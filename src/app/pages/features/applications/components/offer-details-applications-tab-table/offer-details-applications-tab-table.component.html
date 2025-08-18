@@ -1,0 +1,145 @@
+<div class="max-w-[100vw] mx-auto shadow-lg bg-card!">
+  <p-table
+    #table
+    [value]="applications().data"
+    [scrollable]="true"
+    scrollHeight="64vh"
+    dataKey="id"
+    [reorderableColumns]="true"
+    [resizableColumns]="true"
+    [paginator]="true"
+    [rows]="request().size"
+    [totalRecords]="applications().totalItems"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{{ 'SHOWING_ENTRIES' | translate }}"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [lazy]="true"
+    (onLazyLoad)="loadApplications($event)"
+    [loading]="isLoading()"
+    class="fullHeightTable"
+    [style]="{ height: '70vh' }"
+  >
+    <ng-template pTemplate="header">
+      <tr class="bg-secondary!">
+        <ng-container *ngFor="let col of columns; index as i">
+          <th
+            [pSortableColumn]="col.field"
+            pResizableColumn
+            [ngClass]="{ 'border-r': i !== columns.length - 1 }"
+            *ngIf="col.visible"
+            class="min-[20px] border-gray-400! border-b-0! bg-transparent!"
+          >
+            <div class="w-full gap-1 flex items-center text-white">
+              <p>{{ col.header | translate }}</p>
+            </div>
+          </th>
+        </ng-container>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-application let-rowIndex="rowIndex">
+      <tr
+        class="bg-transparent! text-text! hover:bg-gray-50! dark:hover:bg-gray-800! transition-all! border-b! border-gray-400! h-[20px]!"
+      >
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ application?.profile?.profileTitle }}
+            </p>
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ application?.profile?.candidate?.firstName }}
+            </p>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ application?.profile?.candidate?.lastName }}
+            </p>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ application?.profile?.candidate?.email }}
+            </p>
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <div [class]="getApplicationStatusClasses(application.status)">
+              {{ application.status | translate }}
+            </div>
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ application.createdAt | date : "medium" }}
+            </p>
+          </div>
+        </td>
+
+        <td class="w-20 p-1">
+          <button
+            pButton
+            pRipple
+            icon="pi pi-ellipsis-v"
+            class="text-text! bg-transparent! p-1! border-0! hover:bg-gray-200! dark:hover:bg-gray-900/90! transition-all!"
+            (click)="onRowSelect($event, application)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr class="text-center h-[59vh] bg-transparent! text-text!">
+        <td colspan="11" style="text-align: center">
+          {{ "NO_APPLICATIONS_AVAILABLE" | translate }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<app-application-actions-menu
+  [application]="selectedApplication"
+  (onDelete)="deleteApplication()"
+  (onViewDetails)="viewDetails()"
+  #actionsMenu
+></app-application-actions-menu>
+<app-application-history-record-list-dialog />
+<p-confirmDialog
+  [style]="{ minWidth: '450px' }"
+  [draggable]="false"
+  [rejectVisible]="true"
+  acceptLabel="{{ 'YES' | translate }}"
+  rejectLabel="{{ 'NO' | translate }}"
+  acceptIcon="pi pi-check"
+  rejectIcon="pi pi-times"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span class="font-medium text-text!">{{
+        "DELETE_APPLICATION" | translate
+      }}</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-info-circle text-blue-500"></i>
+      <span class="text-text!">{{
+        "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_APPLICATION" | translate
+      }}</span>
+    </div>
+  </ng-template>
+</p-confirmDialog>

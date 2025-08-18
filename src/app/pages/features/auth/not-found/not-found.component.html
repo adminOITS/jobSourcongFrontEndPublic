@@ -1,0 +1,33 @@
+<div class="min-h-screen flex items-center justify-center bg-card px-4">
+  <div class="max-w-lg w-full text-center">
+    <!-- 404 Icon -->
+    <div class="mb-8">
+      <div class="relative">
+        <div class="text-9xl font-bold text-text">404</div>
+
+        <div
+          class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-primary-500 dark:bg-primary-400 rounded-full"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+      {{ message | translate }}
+    </h1>
+
+    <!-- Description -->
+    <p class="text-gray-600 dark:text-gray-400 mb-8">
+      {{ "PAGE_NOT_FOUND_DESCRIPTION" | translate }}
+    </p>
+
+    <!-- Action Button -->
+    <button
+      pButton
+      (click)="goBack()"
+      icon="pi pi-home"
+      label="{{ 'GO_BACK_HOME' | translate }}"
+      class="p-button-primary"
+    ></button>
+  </div>
+</div>

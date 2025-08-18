@@ -1,0 +1,108 @@
+<div
+  class="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 mb-6 border border-slate-200 dark:border-slate-700"
+>
+  <div class="flex justify-between items-start mb-4">
+    <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100">
+      {{ fullName || ("NO_NAME" | translate) }}
+    </h2>
+
+    <button
+      pButton
+      *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+      icon="pi pi-pencil"
+      class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
+      label="{{ 'EDIT' | translate }}"
+      (click)="candidateService.openEditDialog(candidate()!)"
+    ></button>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <!-- Email -->
+    <app-candidate-details-profile-card
+      icon="pi-envelope"
+      [label]="'EMAIL' | translate"
+      [text]="candidate()?.email"
+      [copyTooltip]="'COPY_EMAIL' | translate"
+      (onCopySuccess)="showConfirm('EMAIL_COPIED')"
+    />
+
+    <!-- Phone -->
+    <app-candidate-details-profile-card
+      icon="pi-phone"
+      [label]="'PHONE' | translate"
+      [text]="candidate()?.phone"
+      [copyTooltip]="'COPY_PHONE' | translate"
+      (onCopySuccess)="showConfirm('PHONE_COPIED')"
+    />
+
+    <!-- Location -->
+    <app-candidate-details-profile-card
+      icon="pi-map-marker"
+      [label]="'LOCATION' | translate"
+      [text]="location"
+      [copyTooltip]="'COPY_LOCATION' | translate"
+      (onCopySuccess)="showConfirm('LOCATION_COPIED')"
+    />
+
+    <!-- Address Line 1 -->
+    <app-candidate-details-profile-card
+      icon="pi-home"
+      [label]="'ADDRESS_LINE_1' | translate"
+      [text]="candidate()?.address?.addressLine1"
+      [copyTooltip]="'COPY_ADDRESS' | translate"
+      (onCopySuccess)="showConfirm('ADDRESS_LINE_1_COPIED')"
+    />
+
+    <!-- Address Line 2 -->
+    <app-candidate-details-profile-card
+      icon="pi-building"
+      [label]="'ADDRESS_LINE_2' | translate"
+      [text]="candidate()?.address?.addressLine2"
+      [copyTooltip]="'COPY_ADDRESS' | translate"
+      (onCopySuccess)="showConfirm('ADDRESS_LINE_2_COPIED')"
+    />
+
+    <!-- Zip Code -->
+    <app-candidate-details-profile-card
+      icon="pi-inbox"
+      [label]="'ZIP_CODE' | translate"
+      [text]="candidate()?.address?.zipCode"
+      [copyTooltip]="'COPY_ZIP_CODE' | translate"
+      (onCopySuccess)="showConfirm('ZIP_CODE_COPIED')"
+    />
+
+    <!-- Empty State Message -->
+    <div
+      *ngIf="!hasAnyContactInfo"
+      class="col-span-2 p-6 text-center text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-700 rounded-lg"
+    >
+      {{ "NO_CONTACT_INFO" | translate }}
+    </div>
+  </div>
+</div>
+
+<app-add-edit-candidate-personal-info-dialog
+  *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+/>
+
+<p-toast
+  position="bottom-center"
+  key="confirm"
+  (onClose)="onReject()"
+  [baseZIndex]="5000"
+>
+  <ng-template let-message #headless let-closeFn="closeFn">
+    <section
+      class="flex justify-between items-center p-4 gap-4 w-[500px] bg-emerald-50 dark:bg-slate-700 border border-emerald-200 dark:border-emerald-700 rounded-xl"
+    >
+      <div class="flex items-center gap-5">
+        <span class="font-bold text-base text-slate-800 dark:text-slate-100">{{
+          message.summary | translate
+        }}</span>
+      </div>
+      <span class="text-sm text-slate-800 dark:text-slate-100"
+        ><i class="pi pi-check"></i> {{ message.detail | translate }}</span
+      >
+    </section>
+  </ng-template>
+</p-toast>

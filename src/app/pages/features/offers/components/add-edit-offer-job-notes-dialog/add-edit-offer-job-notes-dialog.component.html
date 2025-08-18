@@ -1,0 +1,123 @@
+<p-dialog
+  [visible]="offerNotesService.isDialogVisibleComputed()"
+  (visibleChange)="offerNotesService.setDialogVisible($event)"
+  [style]="{ width: '70rem' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="dark:bg-slate-800 overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <i class="pi pi-file-edit text-blue-600 mr-2"></i>
+
+    <span class="font-medium text-text!">{{
+      (isEditMode ? "EDIT_JOB_NOTES" : "ADD_JOB_NOTES") | translate
+    }}</span>
+  </ng-template>
+
+  <form [formGroup]="offerNotesForm" (ngSubmit)="onSave()" class="space-y-4">
+    <p-editor
+      formControlName="notes"
+      [placeholder]="'EDIT_JOB_NOTES' | translate"
+      [style]="{ height: '470px' }"
+      class="w-full"
+      [class.ng-invalid]="
+        offerNotesForm.get('notes')?.invalid &&
+        offerNotesForm.get('notes')?.touched
+      "
+    >
+      <ng-template #header>
+        <span class="ql-formats">
+          <button type="button" class="ql-bold" aria-label="Bold"></button>
+          <button type="button" class="ql-italic" aria-label="Italic"></button>
+          <button
+            type="button"
+            class="ql-underline"
+            aria-label="Underline"
+          ></button>
+          <button
+            type="button"
+            class="ql-strike"
+            aria-label="Strikethrough"
+          ></button>
+          <button
+            type="button"
+            class="ql-list"
+            value="ordered"
+            aria-label="Ordered List"
+          ></button>
+          <button
+            type="button"
+            class="ql-list"
+            value="bullet"
+            aria-label="Bullet List"
+          ></button>
+          <button
+            type="button"
+            class="ql-align"
+            value=""
+            aria-label="Align Left"
+          ></button>
+          <button
+            type="button"
+            class="ql-align"
+            value="center"
+            aria-label="Align Center"
+          ></button>
+          <button
+            type="button"
+            class="ql-align"
+            value="right"
+            aria-label="Align Right"
+          ></button>
+          <button
+            type="button"
+            class="ql-align"
+            value="justify"
+            aria-label="Justify"
+          ></button>
+          <button
+            type="button"
+            class="ql-blockquote"
+            aria-label="Blockquote"
+          ></button>
+          <button
+            type="button"
+            class="ql-header"
+            value="1"
+            aria-label="Heading 1"
+          ></button>
+          <button
+            type="button"
+            class="ql-header"
+            value="2"
+            aria-label="Heading 2"
+          ></button>
+        </span>
+        <select class="ql-size" aria-label="Font Size">
+          <option value="small">Small</option>
+          <option selected>Normal</option>
+          <option value="large">Large</option>
+          <option value="huge">Huge</option>
+        </select>
+      </ng-template>
+    </p-editor>
+    <div class="flex justify-end gap-2 mt-6">
+      <button
+        pButton
+        type="button"
+        label="{{ 'CANCEL' | translate }}"
+        class="p-button-text"
+        (click)="onHide()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        [label]="(isEditMode ? 'UPDATE' : 'SAVE') | translate"
+        [disabled]="!offerNotesForm.valid || isLoading()"
+        [loading]="isLoading()"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

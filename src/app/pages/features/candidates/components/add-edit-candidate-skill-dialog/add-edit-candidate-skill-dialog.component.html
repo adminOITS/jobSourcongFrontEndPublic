@@ -1,0 +1,85 @@
+<p-dialog
+  [visible]="skillService.isDialogVisibleComputed()"
+  (visibleChange)="skillService.setDialogVisible($event)"
+  [style]="{ width: '450px' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="dark:bg-slate-800 overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-code text-xl text-primary"></i>
+      <span class="text-base font-medium text-slate-700 dark:text-slate-200">
+        {{ (isEditMode ? "EDIT_SKILL" : "ADD_SKILL") | translate }}
+      </span>
+    </div>
+  </ng-template>
+  <form [formGroup]="skillForm" (ngSubmit)="onSave()" class="space-y-4">
+    <div class="flex flex-col">
+      <label
+        for="skillName"
+        class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+      >
+        <i class="pi pi-tag text-slate-600 dark:text-slate-400"></i>
+        {{ "SKILL_NAME" | translate }} *
+      </label>
+      <input
+        id="skillName"
+        type="text"
+        pInputText
+        formControlName="skillName"
+        placeholder="{{ 'ENTER_SKILL_NAME' | translate }}"
+        class="w-full rounded-md! bg-card! text-card-foreground! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+        [class.border-red-500]="
+          skillForm.get('skillName')?.invalid &&
+          skillForm.get('skillName')?.touched
+        "
+      />
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        for="proficiency"
+        class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+      >
+        <i class="pi pi-star text-slate-600 dark:text-slate-400"></i>
+        {{ "PROFICIENCY_LEVEL" | translate }} *
+      </label>
+      <p-select
+        id="proficiency"
+        [options]="proficiencyLevels"
+        formControlName="proficiency"
+        optionLabel="name"
+        optionValue="value"
+        placeholder="{{ 'SELECT_PROFICIENCY_LEVEL' | translate }}"
+        class="w-full rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+        [class.border-red-500]="
+          skillForm.get('proficiency')?.invalid &&
+          skillForm.get('proficiency')?.touched
+        "
+        pSize="small"
+      ></p-select>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-6">
+      <button
+        pButton
+        type="button"
+        label="{{ 'CANCEL' | translate }}"
+        icon="pi pi-times"
+        class="p-button-text"
+        (click)="skillService.closeDialog()"
+        [disabled]="isLoading()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        label="{{ 'SAVE' | translate }}"
+        icon="pi pi-check"
+        [disabled]="!skillForm.valid"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

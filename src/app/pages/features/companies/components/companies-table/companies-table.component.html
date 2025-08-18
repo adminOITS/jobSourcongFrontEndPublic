@@ -1,0 +1,154 @@
+<div class="max-w-[100vw] mx-auto shadow-lg">
+  <p-table
+    #table
+    [value]="companies().data"
+    [scrollable]="true"
+    scrollHeight="84vh"
+    dataKey="id"
+    [resizableColumns]="true"
+    [paginator]="true"
+    [rows]="request().size"
+    [totalRecords]="companies().totalItems"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{{ 'SHOWING_ENTRIES' | translate }}"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [lazy]="true"
+    (onLazyLoad)="loadCompaniesLazy($event)"
+    [customSort]="true"
+    (sortFunction)="loadCompaniesLazy($event)"
+    [loading]="isLoading()"
+    class="fullHeightTable"
+    [style]="{ height: '90vh' }"
+  >
+    <ng-template pTemplate="header">
+      <tr class="bg-secondary!">
+        <ng-container *ngFor="let col of columns; index as i">
+          <th
+            [pSortableColumn]="col.field"
+            pResizableColumn
+            [ngClass]="{ 'border-r': i !== columns.length - 1 }"
+            *ngIf="col.visible"
+            class="py-2! border-gray-400! bg-transparent!"
+          >
+            <div class="w-full gap-1 flex items-center text-white">
+              <p>{{ col.header | translate }}</p>
+
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </div>
+          </th>
+        </ng-container>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-company let-i="rowIndex">
+      <tr
+        class="bg-transparent! text-text! hover:bg-gray-50 transition-all border-b border-gray-400"
+      >
+        <td class="p-0 px-1">
+          <div class="w-full min-w-32 flex items-center line-clamp-1">
+            {{ company.name }}
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ company.sector || "N/A" }}
+            </p>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ company.address.addressLine1 || "N/A" }}
+            </p>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ company.address.country || "N/A" }}
+            </p>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ company.contact || "N/A" }}
+            </p>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ company.email || "N/A" }}
+            </p>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 flex items-center">
+            <a
+              *ngIf="company.websiteLink"
+              [href]="company.websiteLink"
+              target="_blank"
+              class="text-primary-600 hover:text-primary-700 text-sm truncate overflow-hidden whitespace-nowrap"
+            >
+              {{ company.websiteLink }}
+            </a>
+            <p *ngIf="!company.websiteLink" class="text-sm text-gray-500">
+              N/A
+            </p>
+          </div>
+        </td>
+        <td class="w-[80px] p-1">
+          <button
+            pButton
+            pRipple
+            icon="pi pi-ellipsis-v"
+            class="text-text! bg-transparent! p-1! border-0! hover:bg-gray-200! dark:hover:bg-gray-900/90! transition-all!"
+            (click)="selectRowId($event, company)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr class="text-center h-[76vh] bg-transparent! text-text!">
+        <td colspan="12" style="text-align: center">
+          {{ "NO_DATA_AVAILABLE" | translate }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<app-companies-actions-menu
+  #companiesMenu
+  [company]="selectedCompany"
+  (onDeleteCompany)="deleteCompany()"
+/>
+<p-confirmDialog
+  [style]="{ minWidth: '450px' }"
+  [draggable]="false"
+  [rejectVisible]="true"
+  acceptLabel="{{ 'DELETE' | translate }}"
+  rejectLabel="{{ 'CANCEL' | translate }}"
+  acceptIcon="pi pi-trash"
+  rejectIcon="pi pi-times"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span class="font-medium text-text!">{{
+        "DELETE_COMPANY" | translate
+      }}</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-info-circle text-blue-500"></i>
+      <span class="text-text!">{{
+        "DELETE_COMPANY_CONFIRMATION" | translate
+      }}</span>
+    </div>
+  </ng-template>
+</p-confirmDialog>

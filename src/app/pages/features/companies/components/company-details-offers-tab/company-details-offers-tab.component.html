@@ -1,0 +1,15 @@
+<div class="pt-4 flex flex-col gap-4">
+  <div class="flex flex-col w-full sm:flex-row justify-end items-center gap-4">
+    <button
+      pButton
+      pRipple
+      label="{{ 'ADD_OFFER' | translate }}"
+      icon="pi pi-plus"
+      class="rounded-md! border-none! shadow-md! bg-secondary! text-primary-text! dark:hover:text-slate-200! dark:hover:bg-secondary/80! hover:opacity-90! transition-colors! duration-150!"
+      (click)="navigateToAddOffer()"
+    ></button>
+  </div>
+  <app-offers-filter-form [request]="request"></app-offers-filter-form>
+
+  <app-company-offers-table [request]="request"></app-company-offers-table>
+</div>

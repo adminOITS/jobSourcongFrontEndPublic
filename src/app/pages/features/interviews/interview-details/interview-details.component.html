@@ -1,0 +1,562 @@
+<app-loader [isLoading]="interviewDataLoading"></app-loader>
+<div class="mx-auto lg:p-6" *ngIf="!interviewDataLoading()">
+  <div
+    class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-2 md:p-6 space-y-6 sm:space-y-8 transition-colors duration-200"
+  >
+    <!-- Header Section -->
+    <div
+      class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 border-b border-gray-200 dark:border-gray-700 pb-4"
+    >
+      <div class="space-y-3 flex-1 min-w-0">
+        <div class="flex justify-between items-center">
+          <h1
+            class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white"
+          >
+            {{ "INTERVIEW_DETAILS" | translate }}
+          </h1>
+          <div class="flex items-center gap-2">
+            <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+              <i
+                class="pi pi-calendar text-blue-500 dark:text-blue-400 mr-1"
+              ></i>
+              {{ "CREATED_AT" | translate }}:
+              {{ interviewData()?.createdAt | date }}
+            </span>
+            <div class="relative" *appHasRole="['HR', 'HR_ADMIN', 'RECRUITER']">
+              <p-button
+                icon="pi pi-ellipsis-v"
+                severity="secondary"
+                [text]="true"
+                [rounded]="true"
+                class="dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                (click)="toggleMenu($event)"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div
+            class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+          >
+            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">
+              {{ "CANDIDATE" | translate }}
+            </p>
+            <p
+              class="text-sm sm:text-base text-gray-900 dark:text-white font-medium truncate"
+            >
+              {{ interviewData()?.application?.profile?.candidate?.firstName }}
+              {{ interviewData()?.application?.profile?.candidate?.lastName }}
+            </p>
+          </div>
+          <div
+            class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+          >
+            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">
+              {{ "PROFILE" | translate }}
+            </p>
+            <p
+              class="text-sm sm:text-base text-gray-900 dark:text-white font-medium truncate"
+            >
+              {{ interviewData()?.application?.profile?.profileTitle }}
+            </p>
+          </div>
+          <div
+            class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+          >
+            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">
+              {{ "OFFER" | translate }}
+            </p>
+            <p
+              class="text-sm sm:text-base text-gray-900 dark:text-white font-medium truncate"
+              [title]="interviewData()?.application?.jobOffer?.title"
+            >
+              {{ interviewData()?.application?.jobOffer?.title }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Left Column - Status & Details -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Candidate Status -->
+        <div
+          class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-100 dark:border-gray-600"
+        >
+          <h2
+            class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2"
+          >
+            <i class="pi pi-chart-line text-green-500 dark:text-green-400"></i>
+            {{ "PROGRESS_STATUS" | translate }}
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                  >{{ "CANDIDATE_STATUS" | translate }}</span
+                >
+                <span
+                  class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                  >{{
+                    interviewData()?.candidateStatus
+                      ? (interviewData()?.candidateStatus! | translate)
+                      : ("N/A" | translate)
+                  }}</span
+                >
+              </div>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                  >{{ "OTHER_RECRUITMENT" | translate }}</span
+                >
+                <span class="text-gray-900 dark:text-white font-medium">
+                  <span
+                    [class]="
+                      interviewData()?.otherRecruitmentProcesses?.hasOther
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800'
+                        : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800'
+                    "
+                    class="px-2 py-1 rounded-full text-xs font-medium transition-colors duration-200"
+                  >
+                    {{
+                      interviewData()?.otherRecruitmentProcesses?.hasOther
+                        ? ("YES" | translate)
+                        : ("NO" | translate)
+                    }}
+                  </span>
+                </span>
+              </div>
+              <div
+                class="mt-2"
+                *ngIf="interviewData()?.otherRecruitmentProcesses?.hasOther"
+              >
+                <div class="flex items-center justify-between">
+                  <span
+                    class="text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                    >{{ "PROGRESS_LEVEL" | translate }}</span
+                  >
+                  <span
+                    class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                    >{{
+                      interviewData()?.otherRecruitmentProcesses?.progressLevel
+                        ? (interviewData()?.otherRecruitmentProcesses
+                            ?.progressLevel! | translate)
+                        : ("N/A" | translate)
+                    }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Motivation & Change -->
+        <div
+          class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-100 dark:border-gray-600"
+        >
+          <h2
+            class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2"
+          >
+            <i class="pi pi-comments text-purple-500 dark:text-purple-400"></i>
+            {{ "MOTIVATION_CHANGE" | translate }}
+          </h2>
+          <div
+            class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+          >
+            <p class="text-sm sm:text-base text-gray-900 dark:text-white">
+              {{ interviewData()?.motivationForChange }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div
+          class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-100 dark:border-gray-600"
+        >
+          <h2
+            class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2"
+          >
+            <i class="pi pi-info-circle text-blue-500 dark:text-blue-400"></i>
+            {{ "ADDITIONAL_INFORMATION" | translate }}
+          </h2>
+          <div class="space-y-4">
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <p
+                class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-2"
+              >
+                {{ "SOFT_SKILLS" | translate }}
+              </p>
+              <p
+                class="text-sm sm:text-base text-gray-900 dark:text-white font-medium"
+              >
+                {{ interviewData()?.personality?.softSkills }}
+              </p>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <p
+                class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-2"
+              >
+                {{ "MOTIVATIONS_EXPECTATIONS" | translate }}
+              </p>
+              <p
+                class="text-sm sm:text-base text-gray-900 dark:text-white font-medium"
+              >
+                {{ interviewData()?.motivationsAndExpectations }}
+              </p>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <p
+                class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-2"
+              >
+                {{ "TRAINING_PLANS" | translate }}
+              </p>
+              <p
+                class="text-sm sm:text-base text-gray-900 dark:text-white font-medium"
+              >
+                {{ interviewData()?.trainingPlans }}
+              </p>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <p
+                class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-2"
+              >
+                {{ "REFERENCES" | translate }}
+              </p>
+              <p
+                class="text-sm sm:text-base text-gray-900 dark:text-white font-medium"
+              >
+                {{ interviewData()?.references }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Compensation & Details -->
+      <div class="space-y-6">
+        <!-- Compensation -->
+        <div
+          class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-100 dark:border-gray-600"
+        >
+          <h2
+            class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2"
+          >
+            <i class="pi pi-money-bill text-green-500 dark:text-green-400"></i>
+            {{ "COMPENSATION" | translate }}
+          </h2>
+          <div class="space-y-4">
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <p
+                class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium mb-2"
+              >
+                {{ "CURRENT_COMPENSATION" | translate }}
+              </p>
+              <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                  <span
+                    class="text-xs sm:text-sm text-gray-600 dark:text-gray-300"
+                    >{{ "GROSS_TOTAL" | translate }}</span
+                  >
+                  <span
+                    class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                    >{{
+                      interviewData()?.compensation?.current?.grossTotal
+                    }}</span
+                  >
+                </div>
+                <div class="flex justify-between items-center">
+                  <span
+                    class="text-xs sm:text-sm text-gray-600 dark:text-gray-300"
+                    >{{ "FIXED_PORTION" | translate }}</span
+                  >
+                  <span
+                    class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                    >{{
+                      interviewData()?.compensation?.current?.fixedPortion
+                    }}</span
+                  >
+                </div>
+                <div class="flex justify-between items-center">
+                  <span
+                    class="text-xs sm:text-sm text-gray-600 dark:text-gray-300"
+                    >{{ "BENEFITS" | translate }}</span
+                  >
+                  <span
+                    class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                    >{{
+                      interviewData()?.compensation?.current?.benefits
+                    }}</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <p
+                class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium mb-2"
+              >
+                {{ "DESIRED_COMPENSATION" | translate }}
+              </p>
+              <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                  <span
+                    class="text-xs sm:text-sm text-gray-600 dark:text-gray-300"
+                    >{{ "GROSS_TOTAL" | translate }}</span
+                  >
+                  <span
+                    class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                    >{{
+                      interviewData()?.compensation?.desired?.grossTotal
+                    }}</span
+                  >
+                </div>
+                <div class="flex justify-between items-center">
+                  <span
+                    class="text-xs sm:text-sm text-gray-600 dark:text-gray-300"
+                    >{{ "FIXED_PORTION" | translate }}</span
+                  >
+                  <span
+                    class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                    >{{
+                      interviewData()?.compensation?.desired?.fixedPortion
+                    }}</span
+                  >
+                </div>
+                <div class="flex justify-between items-center">
+                  <span
+                    class="text-xs sm:text-sm text-gray-600 dark:text-gray-300"
+                    >{{ "BENEFITS" | translate }}</span
+                  >
+                  <span
+                    class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                    >{{
+                      interviewData()?.compensation?.desired?.benefits
+                    }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Employment & Mobility -->
+        <div
+          class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-100 dark:border-gray-600"
+        >
+          <h2
+            class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2"
+          >
+            <i class="pi pi-briefcase text-orange-500 dark:text-orange-400"></i>
+            {{ "EMPLOYMENT_DETAILS" | translate }}
+          </h2>
+          <div class="space-y-4">
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                  >{{ "CURRENTLY_EMPLOYED" | translate }}</span
+                >
+                <span class="text-gray-900 dark:text-white font-medium">
+                  <span
+                    [class]="
+                      interviewData()?.currentlyEmployed
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800'
+                        : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800'
+                    "
+                    class="px-2 py-1 rounded-full text-xs font-medium transition-colors duration-200"
+                  >
+                    {{
+                      interviewData()?.currentlyEmployed
+                        ? ("YES" | translate)
+                        : ("NO" | translate)
+                    }}
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                  >{{ "NOTICE_PERIOD" | translate }}</span
+                >
+                <span
+                  class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                  >{{
+                    interviewData()?.availability?.noticeDetails?.duration
+                  }}</span
+                >
+              </div>
+              <div class="mt-2">
+                <div class="flex items-center justify-between">
+                  <span
+                    class="text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                    >{{ "IS_NEGOTIABLE" | translate }}</span
+                  >
+                  <span class="text-gray-900 dark:text-white font-medium">
+                    <span
+                      [class]="
+                        interviewData()?.availability?.noticeDetails
+                          ?.isNegotiable
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800'
+                          : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800'
+                      "
+                      class="px-2 py-1 rounded-full text-xs font-medium transition-colors duration-200"
+                    >
+                      {{
+                        interviewData()?.availability?.noticeDetails
+                          ?.isNegotiable
+                          ? ("YES" | translate)
+                          : ("NO" | translate)
+                      }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                  >{{ "AVAILABILITY_DATE" | translate }}</span
+                >
+                <span
+                  class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                  >{{
+                    interviewData()?.availability?.noticeDetails
+                      ?.availabilityDate | date
+                  }}</span
+                >
+              </div>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                  >{{ "VIDEO_RECORD_DATE" | translate }}</span
+                >
+                <span
+                  class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                  >{{ interviewData()?.videoInterviewDate | date }}</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobility -->
+        <div
+          class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-100 dark:border-gray-600"
+        >
+          <h2
+            class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2"
+          >
+            <i class="pi pi-globe text-blue-500 dark:text-blue-400"></i>
+            {{ "MOBILITY" | translate }}
+          </h2>
+          <div class="space-y-4">
+            <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                  >{{ "IS_MOBILE" | translate }}</span
+                >
+                <span class="text-gray-900 dark:text-white font-medium">
+                  <span
+                    [class]="
+                      interviewData()?.mobility?.mobile
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800'
+                        : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800'
+                    "
+                    class="px-2 py-1 rounded-full text-xs font-medium transition-colors duration-200"
+                  >
+                    {{
+                      interviewData()?.mobility?.mobile
+                        ? ("YES" | translate)
+                        : ("NO" | translate)
+                    }}
+                  </span>
+                </span>
+              </div>
+              <div class="mt-2" *ngIf="interviewData()?.mobility?.mobile">
+                <div class="flex items-center justify-between">
+                  <span
+                    class="text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                    >{{ "MOBILITY_ZONE" | translate }}</span
+                  >
+                  <span
+                    class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium"
+                    >{{ interviewData()?.mobility?.mobilityZone }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-interview-data-actions-menu
+  #interviewDataActionsMenu
+  [interviewData]="interviewData"
+  (onEditInterviewData)="onEditInterviewData()"
+  (onDeleteInterviewData)="onDeleteInterviewData()"
+/>
+
+<p-confirmDialog
+  *appHasRole="['HR', 'HR_ADMIN', 'RECRUITER']"
+  [style]="{ minWidth: '450px' }"
+  [draggable]="false"
+  [rejectVisible]="true"
+  acceptLabel="{{ 'DELETE' | translate }}"
+  rejectLabel="{{ 'CANCEL' | translate }}"
+  acceptIcon="pi pi-trash"
+  rejectIcon="pi pi-times"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span class="font-medium text-text!">{{
+        "DELETE_INTERVIEW_DATA" | translate
+      }}</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-info-circle text-blue-500"></i>
+      <span class="text-text!">{{
+        "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_INTERVIEW_DATA" | translate
+      }}</span>
+    </div>
+  </ng-template>
+</p-confirmDialog>

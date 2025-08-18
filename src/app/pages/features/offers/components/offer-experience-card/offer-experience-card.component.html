@@ -1,0 +1,81 @@
+<p-confirmDialog
+  *appHasRole="['HR', 'HR_ADMIN']"
+  [style]="{ minWidth: '450px' }"
+  [draggable]="false"
+  [rejectVisible]="true"
+  acceptLabel="{{ 'YES' | translate }}"
+  rejectLabel="{{ 'NO' | translate }}"
+  acceptIcon="pi pi-check"
+  rejectIcon="pi pi-times"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span class="font-medium text-text!">{{
+        "DELETE_EXPERIENCE" | translate
+      }}</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-info-circle text-blue-500"></i>
+      <span class="text-text!">{{
+        "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_EXPERIENCE" | translate
+      }}</span>
+    </div>
+  </ng-template>
+</p-confirmDialog>
+<div
+  class="bg-slate-50 dark:bg-slate-700 p-3 sm:p-4 rounded-lg border border-border hover:bg-slate-100 dark:hover:bg-background/80 transition-all duration-300 hover:border-primary/30 group"
+>
+  <div class="flex justify-between items-start">
+    <div>
+      <h5 class="font-medium text-base sm:text-lg text-text transition-colors">
+        {{ experience.title }}
+      </h5>
+      <p
+        *ngIf="experience.companyName"
+        class="text-text/80 text-sm sm:text-base flex items-center gap-1 sm:gap-2"
+      >
+        <i
+          class="pi pi-building text-primary text-sm sm:text-base group-hover:scale-110 transition-transform"
+        ></i>
+        <span class="group-hover:text-text transition-colors">
+          {{ experience.companyName }}
+        </span>
+      </p>
+    </div>
+    <div class="flex items-center justify-center gap-x-4 sm:gap-x-9">
+      <div
+        class="flex items-center sm:mr-1 gap-1 sm:gap-2 px-2 sm:px-4 py-1 sm:py-2 rounded-lg bg-primary/10 border border-primary/20 group-hover:bg-primary/20 transition-colors"
+      >
+        <i
+          class="pi pi-calendar text-primary text-sm sm:text-base group-hover:scale-110 transition-transform"
+        ></i>
+        <span class="text-primary text-xs sm:text-sm"
+          >{{ experience.yearsRequired }} {{ "YEARS" | translate }}</span
+        >
+      </div>
+      <button
+        *appHasRole="['HR', 'HR_ADMIN']"
+        pButton
+        icon="pi pi-ellipsis-v"
+        class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
+        (click)="menu.toggle($event)"
+      ></button>
+    </div>
+  </div>
+  <p *ngIf="experience.description" class="text-text/70 text-sm mt-2">
+    {{ experience.description }}
+  </p>
+</div>
+
+<p-menu
+  #menu
+  [popup]="true"
+  [model]="menuItems"
+  appendTo="body"
+  *appHasRole="['HR', 'HR_ADMIN']"
+></p-menu>

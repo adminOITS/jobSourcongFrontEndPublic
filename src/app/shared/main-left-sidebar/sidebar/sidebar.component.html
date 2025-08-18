@@ -1,0 +1,6 @@
+@if (isLargeScreen()) {
+<app-desktop-sidebar [sidebarItems]="sidebarItems" />
+}@else {
+
+<app-mobile-sidebar [sidebarItems]="sidebarItems" />
+}

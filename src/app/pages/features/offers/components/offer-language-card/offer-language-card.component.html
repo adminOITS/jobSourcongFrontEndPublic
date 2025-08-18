@@ -1,0 +1,105 @@
+<p-confirmDialog
+  *appHasRole="['HR', 'HR_ADMIN']"
+  [style]="{ minWidth: '450px' }"
+  [draggable]="false"
+  [rejectVisible]="true"
+  acceptLabel="{{ 'YES' | translate }}"
+  rejectLabel="{{ 'NO' | translate }}"
+  acceptIcon="pi pi-check"
+  rejectIcon="pi pi-times"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span class="font-medium text-text!">
+        {{ "DELETE_LANGUAGE" | translate }}
+      </span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-info-circle text-blue-500"></i>
+      <span class="text-text!">{{
+        "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_LANGUAGE" | translate
+      }}</span>
+    </div>
+  </ng-template>
+</p-confirmDialog>
+<div
+  class="flex flex-col p-2 sm:p-3 rounded-lg bg-slate-50 dark:bg-slate-700 border border-border hover:bg-slate-100 dark:hover:bg-background/80 transition-all duration-300 hover:border-primary/30 group"
+>
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <i
+        class="pi pi-check-circle text-primary text-[10px] sm:text-sm group-hover:scale-110 transition-transform"
+      ></i>
+      <span class="text-text/90 text-xs sm:text-base transition-colors">{{
+        language.language | translate
+      }}</span>
+      <span
+        class="text-text/60 text-[10px] sm:text-sm group-hover:text-text/80 transition-colors"
+        >({{ language.proficiency | translate }})</span
+      >
+    </div>
+    <div class="flex items-center gap-x-2 sm:gap-x-4">
+      <div class="flex items-center gap-1">
+        <span
+          class="text-[10px] sm:text-sm text-sky-900 dark:text-sky-600 transition-colors whitespace-nowrap"
+          [ngClass]="{
+            'text-success group-hover:text-success/80':
+              language.requirementLevel === 'OPTIONAL',
+            'text-warning group-hover:text-warning/80':
+              language.requirementLevel === 'PREFERRED',
+            'text-danger group-hover:text-danger/80':
+              language.requirementLevel === 'REQUIRED'
+          }"
+        >
+          {{ language.requirementLevel | translate }}
+        </span>
+        <i
+          class="text-sky-900 dark:text-sky-600 pi text-[10px] sm:text-sm transition-all group-hover:scale-110"
+          [ngClass]="{
+            'pi-check text-success group-hover:text-success/80':
+              language.requirementLevel === 'OPTIONAL',
+            'pi-star text-warning group-hover:text-warning/80':
+              language.requirementLevel === 'PREFERRED',
+            'pi-star-fill text-danger group-hover:text-danger/80':
+              language.requirementLevel === 'REQUIRED'
+          }"
+        ></i>
+        <div class="ml-1">
+          <button
+            pButton
+            [disabled]="!language.description"
+            (click)="toggleExpand()"
+            [icon]="isExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+            class="p-button-rounded p-button-text p-button-sm dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+          ></button>
+        </div>
+      </div>
+      <button
+        *appHasRole="['HR', 'HR_ADMIN']"
+        pButton
+        icon="pi pi-ellipsis-v"
+        class="p-button-rounded p-button-text p-button-sm dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+        (click)="menu.toggle($event)"
+      ></button>
+    </div>
+  </div>
+
+  <div *ngIf="language.description && isExpanded" class="mt-1 ml-6">
+    <p class="text-[10px] sm:text-sm text-text/70">
+      {{ language.description }}
+    </p>
+  </div>
+</div>
+
+<p-menu
+  #menu
+  [popup]="true"
+  [model]="menuItems"
+  appendTo="body"
+  *appHasRole="['HR', 'HR_ADMIN']"
+></p-menu>

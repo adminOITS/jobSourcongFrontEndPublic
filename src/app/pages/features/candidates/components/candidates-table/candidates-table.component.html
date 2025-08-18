@@ -1,0 +1,197 @@
+<div class="max-w-[100vw] mx-auto shadow-lg">
+  <p-table
+    #table
+    [value]="candidates().data"
+    [scrollable]="true"
+    scrollHeight="82vh"
+    dataKey="id"
+    [reorderableColumns]="true"
+    [resizableColumns]="true"
+    [paginator]="true"
+    [rows]="request().size"
+    [totalRecords]="candidates().totalItems"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [lazy]="true"
+    (onLazyLoad)="loadCandidatesLazy($event)"
+    [loading]="isLoading()"
+    class="fullHeightTable"
+    [style]="{ height: '90vh' }"
+    currentPageReportTemplate="{{ 'SHOWING_ENTRIES' | translate }}"
+    [showCurrentPageReport]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr class="bg-secondary!">
+        <ng-container *ngFor="let col of columns; index as i">
+          <th
+            pResizableColumn
+            [ngClass]="{ 'border-r': i !== columns.length - 1 }"
+            *ngIf="col.visible && col.field !== 'id'"
+            class="py-2! border-gray-400! bg-transparent!"
+          >
+            <div class="w-full gap-1 flex items-center text-white">
+              <p>{{ col.header | translate }}</p>
+            </div>
+          </th>
+        </ng-container>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row let-i="rowIndex">
+      <tr
+        class="bg-transparent! text-text! hover:bg-gray-50 dark:hover:bg-gray-800! transition-all border-b border-gray-400 h-[20px]"
+      >
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            {{ row.firstName }}
+            {{ row.lastName }}
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ row.phone }}
+            </p>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ row.email }}
+            </p>
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ row.address.city }}
+            </p>
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            {{ row.address.country }}
+          </div>
+        </td>
+
+        <td class="p-0 max-w-[350px] px-1">
+          <div
+            class="px-0 min-h-[20px] max-w-full max-h-[20px] flex items-center"
+          >
+            <p
+              class="text-sm truncate max-w-full overflow-hidden whitespace-nowrap"
+            >
+              {{ row.address.addressLine1 }}
+            </p>
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            <span
+              [ngClass]="getCreationSourceClasses(row.candidateCreationSource)"
+              class="truncate max-w-[120px]"
+            >
+              {{ row.candidateCreationSource | translate }}
+            </span>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            <span
+              [ngClass]="
+                getValidationStatusClasses(row.candidateValidationStatus)
+              "
+              class="truncate max-w-[120px]"
+            >
+              {{ row.candidateValidationStatus | translate }}
+            </span>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            <span
+              [ngClass]="
+                getAvailabilityStatusClasses(row.candidateAvailabilityStatus)
+              "
+              class="truncate max-w-[120px]"
+            >
+              {{ row.candidateAvailabilityStatus | translate }}
+            </span>
+          </div>
+        </td>
+
+        <td class="w-[12%] p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            {{ row.createdAt | date : "dd/MM/yyyy" }}
+          </div>
+        </td>
+
+        <td class="w-[80px] p-1">
+          <button
+            pButton
+            pRipple
+            icon="pi pi-ellipsis-v"
+            class="text-text! bg-transparent! p-1! border-0! hover:bg-gray-200! dark:hover:bg-gray-900/90! transition-all!"
+            (click)="selectRowId($event, row)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr class="text-center h-[75vh] bg-transparent! text-text!">
+        <td colspan="12" style="text-align: center">
+          {{ "NO_DATA_AVAILABLE" | translate }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<app-candidates-actions-menu
+  [candidate]="selectedCandidate"
+  (onDeleteCandidate)="deleteCandidate()"
+  #candidatesActionsMenu
+/>
+<p-confirmDialog
+  [style]="{ minWidth: '450px' }"
+  [draggable]="false"
+  [rejectVisible]="true"
+  acceptLabel="{{ 'DELETE' | translate }}"
+  rejectLabel="{{ 'CANCEL' | translate }}"
+  acceptIcon="pi pi-trash"
+  rejectIcon="pi pi-times"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span class="font-medium text-text!">{{
+        "DELETE_CANDIDATE" | translate
+      }}</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-info-circle text-blue-500"></i>
+      <span class="text-text!">{{
+        "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_CANDIDATE" | translate
+      }}</span>
+    </div>
+  </ng-template>
+</p-confirmDialog>

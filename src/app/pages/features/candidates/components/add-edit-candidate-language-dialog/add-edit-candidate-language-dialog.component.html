@@ -1,0 +1,113 @@
+<p-dialog
+  [visible]="languageService.isDialogVisibleComputed()"
+  (visibleChange)="languageService.setDialogVisible($event)"
+  [style]="{ width: '60rem' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="dark:bg-slate-800 overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-globe text-xl text-primary"></i>
+      <span class="text-base font-medium text-slate-700 dark:text-slate-200">
+        {{
+          (languageService.selectedLanguageComputed()
+            ? "EDIT_LANGUAGE"
+            : "ADD_LANGUAGE"
+          ) | translate
+        }}
+      </span>
+    </div>
+  </ng-template>
+  <form [formGroup]="languageForm" (ngSubmit)="onSave()">
+    <div class="flex flex-col lg:flex-row gap-3">
+      <div class="w-full">
+        <label
+          for="languageName"
+          class="flex items-center gap-2 mb-2 text-sm font-medium text-slate-700 dark:text-slate-300"
+        >
+          <i class="pi pi-comment text-slate-600 dark:text-slate-400"></i>
+          {{ "Language" | translate }}
+        </label>
+
+        <p-select
+          id="languageName"
+          [options]="languageOptions"
+          formControlName="languageName"
+          optionLabel="name"
+          optionValue="value"
+          [filter]="true"
+          filterBy="name"
+          [showClear]="true"
+          [placeholder]="'SELECT_LANGUAGE' | translate"
+          class="w-full rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.ng-invalid]="
+            languageForm.get('languageName')?.invalid &&
+            languageForm.get('languageName')?.touched
+          "
+        ></p-select>
+        <small
+          class="text-red-500 dark:text-red-400"
+          *ngIf="
+            languageForm.get('languageName')?.invalid &&
+            languageForm.get('languageName')?.touched
+          "
+        >
+          {{ "LANGUAGE_REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <div class="w-full">
+        <label
+          for="proficiency"
+          class="flex items-center gap-2 mb-2 text-sm font-medium text-slate-700 dark:text-slate-300"
+        >
+          <i class="pi pi-star text-slate-600 dark:text-slate-400"></i>
+          {{ "Proficiency" | translate }}
+        </label>
+        <p-select
+          id="proficiency"
+          [options]="proficiencyLevels"
+          formControlName="proficiency"
+          optionLabel="label"
+          optionValue="value"
+          [placeholder]="'SELECT_PROFICIENCY_LEVEL' | translate"
+          class="w-full rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.ng-invalid]="
+            languageForm.get('proficiency')?.invalid &&
+            languageForm.get('proficiency')?.touched
+          "
+        ></p-select>
+        <small
+          class="text-red-500 dark:text-red-400"
+          *ngIf="
+            languageForm.get('proficiency')?.invalid &&
+            languageForm.get('proficiency')?.touched
+          "
+        >
+          {{ "PROFICIENCY_LEVEL_REQUIRED" | translate }}
+        </small>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-6">
+      <p-button
+        type="button"
+        label="{{ 'CANCEL' | translate }}"
+        icon="pi pi-times"
+        (onClick)="languageService.closeDialog()"
+        styleClass="p-button-text"
+        [disabled]="isLoading()"
+      ></p-button>
+      <p-button
+        type="submit"
+        label="{{ 'SAVE' | translate }}"
+        icon="pi pi-check"
+        [disabled]="!languageForm.valid || isLoading()"
+        [loading]="isLoading()"
+      ></p-button>
+    </div>
+  </form>
+</p-dialog>

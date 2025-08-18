@@ -1,0 +1,246 @@
+<p-dialog
+  [modal]="true"
+  [visible]="isStaffDetailsDialogVisible()"
+  (visibleChange)="staffService.setStaffDetailsDialogVisible($event)"
+  [closable]="true"
+  [dismissableMask]="false"
+  [breakpoints]="{ '1199px': '75vw', '640px': '100vw' }"
+  [style]="{ width: '50vw' }"
+  (onHide)="closeDialog()"
+  [draggable]="false"
+  class="overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <h2 class="text-xl font-semibold flex items-center gap-2 text-text!">
+      <i class="pi pi-user text-blue-600"></i>
+      {{ "MEMBER_DETAILS" | translate }}
+    </h2>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div *ngIf="selectedStaffForDetails()" class="space-y-6">
+      <!-- Staff Avatar and Basic Info -->
+      <div
+        class="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg"
+      >
+        <div class="flex-shrink-0">
+          <div
+            [ngClass]="
+              selectedStaffForDetails()!.role === 'RECRUITER'
+                ? 'bg-blue-100 dark:bg-blue-800'
+                : 'bg-green-100 dark:bg-green-800'
+            "
+            class="h-16 w-16 rounded-full flex items-center justify-center"
+          >
+            <span
+              [ngClass]="
+                selectedStaffForDetails()!.role === 'RECRUITER'
+                  ? 'text-blue-700 dark:text-blue-200'
+                  : 'text-green-700 dark:text-green-200'
+              "
+              class="text-xl font-semibold"
+            >
+              {{ selectedStaffForDetails()!.firstName.charAt(0)
+              }}{{ selectedStaffForDetails()!.lastName.charAt(0) }}
+            </span>
+          </div>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            {{ selectedStaffForDetails()!.firstName }}
+            {{ selectedStaffForDetails()!.lastName }}
+          </h3>
+          <div class="flex items-center gap-2 mt-1">
+            <span
+              class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium"
+              [ngClass]="
+                selectedStaffForDetails()!.role === 'RECRUITER'
+                  ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
+                  : 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+              "
+            >
+              <i class="pi pi-user-plus mr-1"></i>
+              {{ selectedStaffForDetails()!.role | translate }}
+            </span>
+            <!-- <span
+              class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium"
+              [ngClass]="
+                selectedStaffForDetails()!.isEnabled
+                  ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+                  : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
+              "
+            >
+              <i
+                class="pi mr-1"
+                [ngClass]="
+                  selectedStaffForDetails()!.isEnabled
+                    ? 'pi-check-circle'
+                    : 'pi-times-circle'
+                "
+              ></i>
+              {{
+                selectedStaffForDetails()!.isEnabled
+                  ? ("ACTIVE" | translate)
+                  : ("INACTIVE" | translate)
+              }}
+            </span> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="space-y-4">
+        <h4
+          class="text-lg font-medium text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2"
+        >
+          <i class="pi pi-address-book text-blue-600 mr-2"></i>
+          {{ "CONTACT_INFORMATION" | translate }}
+        </h4>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              <i class="pi pi-envelope text-green-600 mr-2"></i>
+              {{ "EMAIL" | translate }}
+            </label>
+            <div
+              class="p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700"
+            >
+              <span class="text-gray-900 dark:text-gray-100">{{
+                selectedStaffForDetails()!.email
+              }}</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              <i class="pi pi-phone text-orange-600 mr-2"></i>
+              {{ "PHONE" | translate }}
+            </label>
+            <div
+              class="p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700"
+            >
+              <span class="text-gray-900 dark:text-gray-100">{{
+                selectedStaffForDetails()!.phone
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location Information -->
+      <div class="space-y-4">
+        <h4
+          class="text-lg font-medium text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2"
+        >
+          <i class="pi pi-map-marker text-purple-600 mr-2"></i>
+          {{ "LOCATION" | translate }}
+        </h4>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              <i class="pi pi-globe text-blue-600 mr-2"></i>
+              {{ "COUNTRY" | translate }}
+            </label>
+            <div
+              class="p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700"
+            >
+              <span class="text-gray-900 dark:text-gray-100">{{
+                selectedStaffForDetails()!.country
+              }}</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              <i class="pi pi-building text-purple-600 mr-2"></i>
+              {{ "CITY" | translate }}
+            </label>
+            <div
+              class="p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700"
+            >
+              <span class="text-gray-900 dark:text-gray-100">{{
+                selectedStaffForDetails()!.city
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Information -->
+      <div class="space-y-4">
+        <h4
+          class="text-lg font-medium text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2"
+        >
+          <i class="pi pi-info-circle text-indigo-600 mr-2"></i>
+          {{ "ADDITIONAL_INFORMATION" | translate }}
+        </h4>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              <i class="pi pi-calendar text-indigo-600 mr-2"></i>
+              {{ "CREATED_DATE" | translate }}
+            </label>
+            <div
+              class="p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700"
+            >
+              <span class="text-gray-900 dark:text-gray-100">
+                {{ selectedStaffForDetails()!.createdAt | date : "medium" }}
+              </span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              <i class="pi pi-clock text-indigo-600 mr-2"></i>
+              {{ "LAST_UPDATED" | translate }}
+            </label>
+            <div
+              class="p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700"
+            >
+              <span
+                class="text-gray-900 dark:text-gray-100"
+                *ngIf="selectedStaffForDetails()!.lastModifiedDate"
+              >
+                {{
+                  selectedStaffForDetails()!.lastModifiedDate | date : "medium"
+                }}
+              </span>
+              <span
+                class="text-gray-900 dark:text-gray-100"
+                *ngIf="!selectedStaffForDetails()!.lastModifiedDate"
+              >
+                {{ "N/A" | translate }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-end pt-6 gap-2">
+      <button
+        pButton
+        type="button"
+        label="{{ 'CLOSE' | translate }}"
+        class="p-button-text"
+        (click)="closeDialog()"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>

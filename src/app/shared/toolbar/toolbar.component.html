@@ -1,0 +1,129 @@
+<div
+  class="flex items-center h-14 justify-between bg-white dark:bg-slate-900 py-3 px-6"
+  [ngClass]="
+    landingPage ? 'shadow-lg dark:shadow-gray-900/20' : 'border-b border-border'
+  "
+>
+  <div
+    [ngClass]="landingPage ? 'max-w-[1200px] w-full mx-auto' : 'w-full'"
+    class="flex items-center h-14 justify-between"
+  >
+    <!-- Sidebar Toggle -->
+    <div class="flex items-center gap-2">
+      <button
+        (click)="toggleSidebar()"
+        class="py-2 px-2.5 rounded-md text-sidebar-foreground hover:bg-secondary/10 cursor-pointer"
+        *ngIf="!landingPage"
+      >
+        <i class="pi pi-bars text-xl!"></i>
+      </button>
+      <div class="cursor-pointer!" (click)="navigateToHome()">
+        <img [src]="logoUrl()" alt="logo" class="h-10" />
+      </div>
+    </div>
+
+    <!-- Search Input -->
+    <!-- <div class="relative" *ngIf="isLargeScreen()">
+    <span
+      class="absolute inset-y-0 left-3 flex items-center text-muted-foreground"
+    >
+      <i class="pi pi-search"></i>
+    </span>
+    <input
+      type="text"
+      class="pl-10 pr-4 py-2 rounded-md w-96 border border-border bg-card text-foreground focus:ring-2 focus:ring-ring focus:outline-none"
+      placeholder="Search"
+    />
+  </div> -->
+
+    <!-- Action Buttons -->
+    <div class="flex gap-1 items-center">
+      <!-- Language Button -->
+      <button
+        class="py-2 px-2.5 rounded-md flex items-center gap-x-1 text-sidebar-foreground hover:bg-secondary/10 transition cursor-pointer!"
+        (click)="langMenu.toggle($event)"
+      >
+        <i class="pi pi-globe text-xl!"></i>
+        <span>{{ language().toUpperCase() }}</span>
+      </button>
+
+      <!-- Notification Button -->
+      <button
+        *ngIf="!landingPage"
+        class="py-2 px-2.5 rounded-md text-sidebar-foreground hover:bg-secondary/10 transition cursor-pointer!"
+      >
+        <p-overlay-badge value="4" severity="danger" class="inline-flex">
+          <i class="pi pi-bell text-xl!"></i>
+        </p-overlay-badge>
+      </button>
+
+      <!-- Mode Toggle (Dark/Light) -->
+      <button
+        (click)="toggleDarkMode()"
+        class="py-2 px-2.5 rounded-md text-sidebar-foreground hover:bg-secondary/10 transition cursor-pointer!"
+      >
+        <i
+          class="text-xl! pi"
+          [ngClass]="theme() == 'dark' ? 'pi-sun' : 'pi-moon'"
+        ></i>
+      </button>
+      <ng-container *ngIf="landingPage">
+        <button
+          class="cursor-pointer bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full font-semibold shadow hover:opacity-90 transition duration-300 text-sm"
+          (click)="navigateToLogin()"
+        >
+          {{ "LOGIN" | translate }}
+        </button>
+      </ng-container>
+
+      <div
+        class="py-2 px-2.5 flex items-center cursor-pointer justify-center rounded-md hover:bg-secondary/10 transition"
+        (click)="userMenu.toggle($event)"
+        *ngIf="!landingPage"
+      >
+        <p-avatar
+          [label]="userName"
+          styleClass=" text-white! bg-primary! w-7! h-7! text-xs!"
+          shape="circle"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-menu
+  #langMenu
+  [popup]="true"
+  [model]="languageItems"
+  styleClass="bg-white! dark:bg-gray-900!"
+>
+  <ng-template pTemplate="item" let-item>
+    <a
+      class="flex items-center dark:bg-gray-900! cursor-pointer gap-3 px-4 py-2 transition-colors duration-150 hover:bg-blue-50 dark:hover:bg-gray-900/90!"
+    >
+      <span [class]="item.icon + ' ' + item.iconColor + ' text-lg'"></span>
+      <span
+        class="ml-1 font-medium text-gray-800 dark:text-gray-100 dark:hover:text-white!"
+        >{{ item.label | translate }}
+      </span>
+    </a>
+  </ng-template>
+</p-menu>
+<p-menu
+  #userMenu
+  [model]="userMenuItems"
+  [popup]="true"
+  styleClass="bg-white! dark:bg-gray-900!"
+>
+  <ng-template pTemplate="item" let-item>
+    <a
+      class="flex items-center dark:bg-gray-900! cursor-pointer gap-3 px-4 py-2 transition-colors duration-150 hover:bg-blue-50 dark:hover:bg-gray-900/90!"
+    >
+      <span [class]="item.icon + ' ' + item.iconColor + ' text-lg'"></span>
+      <span
+        class="ml-1 font-medium text-gray-800 dark:text-gray-100 dark:hover:text-white!"
+        >{{ item.label | translate }}
+      </span>
+    </a>
+  </ng-template>
+</p-menu>

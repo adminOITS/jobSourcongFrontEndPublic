@@ -1,0 +1,171 @@
+<p-dialog
+  [visible]="interviewService.isDialogVisibleComputed()"
+  (visibleChange)="interviewService.setDialogVisible($event)"
+  [style]="{ width: '50rem' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="dark:bg-slate-800 overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <span class="font-medium text-text!">{{
+      (isEditMode ? "RESCHEDULE_INTERVIEW" : "SCHEDULE_INTERVIEW") | translate
+    }}</span>
+  </ng-template>
+  <form [formGroup]="interviewForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Interview Type -->
+      <div class="flex flex-col">
+        <label
+          for="type"
+          class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          {{ "INTERVIEW_TYPE" | translate }} *
+        </label>
+        <p-select
+          id="type"
+          formControlName="type"
+          [options]="interviewTypeOptions"
+          optionLabel="name"
+          optionValue="value"
+          placeholder="{{ 'SELECT_INTERVIEW_TYPE' | translate }}"
+          class="w-full rounded-md! py-0! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          styleClass="small-select"
+          pSize="small"
+          [class.border-red-500]="
+            interviewForm.get('type')?.invalid &&
+            interviewForm.get('type')?.touched
+          "
+        ></p-select>
+        <small
+          *ngIf="
+            interviewForm.get('type')?.invalid &&
+            interviewForm.get('type')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "INTERVIEW_TYPE_REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Interview Duration -->
+      <div class="flex flex-col">
+        <label
+          for="interviewDuration"
+          class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          {{ "INTERVIEW_DURATION" | translate }} *
+        </label>
+        <p-inputNumber
+          id="interviewDuration"
+          formControlName="interviewDuration"
+          [min]="15"
+          [max]="180"
+          [step]="15"
+          suffix=" minutes"
+          class="w-full rounded-md! bg-card! small-input text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          pSize="small"
+          styleClass="small-input"
+          [class.border-red-500]="
+            interviewForm.get('interviewDuration')?.invalid &&
+            interviewForm.get('interviewDuration')?.touched
+          "
+        ></p-inputNumber>
+        <small
+          *ngIf="
+            interviewForm.get('interviewDuration')?.invalid &&
+            interviewForm.get('interviewDuration')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "INTERVIEW_DURATION_REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Scheduled Date Time -->
+      <div class="flex flex-col w-full">
+        <label
+          for="scheduledDateTime"
+          class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          {{ "SCHEDULED_DATE_TIME" | translate }} *
+        </label>
+        <p-datepicker
+          showIcon
+          iconDisplay="input"
+          [showTime]="true"
+          size="small"
+          id="scheduledDateTime"
+          formControlName="scheduledDateTime"
+          styleClass="w-full"
+          [class.border-red-500]="
+            interviewForm.get('scheduledDateTime')?.invalid &&
+            interviewForm.get('scheduledDateTime')?.touched
+          "
+        ></p-datepicker>
+        <small
+          *ngIf="
+            interviewForm.get('scheduledDateTime')?.invalid &&
+            interviewForm.get('scheduledDateTime')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "SCHEDULED_DATE_TIME_REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Meeting Link -->
+      <div class="flex flex-col">
+        <label
+          for="meetingLink"
+          class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          {{ "MEETING_LINK" | translate }}
+        </label>
+
+        <input
+          pInputText
+          id="meetingLink"
+          formControlName="meetingLink"
+          class="w-full rounded-md! bg-card! text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          pSize="small"
+          placeholder="https://"
+          [class.border-red-500]="
+            interviewForm.get('meetingLink')?.invalid &&
+            interviewForm.get('meetingLink')?.touched
+          "
+        />
+
+        <small
+          *ngIf="
+            interviewForm.get('meetingLink')?.invalid &&
+            interviewForm.get('meetingLink')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "MEETING_LINK_REQUIRED" | translate }}
+        </small>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-6">
+      <button
+        pButton
+        type="button"
+        label="{{ 'CANCEL' | translate }}"
+        class="p-button-text"
+        (click)="onHide()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        [label]="(isEditMode ? 'RESCHEDULE' : 'SCHEDULE') | translate"
+        [disabled]="
+          !interviewForm.valid || interviewService.selectedInterviewLoading()
+        "
+        [loading]="interviewService.selectedInterviewLoading()"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

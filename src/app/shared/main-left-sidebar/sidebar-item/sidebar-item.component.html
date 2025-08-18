@@ -1,0 +1,50 @@
+<!-- Item with SubItems -->
+<div *ngIf="item.subItems; else singleLink">
+  <button
+    (click)="toggle()"
+    class="w-full flex items-center px-4 py-2 mb-1 text-sidebar-foreground hover:bg-secondary/30 rounded-md transition-colors focus:outline-none"
+  >
+    <i class="text-xl! {{ item.icon }}  "></i>
+    <span *ngIf="isExpanded" class="ml-2 flex-1 text-left">{{
+      item.label | translate
+    }}</span>
+
+    <i
+      class="pi"
+      [ngClass]="{ 'pi-chevron-up': open, 'pi-chevron-down': !open }"
+    ></i>
+  </button>
+
+  <!-- SubItems List -->
+  <ul *ngIf="open" class="bg-primary-700">
+    <li *ngFor="let subItem of item.subItems">
+      <a
+        [routerLink]="subItem.route"
+        routerLinkActive="bg-gradient-to-br from-primary to-secondary dark:from-primary dark:to-secondary"
+        class="flex items-center px-8 py-2 text-sidebar-foreground hover:bg-secondary/30 rounded-md transition-colors"
+        [pTooltip]="!isExpanded ? (item.label | translate) : ''"
+        tooltipPosition="right"
+      >
+        <i class="{{ subItem.icon }} w-4 h-4"></i>
+        <span *ngIf="isExpanded" class="ml-3">{{
+          item.label | translate
+        }}</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- Item without SubItems -->
+<ng-template #singleLink>
+  <a
+    [routerLink]="item.route"
+    [routerLinkActiveOptions]="{ exact: true }"
+    routerLinkActive="bg-gradient-to-br from-primary to-secondary dark:from-primary dark:to-secondary text-white"
+    class="flex items-center px-4 py-3 mb-1 text-sidebar-foreground hover:bg-secondary/40 dark:hover:bg-accent/80! rounded-md transition-colors"
+    [pTooltip]="!isExpanded ? (item.label | translate) : ''"
+    tooltipPosition="right"
+  >
+    <i class="{{ item.icon }} w-5 h-5"></i>
+    <span *ngIf="isExpanded" class="ml-2">{{ item.label | translate }}</span>
+  </a>
+</ng-template>

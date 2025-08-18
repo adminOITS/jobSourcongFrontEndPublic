@@ -1,0 +1,164 @@
+<p-dialog
+  [visible]="offerEducationService.isDialogVisibleComputed()"
+  (visibleChange)="offerEducationService.setDialogVisible($event)"
+  [style]="{ width: '50rem' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="dark:bg-slate-800 overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <span class="font-medium text-text!">
+      <i class="pi pi-book mr-2 text-primary"></i>
+      {{ (isEditMode ? "EDIT_EDUCATION" : "ADD_EDUCATION") | translate }}
+    </span>
+  </ng-template>
+
+  <form [formGroup]="educationForm" (ngSubmit)="onSave()" class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Degree -->
+      <div class="flex flex-col">
+        <label for="degree" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-graduation-cap mr-2"></i>{{ "DEGREE" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="degree"
+          formControlName="degree"
+          class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            educationForm.get('degree')?.invalid &&
+            educationForm.get('degree')?.touched
+          "
+        />
+        <small
+          *ngIf="
+            educationForm.get('degree')?.invalid &&
+            educationForm.get('degree')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Field -->
+      <div class="flex flex-col">
+        <label for="field" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-book mr-2"></i>{{ "FIELD" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="field"
+          formControlName="field"
+          class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            educationForm.get('field')?.invalid &&
+            educationForm.get('field')?.touched
+          "
+        />
+        <small
+          *ngIf="
+            educationForm.get('field')?.invalid &&
+            educationForm.get('field')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Institution -->
+      <div class="flex flex-col">
+        <label for="institution" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-building mr-2"></i>{{ "INSTITUTION" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="institution"
+          formControlName="institution"
+          class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            educationForm.get('institution')?.invalid &&
+            educationForm.get('institution')?.touched
+          "
+        />
+        <small
+          *ngIf="
+            educationForm.get('institution')?.invalid &&
+            educationForm.get('institution')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Requirement Level -->
+      <div class="flex flex-col">
+        <label
+          for="requirementLevel"
+          class="text-sm font-medium text-text/85 mb-1"
+        >
+          <i class="pi pi-star mr-2"></i>{{ "REQUIRED_LEVEL" | translate }} *
+        </label>
+        <p-select
+          id="requirementLevel"
+          formControlName="requirementLevel"
+          [options]="requirementLevelOptions"
+          optionLabel="name"
+          optionValue="value"
+          placeholder="{{ 'SELECT_REQUIREMENT_LEVEL' | translate }}"
+          class="w-full rounded-md! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            educationForm.get('requirementLevel')?.invalid &&
+            educationForm.get('requirementLevel')?.touched
+          "
+        ></p-select>
+        <small
+          *ngIf="
+            educationForm.get('requirementLevel')?.invalid &&
+            educationForm.get('requirementLevel')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="flex flex-col">
+      <label for="description" class="text-sm font-medium text-text/85 mb-1">
+        <i class="pi pi-align-left mr-2"></i>{{ "DESCRIPTION" | translate }}
+      </label>
+      <textarea
+        pTextarea
+        id="description"
+        formControlName="description"
+        class="w-full rounded-md! bg-card! text-text! h-full! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+        rows="5"
+        [autoResize]="true"
+      ></textarea>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-6">
+      <button
+        pButton
+        type="button"
+        label="{{ 'CANCEL' | translate }}"
+        class="p-button-text"
+        (click)="onHide()"
+        [disabled]="isLoading()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        [label]="(isEditMode ? 'UPDATE' : 'SAVE') | translate"
+        [disabled]="!educationForm.valid || isLoading()"
+        [loading]="isLoading()"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

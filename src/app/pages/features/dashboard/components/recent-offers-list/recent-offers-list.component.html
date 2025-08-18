@@ -1,0 +1,74 @@
+<div
+  class="relative bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
+>
+  <!-- Background decoration -->
+  <div
+    class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 rounded-full -translate-y-8 translate-x-8 opacity-30"
+  ></div>
+
+  <div class="relative z-10 p-4 sm:p-5">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-4 sm:mb-5">
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <div
+          class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-gradient-to-br from-primary to-secondary dark:from-primary dark:to-secondary rounded-lg shadow-sm"
+        >
+          <i class="pi pi-clock text-white text-sm sm:text-base"></i>
+        </div>
+        <h2
+          class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white"
+        >
+          {{ "RECENTLY_VISITED_OFFERS" | translate }}
+        </h2>
+      </div>
+      <button
+        *ngIf="showViewAll"
+        class="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-primary to-secondary hover:from-primary hover:to-secondary text-white text-xs sm:text-sm font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105"
+        (click)="onViewAll()"
+      >
+        {{ "VIEW_ALL" | translate }}
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="space-y-2 sm:space-y-3">
+      <!-- Dynamic Offer Items -->
+      <div
+        class="space-y-2 sm:space-y-3"
+        *ngIf="recentOffersViews().length > 0"
+      >
+        <app-recent-offer-card
+          *ngFor="let offer of recentOffersViews()"
+          [recentOffer]="offer"
+        ></app-recent-offer-card>
+      </div>
+
+      <!-- Empty State -->
+      <div
+        *ngIf="recentOffersViews().length === 0"
+        class="flex flex-col items-center justify-center py-8 text-center"
+      >
+        <div
+          class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-full mb-4 shadow-sm"
+        >
+          <i
+            class="pi pi-briefcase text-gray-400 dark:text-gray-500 text-xl sm:text-2xl"
+          ></i>
+        </div>
+        <h3
+          class="text-base sm:text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1"
+        >
+          {{ "NO_RECENT_OFFERS" | translate }}
+        </h3>
+        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-sm">
+          {{ "VISIT_SOME_OFFERS_TO_SEE_THEM_HERE" | translate }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom accent line -->
+  <div
+    class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-600"
+  ></div>
+</div>

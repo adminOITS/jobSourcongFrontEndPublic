@@ -1,0 +1,134 @@
+<div class="max-w-4xl mx-auto space-y-8">
+  <!-- Profile Information -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <h3
+      class="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white"
+    >
+      <i class="pi pi-user text-primary"></i>
+      {{ "PROFILE_INFORMATION" | translate }}
+    </h3>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      <div class="space-y-4">
+        <div>
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >{{ "FIRST_NAME" | translate }}</label
+          >
+          <input
+            type="text"
+            pInputText
+            formControlName="firstName"
+            [placeholder]="'ENTER_FIRST_NAME' | translate"
+            class="w-full! dark:bg-gray-700! dark:border-gray-600! dark:text-white!"
+            [style]="{ width: '100%' }"
+          />
+        </div>
+        <div>
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >{{ "LAST_NAME" | translate }}</label
+          >
+          <input
+            type="text"
+            pInputText
+            formControlName="lastName"
+            [placeholder]="'ENTER_LAST_NAME' | translate"
+            class="w-full dark:bg-gray-700! dark:border-gray-600! dark:text-white!"
+            [style]="{ width: '100%' }"
+          />
+        </div>
+        <div>
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >{{ "PHONE_NUMBER" | translate }}</label
+          >
+          <input
+            type="tel"
+            pInputText
+            formControlName="phone"
+            [placeholder]="'ENTER_PHONE_NUMBER' | translate"
+            class="w-full dark:bg-gray-700! dark:border-gray-600! dark:text-white!"
+            [style]="{ width: '100%' }"
+          />
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <p-button
+          type="submit"
+          [label]="'SAVE_CHANGES' | translate"
+          icon="pi pi-save"
+          severity="primary"
+          [rounded]="true"
+        ></p-button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Email Information -->
+  <!-- <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <h3
+      class="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white"
+    >
+      <i class="pi pi-envelope text-primary"></i>
+      {{ "EMAIL_INFORMATION" | translate }}
+    </h3>
+    <div class="space-y-4">
+      <div>
+        <label
+          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >{{ "EMAIL_ADDRESS" | translate }}</label
+        >
+        <input
+          type="email"
+          pInputText
+          [(ngModel)]="user.email"
+          [placeholder]="'ENTER_EMAIL_ADDRESS' | translate"
+          class="w-full dark:bg-gray-700! dark:border-gray-600! dark:text-white!"
+          [style]="{ width: '100%' }"
+        />
+      </div>
+      <div class="flex justify-end">
+        <p-button
+          (onClick)="updateEmail()"
+          [label]="'UPDATE_EMAIL' | translate"
+          icon="pi pi-save"
+          severity="primary"
+          [rounded]="true"
+        ></p-button>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Account Status -->
+  <!-- <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <h3
+      class="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white"
+    >
+      <i class="pi pi-info-circle text-primary"></i>
+      {{ "ACCOUNT_STATUS" | translate }}
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+        <i
+          class="pi pi-check-circle text-2xl text-green-600 dark:text-green-400 mb-2"
+        ></i>
+        <div class="font-medium text-gray-900 dark:text-white">
+          {{ "ACTIVE" | translate }}
+        </div>
+        <div class="text-sm text-gray-600 dark:text-gray-400">
+          {{ "ACCOUNT_IS_ACTIVE" | translate }}
+        </div>
+      </div>
+      <div class="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+        <i
+          class="pi pi-calendar text-2xl text-blue-600 dark:text-blue-400 mb-2"
+        ></i>
+        <div class="font-medium text-gray-900 dark:text-white">
+          {{ "MEMBER_SINCE" | translate }}
+        </div>
+        <div class="text-sm text-gray-600 dark:text-gray-400">January 2024</div>
+      </div>
+    </div>
+  </div> -->
+</div>

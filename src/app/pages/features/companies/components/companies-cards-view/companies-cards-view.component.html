@@ -1,0 +1,17 @@
+<div
+  class="grid grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-4"
+  *ngIf="companies().data.length > 0"
+>
+  <app-company-card
+    *ngFor="let company of companies().data"
+    [company]="company"
+  ></app-company-card>
+</div>
+<div
+  class="flex justify-center items-center h-[calc(100vh-15rem)]"
+  *ngIf="companies().data.length === 0"
+>
+  <p class="text-sm text-slate-500 dark:text-slate-200">
+    {{ "NO_COMPANIES_FOUND" | translate }}
+  </p>
+</div>

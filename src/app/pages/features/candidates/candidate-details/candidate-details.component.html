@@ -1,0 +1,22 @@
+<app-loader [isLoading]="isCandidateLoading"></app-loader>
+<div class="w-full h-full" *ngIf="!isCandidateLoading()">
+  <div class="flex sm:items-center flex-col sm:flex-row justify-between my-5">
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
+      {{ "CANDIDATE_DETAILS" | translate }} : {{ candidate()?.firstName }}
+      {{ candidate()?.lastName }}
+    </h1>
+    <button
+      pButton
+      pRipple
+      label="{{ 'SEND_EMAIL' | translate }}"
+      icon="pi pi-envelope"
+      type="button"
+      class="bg-gradient-to-r! rounded-md! from-secondary! to-primary! text-white! shadow-md! border-none! transition-colors duration-150 hover:opacity-90!"
+      (click)="showSendEmailDialog()"
+    ></button>
+  </div>
+  <div class="card" *ngIf="!isCandidateLoading()">
+    <app-candidates-details-tabs />
+  </div>
+</div>
+<app-candidates-send-generic-email-dialog />

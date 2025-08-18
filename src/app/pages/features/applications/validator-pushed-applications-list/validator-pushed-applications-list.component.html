@@ -1,0 +1,20 @@
+<div class="w-full">
+  <div class="flex sm:items-center flex-col sm:flex-row justify-between my-5">
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
+      {{ "APPLICATIONS" | translate }}
+    </h1>
+  </div>
+  <div class="w-full flex flex-col gap-3 mt-3">
+    <div
+      class="flex items-center flex-col sm:flex-row sm:justify-center justify-between gap-2"
+    >
+      <app-applications-filter-form class="w-full" [request]="request" />
+    </div>
+
+    <div class="mb-6">
+      <app-global-applications-table
+        [request]="request"
+      ></app-global-applications-table>
+    </div>
+  </div>
+</div>

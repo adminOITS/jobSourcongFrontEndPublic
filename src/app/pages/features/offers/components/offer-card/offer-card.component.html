@@ -1,0 +1,100 @@
+<div
+  class="bg-white dark:bg-slate-800 shadow-lg rounded-xl h-full w-full py-2 px-3 space-y-1.5 flex flex-col border border-slate-200 dark:border-slate-700 dark:shadow-md cursor-pointer transform transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-blue-500/30"
+  (click)="viewMore()"
+>
+  <!-- Job Title & Status -->
+  <div class="flex justify-between items-center">
+    <h3
+      class="text-sm font-semibold truncate flex items-center gap-1.5 text-slate-800 dark:text-slate-100"
+    >
+      <i class="pi pi-briefcase text-blue-500 text-sm"></i>
+      <span class="truncate max-w-[200px]">{{ offer.title }}</span>
+    </h3>
+    <span
+      class="px-2 py-1 text-[10px] font-semibold rounded-md flex items-center gap-1 truncate max-w-[80px]"
+      [ngClass]="getStatusColor(offer.status)"
+    >
+      {{ offer.status | translate }}
+    </span>
+  </div>
+
+  <!-- Job Details Section -->
+  <div
+    class="flex flex-wrap gap-1 justify-between items-center text-xs text-slate-600 dark:text-slate-300"
+  >
+    <!-- Category & Employment Type (Left) -->
+    <div class="flex items-center gap-1.5">
+      <i
+        class="pi pi-tags text-blue-500 text-sm transition-colors group-hover:text-blue-600"
+      ></i>
+      <span
+        class="bg-slate-50 dark:bg-slate-700 px-1.5 py-0.5 rounded-md text-[10px] truncate max-w-[120px] transition-colors hover:bg-slate-100 dark:hover:bg-slate-600"
+      >
+        {{ offer.category }}
+      </span>
+      <span
+        class="bg-slate-50 dark:bg-slate-700 px-1.5 py-0.5 rounded-md text-[10px] truncate max-w-[80px] transition-colors hover:bg-slate-100 dark:hover:bg-slate-600"
+      >
+        {{ offer.employmentType | translate }}
+      </span>
+    </div>
+
+    <!-- City & Country (Right) -->
+    <div class="flex items-center gap-1.5">
+      <i class="pi pi-map-marker text-blue-500 text-sm"></i>
+      <span class="text-slate-700 dark:text-slate-200 truncate max-w-[120px]">
+        {{ offer.city }}, {{ offer.country }}
+      </span>
+      <span
+        class="bg-slate-50 dark:bg-slate-700 px-1.5 py-0.5 rounded-md text-[10px] truncate max-w-[80px]"
+      >
+        {{ offer.workMode | translate }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Candidates & Interviews -->
+  <div
+    class="flex justify-between bg-slate-50 dark:bg-slate-700 p-2 rounded-lg transition-colors hover:bg-slate-100 dark:hover:bg-slate-600"
+  >
+    <p
+      class="flex items-center gap-1.5 text-slate-700 dark:text-slate-200 text-xs"
+    >
+      <i class="pi pi-users text-blue-500 text-sm"></i>
+      <span class="font-medium truncate max-w-[40px]">{{
+        offer.applicationsCount || 0
+      }}</span>
+      {{ "APPLIED" | translate }}
+    </p>
+    <p
+      class="flex items-center gap-1.5 text-slate-700 dark:text-slate-200 text-xs"
+    >
+      <i class="pi pi-check text-blue-500 text-sm"></i>
+      <span class="font-medium truncate max-w-[40px]">{{
+        offer.interviewsCount || 0
+      }}</span>
+      {{ "INTERVIEWS" | translate }}
+    </p>
+  </div>
+
+  <div class="flex grow justify-between items-center">
+    <!-- Created At (Time Ago) -->
+    <div
+      class="text-[10px] h-fit text-slate-500 dark:text-slate-400 flex items-center gap-1.5 transition-colors hover:text-slate-600 dark:hover:text-slate-300"
+    >
+      <i class="pi pi-clock text-blue-500 text-sm"></i>
+      <span class="truncate w-full">{{ timeAgo() }}</span>
+    </div>
+
+    <!-- View More Button -->
+    <button
+      class="inline-flex items-center justify-center gap-1.5 text-blue-500 text-xs font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-1.5 px-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+      (click)="viewMore()"
+    >
+      {{ "VIEW_MORE" | translate }}
+      <i
+        class="pi pi-arrow-right text-xs transition-transform hover:translate-x-1"
+      ></i>
+    </button>
+  </div>
+</div>

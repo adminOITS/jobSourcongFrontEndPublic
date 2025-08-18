@@ -1,0 +1,46 @@
+<div class="mb-8">
+  <div class="flex items-center justify-between mb-4">
+    <h4 class="text-lg font-medium text-text flex items-center gap-2">
+      <i class="pi pi-history text-primary"></i>
+      {{ "EXPERIENCE" | translate }}
+    </h4>
+    <button
+      *appHasRole="['HR', 'HR_ADMIN']"
+      pButton
+      icon="pi pi-plus"
+      label="{{ 'ADD_EXPERIENCE' | translate }}"
+      class="p-button-text p-button-rounded p-button-sm"
+      (click)="onAddExperience()"
+    ></button>
+  </div>
+
+  <div
+    *ngIf="offerExperiences() && offerExperiences().length > 0; else emptyState"
+    class="flex flex-col gap-2"
+  >
+    <app-offer-experience-card
+      *ngFor="let exp of offerExperiences()"
+      [experience]="exp"
+    ></app-offer-experience-card>
+  </div>
+
+  <ng-template #emptyState>
+    <div
+      class="flex flex-col items-center justify-center p-8 bg-slate-50 dark:bg-slate-700 rounded-lg border border-dashed border-border"
+    >
+      <i class="pi pi-history text-4xl text-text/40 mb-4"></i>
+      <p class="text-text/60 mb-4">
+        {{ "NO_EXPERIENCE_REQUIREMENTS_ADDED_YET" | translate }}
+      </p>
+      <button
+        *appHasRole="['HR', 'HR_ADMIN']"
+        pButton
+        icon="pi pi-plus"
+        label="{{ 'ADD_EXPERIENCE' | translate }}"
+        class="p-button-text"
+        (click)="onAddExperience()"
+      ></button>
+    </div>
+  </ng-template>
+</div>
+<app-add-edit-offer-experience-dialog *appHasRole="['HR', 'HR_ADMIN']" />

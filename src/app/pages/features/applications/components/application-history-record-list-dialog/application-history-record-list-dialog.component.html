@@ -1,0 +1,123 @@
+<p-dialog
+  [visible]="isDialogVisible()"
+  (visibleChange)="setDialogVisible($event)"
+  styleClass="xl:w-[70%]  w-full 2xl:w-[50%]"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="dark:bg-slate-800 overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-comment text-xl text-primary dark:text-blue-400"></i>
+      <span class="text-base font-medium text-slate-700 dark:text-slate-200">
+        {{ "APPLICATION_HISTORY_RECORD_LIST" | translate }}
+      </span>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="w-full max-h-96 overflow-y-auto">
+      <!-- Loading State -->
+      <div *ngIf="isLoading()" class="flex justify-center items-center py-8">
+        <i class="pi pi-spinner text-4xl! text-blue-600 dark:text-blue-400"></i>
+      </div>
+
+      <!-- Records List -->
+      <div
+        *ngIf="!isLoading() && applicationHistoryRecords().length > 0"
+        class="space-y-3"
+      >
+        <!-- Scrollable Container -->
+        <div class="overflow-x-auto">
+          <div class="min-w-[800px]">
+            <!-- List Header -->
+            <div
+              class="grid grid-cols-12 gap-4 px-4 py-2 bg-gray-50 dark:bg-slate-700 rounded-t-lg font-medium text-sm text-gray-600 dark:text-slate-300 sticky top-0 z-10"
+            >
+              <div class="col-span-1 min-w-[60px]">
+                {{ "NUMBER" | translate }}
+              </div>
+              <div class="col-span-3 min-w-[150px]">
+                {{ "ACTIONS" | translate }}
+              </div>
+              <div class="col-span-6 min-w-[300px]">
+                {{ "COMMENT" | translate }}
+              </div>
+              <div class="col-span-2 min-w-[120px]">
+                {{ "DATE" | translate }}
+              </div>
+            </div>
+
+            <!-- List Items -->
+            <div
+              *ngFor="let record of applicationHistoryRecords(); let i = index"
+              class="grid grid-cols-12 gap-4 px-4 py-3 border-b border-gray-200 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+            >
+              <!-- Number -->
+              <div
+                class="col-span-1 min-w-[60px] flex items-center text-sm text-gray-600 dark:text-slate-300"
+              >
+                {{ i + 1 }}
+              </div>
+
+              <!-- Actions -->
+              <div class="col-span-3 min-w-[150px] flex items-center">
+                <span
+                  class="px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap"
+                  [ngClass]="{
+                    'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200':
+                      record.status === 'NEW',
+                    'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200':
+                      record.status === 'SUBMITTED_TO_HR',
+                    'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200':
+                      record.status === 'REJECTED_BY_HR',
+                    'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200':
+                      record.status === 'PUSHED_TO_VALIDATOR',
+                    'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200':
+                      record.status === 'ACCEPTED_BY_VALIDATOR',
+                    'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200':
+                      record.status === 'CANCELLED_BY_HR' ||
+                      record.status === 'CANCELLED_BY_RECRUITER' ||
+                      record.status === 'WITHDRAWN_BY_CANDIDATE'
+                  }"
+                >
+                  {{ record.status | translate }}
+                </span>
+              </div>
+
+              <!-- Comment -->
+              <div class="col-span-6 min-w-[300px] flex items-center">
+                <div
+                  class="text-sm text-gray-800 dark:text-slate-200 w-full"
+                  [title]="record.comment"
+                >
+                  {{ record.comment || "-" }}
+                </div>
+              </div>
+
+              <!-- Date -->
+              <div
+                class="col-span-2 min-w-[120px] flex items-center text-sm text-gray-600 dark:text-slate-300 whitespace-nowrap"
+              >
+                {{ record.createdAt | date : "short" }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Records State -->
+      <div
+        *ngIf="!isLoading() && applicationHistoryRecords().length === 0"
+        class="text-center py-8"
+      >
+        <i class="pi pi-inbox text-4xl text-gray-400 mb-4"></i>
+        <p class="text-gray-500 dark:text-slate-400">
+          {{ "NO_HISTORY_RECORDS_FOUND" | translate }}
+        </p>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>

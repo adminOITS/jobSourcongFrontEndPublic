@@ -1,0 +1,46 @@
+<div class="mb-8">
+  <div class="flex items-center justify-between mb-4">
+    <h4 class="text-lg font-medium text-text flex items-center gap-2">
+      <i class="pi pi-star text-primary"></i>
+      {{ "SKILLS" | translate }}
+    </h4>
+    <button
+      *appHasRole="['HR', 'HR_ADMIN']"
+      pButton
+      icon="pi pi-plus"
+      label="{{ 'ADD_SKILL' | translate }}"
+      class="p-button-text p-button-rounded p-button-sm"
+      (click)="onAddSkill()"
+    ></button>
+  </div>
+
+  <div
+    *ngIf="offerSkills() && offerSkills().length > 0; else emptyState"
+    class="flex flex-col gap-2"
+  >
+    <app-offer-skill-card
+      *ngFor="let skill of offerSkills()"
+      [skill]="skill"
+    ></app-offer-skill-card>
+  </div>
+
+  <ng-template #emptyState>
+    <div
+      class="flex flex-col items-center justify-center p-8 bg-slate-50 dark:bg-slate-700 rounded-lg border border-dashed border-border"
+    >
+      <i class="pi pi-star text-4xl text-text/40 mb-4"></i>
+      <p class="text-text/60 mb-4">
+        {{ "NO_SKILLS_ADDED_YET" | translate }}
+      </p>
+      <button
+        *appHasRole="['HR', 'HR_ADMIN']"
+        pButton
+        icon="pi pi-plus"
+        label="{{ 'ADD_SKILL' | translate }}"
+        class="p-button-text"
+        (click)="onAddSkill()"
+      ></button>
+    </div>
+  </ng-template>
+</div>
+<app-add-edit-offer-skill-dialog *appHasRole="['HR', 'HR_ADMIN']" />

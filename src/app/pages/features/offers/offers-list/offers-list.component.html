@@ -1,0 +1,53 @@
+<div class="w-full">
+  <div class="flex sm:items-center flex-col sm:flex-row justify-between my-5">
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
+      {{ "OFFERS" | translate }}
+    </h1>
+    <button
+      *appHasRole="'HR'"
+      pButton
+      pRipple
+      label="{{ 'ADD_OFFER' | translate }}"
+      icon="pi pi-plus"
+      class="rounded-md! border-none! shadow-md! bg-secondary! text-primary-text! dark:hover:text-slate-200! dark:hover:bg-secondary/80! hover:opacity-90! transition-colors! duration-150!"
+      (click)="navigateToAddOffer()"
+    ></button>
+  </div>
+
+  <div class="w-full flex flex-col gap-3 mt-3">
+    <div
+      class="flex items-center flex-col sm:flex-row sm:justify-center justify-between gap-2"
+    >
+      <app-offers-filter-form class="w-full" [request]="request" />
+
+      <p-selectbutton
+        [options]="viewOptions"
+        optionValue="value"
+        [(ngModel)]="selectedView"
+        (onChange)="ChangeView($event.value)"
+        class="self-end! sm:self-center!"
+        size="small"
+      >
+        <ng-template #item let-item>
+          <i [class]="item.icon + ' cursor-pointer!'"></i>
+        </ng-template>
+      </p-selectbutton>
+    </div>
+
+    <ng-container *ngIf="isTableView">
+      <div class="mb-6">
+        <app-offers-table
+          *appHasRole="'HR_ADMIN'"
+          [request]="request"
+        ></app-offers-table>
+        <app-company-offers-table
+          *appHasRole="['HR', 'RECRUITER', 'VALIDATOR']"
+          [request]="request"
+        ></app-company-offers-table>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!isTableView">
+      <app-offer-cards-view></app-offer-cards-view>
+    </ng-container>
+  </div>
+</div>

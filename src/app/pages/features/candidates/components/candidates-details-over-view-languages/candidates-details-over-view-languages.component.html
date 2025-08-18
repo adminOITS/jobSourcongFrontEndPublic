@@ -1,0 +1,53 @@
+<div
+  class="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 mb-6 border border-slate-200 dark:border-slate-700"
+>
+  <div class="flex justify-between items-center mb-4">
+    <h3
+      class="text-xl font-semibold text-slate-800 dark:text-slate-100 flex items-center"
+    >
+      <i class="pi pi-globe text-blue-500 mr-2"></i>
+      {{ "LANGUAGES" | translate }}
+    </h3>
+    <button
+      *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+      pButton
+      icon="pi pi-plus"
+      class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
+      label="{{ 'ADD' | translate }}"
+      (click)="languageService.openAddDialog()"
+    ></button>
+  </div>
+  <div
+    *ngIf="languages() && languages().length > 0; else noLanguages"
+    class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4"
+  >
+    <app-language-card
+      *ngFor="let lang of languages()"
+      [language]="lang"
+      (delete)="onDeleteLanguage($event)"
+    ></app-language-card>
+  </div>
+  <ng-template #noLanguages>
+    <div class="flex flex-col items-center justify-center text-center">
+      <i class="pi pi-globe text-4xl text-slate-400 mb-2"></i>
+      <h4 class="text-lg font-medium text-slate-800 dark:text-slate-100 mb-2">
+        {{ "NO_LANGUAGES" | translate }}
+      </h4>
+      <p class="text-slate-600 dark:text-slate-300 mb-2">
+        {{ "NO_LANGUAGES_DESCRIPTION" | translate }}
+      </p>
+      <button
+        *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+        pButton
+        icon="pi pi-plus"
+        class="p-button-rounded p-button-text"
+        label="{{ 'ADD_LANGUAGE' | translate }}"
+        (click)="languageService.openAddDialog()"
+      ></button>
+    </div>
+  </ng-template>
+
+  <app-add-edit-candidate-language-dialog
+    *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+  ></app-add-edit-candidate-language-dialog>
+</div>

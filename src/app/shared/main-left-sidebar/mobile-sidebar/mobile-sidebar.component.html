@@ -1,0 +1,24 @@
+<p-drawer
+  [visible]="mobileSidebarVisible()"
+  [modal]="true"
+  closable="false"
+  (onHide)="toggleMobileSidebar()"
+>
+  <ng-template pTemplate="header">
+    <div class="w-full flex items-center justify-center">
+      <img
+        src="assets/images/job-sourcing-logo-blue.png"
+        alt="logo"
+        class="h-20"
+      />
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="overflow-y-auto bg-sidebar p-4">
+      <ng-container *ngFor="let item of sidebarItems">
+        <app-sidebar-item [item]="item" [isExpanded]="true"></app-sidebar-item>
+      </ng-container>
+    </div>
+  </ng-template>
+</p-drawer>

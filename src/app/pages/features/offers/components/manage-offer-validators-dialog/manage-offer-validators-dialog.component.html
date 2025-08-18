@@ -1,0 +1,100 @@
+<p-dialog
+  [visible]="offerService.manageValidatorsDialogVisible()"
+  (visibleChange)="onVisibleChange($event)"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="false"
+  [modal]="true"
+  [closable]="false"
+  [style]="{ width: '600px' }"
+  (onHide)="onHide()"
+>
+  <ng-template pTemplate="header">
+    <span class="font-medium text-text!">
+      <i class="pi pi-user-plus mr-2 text-blue-500 dark:text-blue-400"></i>
+      {{ "MANAGE_OFFER_VALIDATORS" | translate }}
+    </span>
+  </ng-template>
+  <ng-template pTemplate="body">
+    <ng-container
+      *ngIf="
+        staffService.offerValidatorsList().length > 0 &&
+        !staffService.isStaffRequestLoading()
+      "
+    >
+      <div
+        *ngFor="let offerStaff of staffService.offerValidatorsList()"
+        class="flex items-center gap-4 py-2 px-6 border-b border-gray-300 dark:border-gray-200 max-w-full overflow-hidden hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+        (click)="onCheckboxChange(offerStaff.staff.id)"
+      >
+        <input
+          type="checkbox"
+          [name]="'validatorSelection'"
+          [checked]="isSelected(offerStaff.staff.id)"
+          class="w-5 h-5 cursor-pointer"
+          [disabled]="offerService.isOfferActionLoading()"
+        />
+
+        <p class="truncate text-text!">
+          {{ offerStaff.staff.firstName }} {{ offerStaff.staff.lastName }}
+        </p>
+      </div>
+    </ng-container>
+    <ng-container
+      *ngIf="
+        staffService.offerValidatorsList().length === 0 &&
+        !staffService.isStaffRequestLoading()
+      "
+    >
+      <div class="flex items-center justify-center h-full">
+        <p class="text-text!">
+          {{ "NO_VALIDATORS_FOUND" | translate }}
+        </p>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="staffService.isStaffRequestLoading()">
+      <div class="flex items-center justify-center h-full">
+        <i
+          class="pi pi-spinner animate-spin text-blue-500 dark:text-blue-400 text-xl"
+        ></i>
+      </div>
+    </ng-container>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="flex items-center justify-between w-full mt-4">
+      <span
+        class="text-sm text-text!"
+        *ngIf="isNumber(getSelectedValidatorMessage())"
+      >
+        {{
+          "MANY_VALIDATORS_SELECTED"
+            | translate : { count: getSelectedValidatorMessage() }
+        }}
+      </span>
+      <span
+        class="text-sm text-text!"
+        *ngIf="!isNumber(getSelectedValidatorMessage())"
+      >
+        {{ getSelectedValidatorMessage().toString() | translate }}
+      </span>
+      <div class="flex justify-end gap-2">
+        <button
+          pButton
+          label="{{ 'CANCEL' | translate }}"
+          (click)="onHide()"
+          type="button"
+          class="p-button-text"
+          [disabled]="offerService.isOfferActionLoading()"
+        ></button>
+        <button
+          pButton
+          [label]="'APPLY_CHANGES' | translate"
+          (click)="saveValidatorAssignment()"
+          class="bg-blue-600 text-white rounded-lg py-2 px-6"
+          [disabled]="offerService.isOfferActionLoading()"
+          [loading]="offerService.isOfferActionLoading()"
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>

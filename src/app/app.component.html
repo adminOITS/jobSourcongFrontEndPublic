@@ -1,0 +1,4 @@
+<p-toast />
+
+<app-loader [isLoading]="translationsLoading"></app-loader>
+<router-outlet *ngIf="!translationsLoading()"></router-outlet>

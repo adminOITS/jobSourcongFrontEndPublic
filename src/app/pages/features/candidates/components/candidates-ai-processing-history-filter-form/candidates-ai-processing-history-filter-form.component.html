@@ -1,0 +1,83 @@
+<!-- Parent FormGroup -->
+<form
+  [formGroup]="filterForm"
+  (ngSubmit)="applyFilters()"
+  autocomplete="off"
+  class="w-full"
+>
+  <div class="w-full flex flex-col items-center justify-end sm:flex-row gap-2">
+    <div class="flex flex-col gap-2">
+      <button
+        type="button"
+        (click)="refresh()"
+        class="inline-flex items-center justify-center cursor-pointer! rounded-md! w-11 h-11 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-800 dark:hover:text-gray-200 transition-all duration-200"
+        title="{{ 'REFRESH' | translate }}"
+      >
+        <i class="pi pi-refresh text-2xl!"></i>
+      </button>
+    </div>
+    <!-- Popover Button -->
+    <p-popover #filterPopover>
+      <div class="p-4 space-y-6 bg-card shadow-lg w-96 rounded-md">
+        <p-select
+          formControlName="status"
+          [options]="statusOptions"
+          optionLabel="label"
+          placeholder="{{ 'SELECT_STATUS' | translate }}"
+          class="w-full rounded-md! py-0! bg-card! text-card-foreground! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          size="small"
+          styleClass="small-select"
+        ></p-select>
+
+        <!-- Creation Date Filter -->
+        <p-floatlabel variant="on" class="col-span-2">
+          <p-datepicker
+            formControlName="creationDate"
+            inputId="creationDate"
+            selectionMode="range"
+            showIcon
+            [readonlyInput]="true"
+            iconDisplay="input"
+            size="small"
+            styleClass="w-full! rounded-md! bg-card! text-card-foreground! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          />
+          <label
+            for="creationDate"
+            class="bg-card! text-gray-500! dark:text-gray-400!"
+            >{{ "CREATION_DATE_RANGE" | translate }}</label
+          >
+        </p-floatlabel>
+
+        <!-- Buttons -->
+        <div class="col-span-2 flex gap-2 justify-between">
+          <!-- Apply Button -->
+          <button
+            type="submit"
+            (click)="applyFilters()"
+            class="w-full rounded-md px-4 py-3 text-sm font-semibold bg-primary text-white hover:bg-primary/80 dark:bg-primary dark:hover:bg-primary/60 transition-colors"
+          >
+            {{ "APPLY" | translate }}
+          </button>
+
+          <!-- Reset Button -->
+          <button
+            type="button"
+            (click)="resetFilters()"
+            class="w-full rounded-md px-4 py-3 text-sm font-semibold bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition-colors"
+          >
+            {{ "RESET" | translate }}
+          </button>
+        </div>
+      </div>
+    </p-popover>
+    <!-- Open Popover Button -->
+    <button
+      type="button"
+      (click)="filterPopover.toggle($event)"
+      class="inline-flex items-center w-full sm:w-fit cursor-pointer justify-center px-5 py-2.5 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
+    >
+      <i class="pi pi-filter mr-2"></i>
+      <span>{{ "FILTER" | translate }}</span>
+    </button>
+  </div>
+</form>

@@ -1,0 +1,91 @@
+<p-confirmDialog
+  *appHasRole="['HR', 'HR_ADMIN']"
+  [style]="{ minWidth: '450px' }"
+  [draggable]="false"
+  [rejectVisible]="true"
+  acceptLabel="{{ 'YES' | translate }}"
+  rejectLabel="{{ 'NO' | translate }}"
+  acceptIcon="pi pi-check"
+  rejectIcon="pi pi-times"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span class="font-medium text-text!">{{
+        "DELETE_EDUCATION" | translate
+      }}</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-info-circle text-blue-500"></i>
+      <span class="text-text!">{{
+        "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_EDUCATION" | translate
+      }}</span>
+    </div>
+  </ng-template>
+</p-confirmDialog>
+<div
+  class="bg-slate-50 dark:bg-slate-700 p-3 sm:p-4 rounded-lg border border-border hover:bg-slate-100 dark:hover:bg-background/80 transition-all duration-300 hover:border-primary/30"
+>
+  <div class="flex justify-between items-start">
+    <div>
+      <h5 class="font-medium text-base sm:text-lg text-text">
+        {{ education.degree }}
+      </h5>
+      <p
+        class="text-text/80 text-sm sm:text-base flex items-center gap-1 sm:gap-2"
+      >
+        <i class="pi pi-graduation-cap text-primary text-sm sm:text-base"></i>
+        {{ education.field }} at {{ education.institution }}
+      </p>
+      <p *ngIf="education.description" class="text-text/70 text-sm mt-2">
+        {{ education.description }}
+      </p>
+    </div>
+    <div class="flex items-center gap-4 sm:gap-9">
+      <div class="flex items-center gap-1 sm:gap-2 mr-1 sm:mr-2">
+        <span
+          class="text-xs sm:text-sm text-sky-900 dark:text-sky-600 transition-colors"
+          [ngClass]="{
+            'text-success group-hover:text-success/80':
+              education.requirementLevel === 'OPTIONAL',
+            'text-warning group-hover:text-warning/80':
+              education.requirementLevel === 'PREFERRED',
+            'text-danger group-hover:text-danger/80':
+              education.requirementLevel === 'REQUIRED'
+          }"
+        >
+          {{ education.requirementLevel | translate }}
+        </span>
+        <i
+          class="text-sky-900 dark:text-sky-600 pi text-xs sm:text-sm transition-all group-hover:scale-110"
+          [ngClass]="{
+            'pi-check text-success group-hover:text-success/80':
+              education.requirementLevel === 'OPTIONAL',
+            'pi-star text-warning group-hover:text-warning/80':
+              education.requirementLevel === 'PREFERRED',
+            'pi-star-fill text-danger group-hover:text-danger/80':
+              education.requirementLevel === 'REQUIRED'
+          }"
+        ></i>
+      </div>
+      <button
+        *appHasRole="['HR', 'HR_ADMIN']"
+        pButton
+        icon="pi pi-ellipsis-v"
+        class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
+        (click)="menu.toggle($event)"
+      ></button>
+    </div>
+  </div>
+</div>
+<p-menu
+  #menu
+  [popup]="true"
+  [model]="menuItems"
+  appendTo="body"
+  *appHasRole="['HR', 'HR_ADMIN']"
+></p-menu>

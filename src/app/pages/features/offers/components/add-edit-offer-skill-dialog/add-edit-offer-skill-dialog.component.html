@@ -1,0 +1,173 @@
+<p-dialog
+  [visible]="offerSkillService.isDialogVisibleComputed()"
+  (visibleChange)="offerSkillService.setDialogVisible($event)"
+  [style]="{ width: '55rem' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="dark:bg-slate-800 overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <span class="font-medium text-text!">
+      <i class="pi pi-bolt mr-2 text-primary"></i>
+      {{ (isEditMode ? "EDIT_SKILL" : "ADD_SKILL") | translate }}
+    </span>
+  </ng-template>
+
+  <form [formGroup]="skillForm" (ngSubmit)="onSave()" class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Skill Name -->
+      <div class="flex flex-col">
+        <label for="skillName" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-tag mr-2"></i>{{ "SKILL_NAME" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="skillName"
+          formControlName="skillName"
+          class="w-full rounded-md! bg-card! py-3.5! text-text! hover:border-primary! focus:border-primary! focus:ring-primary!"
+          pSize="small"
+          [class.border-red-500]="
+            skillForm.get('skillName')?.invalid &&
+            skillForm.get('skillName')?.touched
+          "
+        />
+        <small
+          *ngIf="
+            skillForm.get('skillName')?.invalid &&
+            skillForm.get('skillName')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Proficiency -->
+      <div class="flex flex-col">
+        <label for="proficiency" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-star mr-2"></i>{{ "PROFICIENCY" | translate }} *
+        </label>
+        <p-select
+          id="proficiency"
+          placeholder="{{ 'SELECT_PROFICIENCY_LEVEL' | translate }}"
+          formControlName="proficiency"
+          [options]="proficiencyOptions"
+          optionLabel="name"
+          optionValue="value"
+          styleClass="small-select"
+          class="w-full rounded-md! py-1! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary!"
+          [class.border-red-500]="
+            skillForm.get('proficiency')?.invalid &&
+            skillForm.get('proficiency')?.touched
+          "
+        ></p-select>
+        <small
+          *ngIf="
+            skillForm.get('proficiency')?.invalid &&
+            skillForm.get('proficiency')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Requirement Level -->
+      <div class="flex flex-col">
+        <label
+          for="requirementLevel"
+          class="text-sm font-medium text-text/85 mb-1"
+        >
+          <i class="pi pi-sliders-h mr-2"></i
+          >{{ "REQUIRED_LEVEL" | translate }} *
+        </label>
+        <p-select
+          id="requirementLevel"
+          placeholder="{{ 'SELECT_REQUIREMENT_LEVEL' | translate }}"
+          formControlName="requirementLevel"
+          [options]="requirementLevelOptions"
+          optionLabel="name"
+          optionValue="value"
+          styleClass="small-select"
+          class="w-full rounded-md! py-1! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary!"
+          [class.border-red-500]="
+            skillForm.get('requirementLevel')?.invalid &&
+            skillForm.get('requirementLevel')?.touched
+          "
+        ></p-select>
+        <small
+          *ngIf="
+            skillForm.get('requirementLevel')?.invalid &&
+            skillForm.get('requirementLevel')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+      <div class="flex flex-col">
+        <label for="skillType" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-sliders-h mr-2"></i>{{ "SKILL_TYPE" | translate }} *
+        </label>
+        <p-select
+          id="skillType"
+          placeholder="{{ 'SELECT_SKILL_TYPE' | translate }}"
+          formControlName="skillType"
+          [options]="skillTypeOptions"
+          optionLabel="name"
+          optionValue="value"
+          styleClass="small-select"
+          class="w-full rounded-md! py-1! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary!"
+          [class.border-red-500]="
+            skillForm.get('skillType')?.invalid &&
+            skillForm.get('skillType')?.touched
+          "
+        ></p-select>
+        <small
+          *ngIf="
+            skillForm.get('skillType')?.invalid &&
+            skillForm.get('skillType')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="flex flex-col">
+      <label for="description" class="text-sm font-medium text-text/85 mb-1">
+        <i class="pi pi-align-left mr-2"></i>{{ "DESCRIPTION" | translate }}
+      </label>
+      <textarea
+        pTextarea
+        id="description"
+        formControlName="description"
+        class="w-full rounded-md! bg-card! text-text! h-full! hover:border-primary! focus:border-primary! focus:ring-primary!"
+        pSize="small"
+        rows="5"
+        [autoResize]="true"
+      ></textarea>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-6">
+      <button
+        pButton
+        type="button"
+        label="{{ 'CANCEL' | translate }}"
+        class="p-button-text"
+        (click)="onHide()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        [label]="(isEditMode ? 'UPDATE' : 'SAVE') | translate"
+        [disabled]="!skillForm.valid || isLoading()"
+        [loading]="isLoading()"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

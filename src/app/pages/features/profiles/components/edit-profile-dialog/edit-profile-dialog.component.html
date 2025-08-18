@@ -1,0 +1,135 @@
+<p-dialog
+  [modal]="true"
+  [visible]="isDialogVisible()"
+  (visibleChange)="setIsDialogVisible($event)"
+  [closable]="true"
+  [dismissableMask]="false"
+  [breakpoints]="{ '1199px': '60vw', '640px': '100vw' }"
+  [style]="{ width: '60vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="closeDialog()"
+  styleClass="overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+      {{ "EDIT_PROFILE" | translate }}
+    </h2>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <!-- Begin form from add-edit-candidate-profile-form.component.html -->
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Title and Category on the same line for big screens -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Title Input -->
+        <div class="field">
+          <label for="title" class="block text-sm font-medium text-text mb-2">
+            {{ "TITLE" | translate }}<span class="text-red-500 ml-1">*</span>
+          </label>
+          <input
+            id="title"
+            type="text"
+            pInputText
+            formControlName="title"
+            class="w-full rounded-md! bg-card! text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+            [ngClass]="{
+              'p-invalid':
+                profileForm.get('title')?.invalid &&
+                profileForm.get('title')?.touched
+            }"
+          />
+          <small
+            *ngIf="
+              profileForm.get('title')?.invalid &&
+              profileForm.get('title')?.touched
+            "
+            class="p-error block mt-1 dark:text-red-400! text-red-500!"
+          >
+            <span *ngIf="profileForm.get('title')?.errors?.['required']">{{
+              "PROFILE_TITLE_IS_REQUIRED" | translate
+            }}</span>
+            <span *ngIf="profileForm.get('title')?.errors?.['minlength']">{{
+              "PROFILE_TITLE_MUST_BE_AT_LEAST_3_CHARACTERS" | translate
+            }}</span>
+          </small>
+        </div>
+
+        <!-- Category Select -->
+        <div class="field">
+          <label
+            for="category"
+            class="block text-sm font-medium text-text mb-2"
+          >
+            {{ "CATEGORY" | translate }}<span class="text-red-500 ml-1">*</span>
+          </label>
+          <p-select
+            inputId="category"
+            formControlName="category"
+            [options]="jobCategories"
+            [showClear]="true"
+            [filter]="true"
+            [filterPlaceholder]="'SEARCH_CATEGORY' | translate"
+            placeholder="{{ 'SELECT_CATEGORY' | translate }}"
+            optionLabel="name"
+            optionValue="value"
+            class="w-full rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary!"
+          ></p-select>
+          <small
+            *ngIf="
+              profileForm.get('category')?.invalid &&
+              profileForm.get('category')?.touched
+            "
+            class="p-error block mt-1 dark:text-red-400! text-red-500!"
+          >
+            {{ "CATEGORY_IS_REQUIRED" | translate }}
+          </small>
+        </div>
+      </div>
+
+      <!-- Skills MultiSelect on separate line -->
+      <div class="field">
+        <label for="skills" class="block text-sm font-medium text-text mb-2">
+          {{ "SKILLS" | translate }}<span class="text-red-500 ml-1">*</span>
+        </label>
+        <p-multiSelect
+          id="skills"
+          [options]="skillsOptions"
+          formControlName="skills"
+          optionLabel="name"
+          optionValue="value"
+          placeholder="Select skills"
+          class="w-full rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          pSize="small"
+          [loading]="isSkillsByProfileLoading()"
+          [ngClass]="{
+            'p-invalid':
+              profileForm.get('skills')?.invalid &&
+              profileForm.get('skills')?.touched
+          }"
+        ></p-multiSelect>
+        <small
+          *ngIf="
+            profileForm.get('skills')?.invalid &&
+            profileForm.get('skills')?.touched
+          "
+          class="p-error block mt-1 text-red-500 dark:text-red-400"
+        >
+          {{ "AT_LEAST_ONE_SKILL_IS_REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end">
+        <button
+          pButton
+          type="submit"
+          [loading]="isLoading()"
+          label="{{ 'SAVE_PROFILE' | translate }}"
+          class="p-button-primary"
+          [disabled]="profileForm.invalid || isLoading()"
+        ></button>
+      </div>
+    </form>
+    <!-- End form -->
+  </ng-template>
+</p-dialog>

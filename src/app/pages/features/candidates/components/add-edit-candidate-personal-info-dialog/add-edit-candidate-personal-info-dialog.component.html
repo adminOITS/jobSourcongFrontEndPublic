@@ -1,0 +1,278 @@
+<p-dialog
+  [visible]="candidateService.isDialogVisibleComputed()"
+  (visibleChange)="candidateService.setDialogVisible($event)"
+  [breakpoints]="{ '1024px': '60vw', '900px': '100vw', '901px': '100vh' }"
+  [style]="{ width: '60rem', height: '100vh' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="overflow-visible-lg"
+>
+  <ng-template pTemplate="header">
+    <span class="font-medium text-text!">{{
+      (candidateService.candidateDetails() ? "EDIT_CANDIDATE" : "ADD_CANDIDATE")
+        | translate
+    }}</span>
+  </ng-template>
+  <form
+    [formGroup]="candidateForm"
+    (ngSubmit)="onSubmit()"
+    class="gap-4 text-card-foreground! grid grid-cols-1 lg:grid-cols-2 w-full"
+    autocomplete="off"
+  >
+    <div class="flex flex-col gap-2">
+      <label for="firstName" class="bg-card! text-card-foreground!">
+        <i class="pi pi-user text-blue-500 mr-2"></i>
+        {{ "FIRST_NAME" | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        id="firstName"
+        type="text"
+        pInputText
+        formControlName="firstName"
+        placeholder="{{ 'ENTER_FIRST_NAME' | translate }}"
+        class="w-full rounded-md! bg-card! px-4! text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+        [class.ng-invalid]="
+          candidateForm.get('firstName')?.invalid &&
+          candidateForm.get('firstName')?.touched
+        "
+      />
+      <div class="h-4">
+        <small
+          class="text-red-500"
+          *ngIf="
+            candidateForm.get('firstName')?.invalid &&
+            candidateForm.get('firstName')?.touched
+          "
+        >
+          <span *ngIf="candidateForm.get('firstName')?.errors?.['required']">
+            {{ "FIRST_NAME_REQUIRED" | translate }}
+          </span>
+          <span *ngIf="candidateForm.get('firstName')?.errors?.['minlength']">
+            {{ "FIRST_NAME_MIN_LENGTH" | translate }}
+          </span>
+          <span *ngIf="candidateForm.get('firstName')?.errors?.['maxlength']">
+            {{ "FIRST_NAME_MAX_LENGTH" | translate }}
+          </span>
+        </small>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="lastName" class="bg-card! text-card-foreground!">
+        <i class="pi pi-user text-blue-500 mr-2"></i>
+        {{ "LAST_NAME" | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        id="lastName"
+        type="text"
+        pInputText
+        formControlName="lastName"
+        placeholder="{{ 'ENTER_LAST_NAME' | translate }}"
+        class="w-full rounded-md! bg-card! px-4! text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+        [class.ng-invalid]="
+          candidateForm.get('lastName')?.invalid &&
+          candidateForm.get('lastName')?.touched
+        "
+      />
+      <div class="h-4">
+        <small
+          class="text-red-500"
+          *ngIf="
+            candidateForm.get('lastName')?.invalid &&
+            candidateForm.get('lastName')?.touched
+          "
+        >
+          <span *ngIf="candidateForm.get('lastName')?.errors?.['required']">
+            {{ "LAST_NAME_REQUIRED" | translate }}
+          </span>
+          <span *ngIf="candidateForm.get('lastName')?.errors?.['minlength']">
+            {{ "LAST_NAME_MIN_LENGTH" | translate }}
+          </span>
+          <span *ngIf="candidateForm.get('lastName')?.errors?.['maxlength']">
+            {{ "LAST_NAME_MAX_LENGTH" | translate }}
+          </span>
+        </small>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="phone" class="bg-card! text-card-foreground!">
+        <i class="pi pi-phone text-orange-600 mr-2"></i>
+        {{ "PHONE" | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        id="phone"
+        type="text"
+        pInputText
+        formControlName="phone"
+        placeholder="{{ 'ENTER_PHONE_NUMBER' | translate }}"
+        class="w-full rounded-md! bg-card! px-4! text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+        [class.ng-invalid]="
+          candidateForm.get('phone')?.invalid &&
+          candidateForm.get('phone')?.touched
+        "
+      />
+      <div class="h-4">
+        <small
+          class="text-red-500"
+          *ngIf="
+            candidateForm.get('phone')?.invalid &&
+            candidateForm.get('phone')?.touched
+          "
+        >
+          <span *ngIf="candidateForm.get('phone')?.errors?.['required']">
+            {{ "PHONE_REQUIRED" | translate }}
+          </span>
+          <span *ngIf="candidateForm.get('phone')?.errors?.['pattern']">
+            {{ "PHONE_INVALID" | translate }}
+          </span>
+        </small>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="email" class="bg-card! text-card-foreground!">
+        <i class="pi pi-envelope text-green-600 mr-2"></i>
+        {{ "EMAIL" | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        id="email"
+        type="email"
+        pInputText
+        formControlName="email"
+        placeholder="{{ 'ENTER_EMAIL' | translate }}"
+        class="w-full rounded-md! bg-card! px-4! text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+        [class.ng-invalid]="
+          candidateForm.get('email')?.invalid &&
+          candidateForm.get('email')?.touched
+        "
+      />
+      <div class="h-4">
+        <small
+          class="text-red-500"
+          *ngIf="
+            candidateForm.get('email')?.invalid &&
+            candidateForm.get('email')?.touched
+          "
+        >
+          <span *ngIf="candidateForm.get('email')?.errors?.['required']">
+            {{ "EMAIL_REQUIRED" | translate }}
+          </span>
+          <span *ngIf="candidateForm.get('email')?.errors?.['email']">
+            {{ "EMAIL_INVALID" | translate }}
+          </span>
+        </small>
+      </div>
+    </div>
+
+    <!-- Address Group -->
+    <div class="col-span-1 lg:col-span-2" formGroupName="address">
+      <div class="space-y-4">
+        <h3 class="font-medium text-gray-900 dark:text-gray-100">
+          <i class="pi pi-map-marker text-red-500 mr-2"></i>
+          {{ "ADDRESS_INFORMATION" | translate }}
+        </h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="flex flex-col gap-2">
+            <label for="addressLine1" class="bg-card! text-card-foreground!">
+              <i class="pi pi-map text-blue-600 mr-2"></i>
+              {{ "ADDRESS_LINE_1" | translate }}
+            </label>
+            <input
+              id="addressLine1"
+              type="text"
+              pInputText
+              formControlName="addressLine1"
+              placeholder="{{ 'ENTER_ADDRESS_LINE_1' | translate }}"
+              class="w-full rounded-md! bg-card! px-4! text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="addressLine2" class="bg-card! text-card-foreground!">
+              <i class="pi pi-map text-blue-600 mr-2"></i>
+              {{ "ADDRESS_LINE_2" | translate }}
+            </label>
+            <input
+              id="addressLine2"
+              type="text"
+              pInputText
+              formControlName="addressLine2"
+              placeholder="{{ 'ENTER_ADDRESS_LINE_2' | translate }}"
+              class="w-full rounded-md! bg-card! px-4! text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="city" class="bg-card! text-card-foreground!">
+              <i class="pi pi-building text-purple-600 mr-2"></i>
+              {{ "CITY" | translate }}
+            </label>
+            <input
+              id="city"
+              type="text"
+              pInputText
+              formControlName="city"
+              placeholder="{{ 'ENTER_CITY' | translate }}"
+              class="w-full rounded-md! bg-card! px-4! text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="zipCode" class="bg-card! text-card-foreground!">
+              <i class="pi pi-hashtag text-orange-500 mr-2"></i>
+              {{ "ZIP_CODE" | translate }}
+            </label>
+            <input
+              id="zipCode"
+              type="text"
+              pInputText
+              formControlName="zipCode"
+              placeholder="{{ 'ENTER_ZIP_CODE' | translate }}"
+              class="w-full rounded-md! bg-card! px-4! text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="country" class="bg-card! text-card-foreground!">
+              <i class="pi pi-globe text-blue-600 mr-2"></i>
+              {{ "COUNTRY" | translate }}
+            </label>
+            <input
+              id="country"
+              type="text"
+              pInputText
+              formControlName="country"
+              placeholder="{{ 'ENTER_COUNTRY' | translate }}"
+              class="w-full rounded-md! bg-card! px-4! text-card-foreground! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-1 lg:col-span-2 flex items-center justify-end gap-2">
+      <button
+        type="button"
+        pButton
+        label="{{ 'CANCEL' | translate }}"
+        class="p-button-text"
+        (click)="onHide()"
+        [disabled]="isCandidateLoading()"
+      ></button>
+      <button
+        type="submit"
+        pButton
+        label="{{ 'SUBMIT' | translate }}"
+        icon="pi pi-check"
+        [disabled]="
+          !candidateForm.valid || candidateForm.pristine || isCandidateLoading()
+        "
+        [loading]="isCandidateLoading()"
+        class="px-6"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

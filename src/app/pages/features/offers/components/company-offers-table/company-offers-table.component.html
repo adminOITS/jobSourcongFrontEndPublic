@@ -1,0 +1,177 @@
+<div class="max-w-[100vw] mx-auto shadow-lg">
+  <p-table
+    #table
+    [value]="offers().data"
+    [scrollable]="true"
+    scrollHeight="84vh"
+    dataKey="id"
+    [reorderableColumns]="true"
+    [resizableColumns]="true"
+    [paginator]="true"
+    [rows]="request().size"
+    [totalRecords]="offers().totalItems"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{{ 'SHOWING_ENTRIES' | translate }}"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [lazy]="true"
+    (onLazyLoad)="loadOffersLazy($event)"
+    [loading]="isLoading()"
+    class="fullHeightTable"
+    [style]="{ height: '90vh' }"
+  >
+    <ng-template pTemplate="header">
+      <tr class="bg-secondary!">
+        <ng-container *ngFor="let col of columns; index as i">
+          <th
+            pResizableColumn
+            [ngClass]="{ 'border-r': i !== columns.length - 1 }"
+            *ngIf="col.visible"
+            class="py-2! border-gray-400! bg-transparent!"
+          >
+            <div class="w-full gap-1 flex items-center text-white">
+              <p>{{ col.header | translate }}</p>
+            </div>
+          </th>
+        </ng-container>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row let-i="rowIndex">
+      <tr
+        class="bg-transparent! text-text! hover:bg-gray-50! dark:hover:bg-gray-800! transition-all! border-b! border-gray-400! h-[20px]!"
+      >
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] max-w-80 flex items-center line-clamp-1"
+          >
+            {{ row.title }}
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            {{ row.country }}
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ row.city }}
+            </p>
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            <span [class]="getEmploymentTypeStyle(row.employmentType)">
+              {{ row.employmentType | translate }}
+            </span>
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            <span [class]="getWorkModeStyle(row.workMode)">
+              {{ row.workMode | translate }}
+            </span>
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            <span
+              [ngClass]="getContractTypeStyle(row.contractType)"
+              class="px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1 truncate max-w-[120px]"
+            >
+              {{ row.contractType | translate }}
+            </span>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            <span
+              [ngClass]="getOfferStatusColor(row.status)"
+              class="px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1 truncate max-w-[120px]"
+            >
+              {{ row.status | translate }}
+            </span>
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            {{ row.createdAt | date : "dd/MM/yyyy" }}
+          </div>
+        </td>
+
+        <td class="w-[80px] p-1">
+          <button
+            pButton
+            pRipple
+            icon="pi pi-ellipsis-v"
+            class="text-text! bg-transparent! p-1! border-0! hover:bg-gray-200! dark:hover:bg-gray-900/90! transition-all!"
+            (click)="selectRowId($event, row)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr class="text-center h-[75vh] bg-transparent! text-text!">
+        <td colspan="12" style="text-align: center">
+          {{ "NO_DATA_AVAILABLE" | translate }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<app-offers-actions-menu
+  [offer]="selectedOffer"
+  (onManageRecruiters)="manageRecruiters()"
+  (onManageValidators)="manageValidators()"
+  (onHoldOffer)="holdOffer()"
+  (onCloseOffer)="closeOffer()"
+  (onDeleteOffer)="deleteOffer()"
+  (onOpenOffer)="openOffer()"
+  #offerActionsMenu
+/>
+<app-manage-offer-recruiters-dialog *appHasRole="['HR', 'HR_ADMIN']" />
+<app-manage-offer-validators-dialog *appHasRole="['HR', 'HR_ADMIN']" />
+
+<p-confirmDialog
+  [style]="{ minWidth: '450px' }"
+  [draggable]="false"
+  [rejectVisible]="true"
+  acceptLabel="{{ acceptLabel | translate }}"
+  rejectLabel="{{ 'CANCEL' | translate }}"
+  [acceptIcon]="acceptIcon"
+  rejectIcon="pi pi-times"
+  [acceptButtonStyleClass]="acceptButtonStyleClass"
+  rejectButtonStyleClass="p-button-text"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span class="font-medium text-text!">{{
+        confirmationHeader | translate
+      }}</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-info-circle text-blue-500"></i>
+      <span class="text-text!">{{ confirmationMsg | translate }}</span>
+    </div>
+  </ng-template>
+</p-confirmDialog>

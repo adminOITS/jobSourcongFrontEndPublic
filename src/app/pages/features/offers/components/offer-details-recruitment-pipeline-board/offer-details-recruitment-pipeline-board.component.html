@@ -1,0 +1,32 @@
+<div class="bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-100">
+  <!-- Show/Hide Columns Select -->
+  <div class="my-4 flex flex-wrap gap-2 items-center">
+    <label class="font-semibold mr-2">Visible Columns:</label>
+    <ng-container *ngFor="let col of columns">
+      <button
+        type="button"
+        class="flex items-center px-4 py-1.5 cursor-pointer! rounded-full border text-sm mr-2 mb-2 transition-all duration-150 shadow-sm font-medium outline-none focus:ring-2 focus:ring-blue-400"
+        [ngClass]="
+          col.visible
+            ? 'bg-blue-100 border-blue-400 text-blue-900 dark:bg-blue-900 dark:border-blue-600 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800 active:scale-95'
+            : 'bg-gray-100 border-gray-300 text-gray-400 dark:bg-slate-800 dark:border-slate-700 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-700 active:scale-95'
+        "
+        (click)="toggleColumnVisibility(col.key)"
+      >
+        <i [ngClass]="col.icon + ' mr-1'" aria-hidden="true"></i>
+        {{ col.label | translate }}
+      </button>
+    </ng-container>
+  </div>
+
+  <div
+    class="flex flex-col pb-3 h-[calc(100vh-10rem)] md:flex-row gap-4 overflow-x-auto"
+  >
+    <app-pipeline-column
+      *ngFor="let col of columns"
+      [header]="col"
+      [items]="getColumnItems(col.key)"
+      (onToggleVisibility)="toggleColumnVisibility($event)"
+    ></app-pipeline-column>
+  </div>
+</div>

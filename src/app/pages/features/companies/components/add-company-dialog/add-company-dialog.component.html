@@ -1,0 +1,24 @@
+<p-dialog
+  [modal]="true"
+  [visible]="isVisible()"
+  (visibleChange)="setIsCompanyAddDialogVisible($event)"
+  [closable]="true"
+  [dismissableMask]="false"
+  [breakpoints]="{ '1199px': '75vw', '640px': '100vw' }"
+  [style]="{ width: '65vw' }"
+  (onHide)="onHideDialog()"
+  class="p-0!"
+>
+  <ng-template pTemplate="header">
+    <h2 class="text-xl font-semibold text-text!">
+      {{
+        currentStep === 1
+          ? ("CREATE_NEW_COMPANY" | translate)
+          : ("CREATE_COMPANY_HR" | translate)
+      }}
+    </h2>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <app-add-company-form (stepChange)="onStepChange($event)" />
+  </ng-template>
+</p-dialog>

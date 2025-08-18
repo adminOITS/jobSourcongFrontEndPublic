@@ -1,0 +1,218 @@
+<p-dialog
+  [visible]="educationService.isDialogVisibleComputed()"
+  (visibleChange)="educationService.setDialogVisible($event)"
+  [style]="{ width: '50rem' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="dark:bg-slate-800 overflow-visible-lg"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-book text-xl text-primary"></i>
+      <span class="text-base font-medium text-slate-700 dark:text-slate-200">
+        {{ (isEditMode ? "EDIT_EDUCATION" : "ADD_EDUCATION") | translate }}
+      </span>
+    </div>
+  </ng-template>
+  <form [formGroup]="educationForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Degree -->
+      <div class="flex flex-col">
+        <label
+          for="degree"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          <i class="pi pi-bookmark text-slate-600 dark:text-slate-400"></i>
+          {{ "DEGREE" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="degree"
+          formControlName="degree"
+          class="w-full rounded-md! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            educationForm.get('degree')?.invalid &&
+            educationForm.get('degree')?.touched
+          "
+        />
+      </div>
+
+      <!-- Institution -->
+      <div class="flex flex-col">
+        <label
+          for="institution"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          <i class="pi pi-building text-slate-600 dark:text-slate-400"></i>
+          {{ "INSTITUTION" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="institution"
+          formControlName="institution"
+          class="w-full rounded-md! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            educationForm.get('institution')?.invalid &&
+            educationForm.get('institution')?.touched
+          "
+        />
+      </div>
+
+      <!-- Field of Study -->
+      <div class="flex flex-col">
+        <label
+          for="field"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          <i class="pi pi-tag text-slate-600 dark:text-slate-400"></i>
+          {{ "FIELD_OF_STUDY" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="field"
+          formControlName="field"
+          class="w-full rounded-md! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            educationForm.get('field')?.invalid &&
+            educationForm.get('field')?.touched
+          "
+        />
+      </div>
+
+      <!-- Location -->
+      <div class="flex flex-col">
+        <label
+          for="location"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          <i class="pi pi-map-marker text-slate-600 dark:text-slate-400"></i>
+          {{ "LOCATION" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="location"
+          formControlName="location"
+          class="w-full rounded-md! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            educationForm.get('location')?.invalid &&
+            educationForm.get('location')?.touched
+          "
+        />
+      </div>
+
+      <!-- Start Date -->
+      <div class="flex flex-col w-full">
+        <label
+          for="startDate"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          <i class="pi pi-calendar text-slate-600 dark:text-slate-400"></i>
+          {{ "START_DATE" | translate }} *
+        </label>
+        <p-datePicker
+          id="startDate"
+          formControlName="startDate"
+          [showIcon]="true"
+          iconDisplay="input"
+          dateFormat="mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="2000:2030"
+          styleClass="w-full"
+          [class.border-red-500]="
+            educationForm.get('startDate')?.invalid &&
+            educationForm.get('startDate')?.touched
+          "
+        ></p-datePicker>
+        <small
+          *ngIf="educationForm.get('startDate')?.touched"
+          class="text-red-500 mt-1"
+        >
+          <span *ngIf="educationForm.get('startDate')?.errors?.['required']">
+            {{ "START_DATE_REQUIRED" | translate }}
+          </span>
+        </small>
+      </div>
+
+      <!-- End Date -->
+      <div class="flex flex-col w-full">
+        <label
+          *ngIf="!current"
+          for="endDate"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          <i
+            class="pi pi-calendar-times text-slate-600 dark:text-slate-400"
+          ></i>
+          {{ "END_DATE" | translate }} *
+        </label>
+        <p-datePicker
+          *ngIf="!current"
+          id="endDate"
+          formControlName="endDate"
+          [showIcon]="true"
+          iconDisplay="input"
+          dateFormat="mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="2000:2030"
+          styleClass="w-full"
+          [class.border-red-500]="
+            educationForm.get('endDate')?.invalid &&
+            educationForm.get('endDate')?.touched
+          "
+        ></p-datePicker>
+        <small
+          *ngIf="!current && educationForm.get('endDate')?.touched"
+          class="text-red-500 mt-1"
+        >
+          <span *ngIf="educationForm.get('endDate')?.errors?.['required']">
+            {{ "END_DATE_REQUIRED" | translate }}
+          </span>
+          <span *ngIf="educationForm.errors?.['dateRangeInvalid']">
+            {{ "END_DATE_AFTER_START_DATE" | translate }}
+          </span>
+        </small>
+      </div>
+
+      <!-- Current Education -->
+      <div class="flex items-center">
+        <p-checkbox
+          id="current"
+          formControlName="current"
+          [binary]="true"
+          class="mr-2"
+        ></p-checkbox>
+        <label
+          for="current"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300"
+        >
+          <i class="pi pi-clock text-slate-600 dark:text-slate-400"></i>
+          {{ "CURRENT_EDUCATION" | translate }}
+        </label>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-6">
+      <button
+        pButton
+        type="button"
+        label="{{ 'CANCEL' | translate }}"
+        icon="pi pi-times"
+        class="p-button-text"
+        (click)="onHide()"
+        [disabled]="isLoading()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        [label]="(isEditMode ? 'UPDATE' : 'SAVE') | translate"
+        icon="pi pi-check"
+        [disabled]="!educationForm.valid || isLoading()"
+        [loading]="isLoading()"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

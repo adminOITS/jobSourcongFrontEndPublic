@@ -1,0 +1,201 @@
+<p-dialog
+  [visible]="experienceService.isDialogVisibleComputed()"
+  (visibleChange)="experienceService.setDialogVisible($event)"
+  [style]="{ width: '50rem' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="dark:bg-slate-800 overflow-visible-lg"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-briefcase text-xl text-primary"></i>
+      <span class="text-base font-medium text-slate-700 dark:text-slate-200">
+        {{ (isEditMode ? "EDIT_EXPERIENCE" : "ADD_EXPERIENCE") | translate }}
+      </span>
+    </div>
+  </ng-template>
+  <form [formGroup]="experienceForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Title -->
+      <div class="flex flex-col">
+        <label
+          for="title"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          <i class="pi pi-id-card text-slate-600 dark:text-slate-400"></i>
+          {{ "TITLE" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="title"
+          formControlName="title"
+          class="w-full rounded-md! bg-card! text-card-foreground! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            experienceForm.get('title')?.invalid &&
+            experienceForm.get('title')?.touched
+          "
+        />
+      </div>
+
+      <!-- Company -->
+      <div class="flex flex-col">
+        <label
+          for="company"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          <i class="pi pi-building text-slate-600 dark:text-slate-400"></i>
+          {{ "COMPANY" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="company"
+          formControlName="company"
+          class="w-full rounded-md! bg-card! text-card-foreground! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            experienceForm.get('company')?.invalid &&
+            experienceForm.get('company')?.touched
+          "
+        />
+      </div>
+
+      <!-- Location -->
+      <div class="flex flex-col">
+        <label
+          for="location"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          <i class="pi pi-map-marker text-slate-600 dark:text-slate-400"></i>
+          {{ "LOCATION" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="location"
+          formControlName="location"
+          class="w-full rounded-md! bg-card! text-card-foreground! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            experienceForm.get('location')?.invalid &&
+            experienceForm.get('location')?.touched
+          "
+        />
+      </div>
+
+      <!-- Description -->
+      <div class="flex flex-col md:col-span-2">
+        <label
+          for="description"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          <i class="pi pi-align-left text-slate-600 dark:text-slate-400"></i>
+          {{ "DESCRIPTION" | translate }} *
+        </label>
+        <textarea
+          pTextarea
+          id="description"
+          formControlName="description"
+          [rows]="4"
+          [autoResize]="true"
+          class="w-full rounded-md! bg-card! text-card-foreground! h-full! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            experienceForm.get('description')?.invalid &&
+            experienceForm.get('description')?.touched
+          "
+        ></textarea>
+      </div>
+
+      <!-- Start Date -->
+      <div class="flex flex-col w-full">
+        <label
+          for="startDate"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+        >
+          <i class="pi pi-calendar text-slate-600 dark:text-slate-400"></i>
+          {{ "START_DATE" | translate }} *
+        </label>
+        <p-datePicker
+          id="startDate"
+          formControlName="startDate"
+          [showIcon]="true"
+          iconDisplay="input"
+          dateFormat="mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="2000:2030"
+          styleClass="w-full"
+          [class.border-red-500]="
+            experienceForm.get('startDate')?.invalid &&
+            experienceForm.get('startDate')?.touched
+          "
+        ></p-datePicker>
+      </div>
+
+      <!-- End Date -->
+      <div class="flex flex-col w-full">
+        <label
+          for="endDate"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+          *ngIf="!current"
+        >
+          <i
+            class="pi pi-calendar-times text-slate-600 dark:text-slate-400"
+          ></i>
+          {{ "END_DATE" | translate }} *
+        </label>
+        <p-datePicker
+          *ngIf="!current"
+          id="endDate"
+          formControlName="endDate"
+          [showIcon]="true"
+          iconDisplay="input"
+          dateFormat="mm/yy"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="2000:2030"
+          styleClass="w-full"
+          [class.border-red-500]="
+            experienceForm.get('endDate')?.invalid &&
+            experienceForm.get('endDate')?.touched
+          "
+        ></p-datePicker>
+      </div>
+
+      <!-- Current Experience -->
+      <div class="flex items-center">
+        <p-checkbox
+          id="current"
+          formControlName="current"
+          [binary]="true"
+          class="mr-2"
+        ></p-checkbox>
+        <label
+          for="current"
+          class="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300"
+        >
+          <i class="pi pi-clock text-slate-600 dark:text-slate-400"></i>
+          {{ "CURRENT_EXPERIENCE" | translate }}
+        </label>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-6">
+      <button
+        pButton
+        type="button"
+        label="{{ 'CANCEL' | translate }}"
+        icon="pi pi-times"
+        class="p-button-text"
+        (click)="onHide()"
+        [disabled]="isLoading()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        [label]="(isEditMode ? 'UPDATE' : 'SAVE') | translate"
+        icon="pi pi-check"
+        [disabled]="!experienceForm.valid || isLoading()"
+        [loading]="isLoading()"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

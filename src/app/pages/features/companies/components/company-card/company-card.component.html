@@ -1,0 +1,108 @@
+<div
+  class="bg-white dark:bg-slate-800 max-w-[500px] shadow-lg rounded-xl h-full w-full flex flex-col border border-slate-200 dark:border-slate-700 dark:shadow-md cursor-pointer transform transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-blue-500/30"
+  (click)="viewMore()"
+>
+  <!-- Top Section with Logo and Info -->
+  <!-- Background Banner -->
+  <div class="relative">
+    <div
+      class="h-20 sm:h-24 w-full rounded-t-xl"
+      [ngStyle]="{
+        background:
+          'linear-gradient(135deg, ' +
+          company.primaryColor +
+          ', ' +
+          company.secondaryColor +
+          ')'
+      }"
+    ></div>
+
+    <!-- Logo Container -->
+    <div class="absolute -bottom-6 sm:-bottom-8 left-3 sm:left-4">
+      <div
+        class="h-12 w-12 sm:h-16 sm:w-16 bg-white rounded-lg overflow-hidden border-white shadow-lg transition-all duration-300"
+      >
+        <p-skeleton
+          *ngIf="isImageLoading()"
+          size="4rem"
+          styleClass="mr-2"
+        ></p-skeleton>
+
+        @if (company.logoAttachment?.url) {
+        <img
+          [class.visible]="!isImageLoading()"
+          (load)="onImageLoaded()"
+          (error)="onImageError()"
+          class="h-full w-full object-contain"
+          [src]="company.logoAttachment?.url"
+        />
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="p-3 sm:p-4 mt-6 sm:mt-8">
+    <div class="flex flex-col gap-1">
+      <h3
+        class="text-base sm:text-xl font-semibold text-slate-800 dark:text-slate-100 group-hover:text-blue-500 transition-colors truncate"
+      >
+        {{ company.name }}
+      </h3>
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <span
+          class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 flex items-center gap-1"
+        >
+          <i class="pi pi-building text-blue-500 text-sm sm:text-base"></i>
+          {{ company.sector }}
+        </span>
+        <span
+          class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 flex items-center gap-1"
+        >
+          <i class="pi pi-globe text-blue-500 text-sm sm:text-base"></i>
+          {{ company.address.country }}
+        </span>
+      </div>
+    </div>
+
+    <p
+      class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm mt-2 sm:mt-3 line-clamp-2 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors"
+      [title]="company.description"
+    >
+      {{ company.description }}
+    </p>
+
+    <div class="mt-3 sm:mt-4 flex flex-col gap-1.5 sm:gap-2">
+      @if (company.address) {
+      <div
+        class="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300"
+      >
+        <i class="pi pi-map-marker text-blue-500 text-sm sm:text-base"></i>
+        <span class="truncate">{{ company.address.addressLine1 }}</span>
+      </div>
+      } @if (company.email) {
+      <div
+        class="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300"
+      >
+        <i class="pi pi-envelope text-blue-500 text-sm sm:text-base"></i>
+        <span class="truncate">{{ company.email }}</span>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Footer with Action Button -->
+  <div
+    class="mt-auto p-3 sm:p-4 border-t border-slate-200 dark:border-slate-700"
+  >
+    <button
+      class="w-full inline-flex items-center justify-center gap-1.5 sm:gap-2 text-blue-500 text-xs sm:text-sm font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+      (click)="viewMore()"
+    >
+      {{ "VIEW_COMPANY_DETAILS" | translate }}
+      <i
+        class="pi pi-arrow-right text-[10px] sm:text-xs transition-transform group-hover:translate-x-1"
+      ></i>
+    </button>
+  </div>
+</div>

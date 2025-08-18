@@ -1,0 +1,127 @@
+<div class="max-w-[100vw] mx-auto shadow-lg">
+  <p-table
+    #table
+    [value]="H_RsData"
+    [scrollable]="true"
+    scrollHeight="82vh"
+    dataKey="id"
+    [resizableColumns]="true"
+    [paginator]="true"
+    [rows]="request.rows"
+    [first]="request.first"
+    [totalRecords]="70"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{{ 'SHOWING_ENTRIES' | translate }}"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [lazy]="true"
+    (onLazyLoad)="loadH_RsDataLazy($event)"
+    [customSort]="true"
+    (sortFunction)="loadH_RsDataLazy($event)"
+    [loading]="isLoading"
+    class="fullHeightTable"
+    [style]="{ height: '90vh' }"
+  >
+    <ng-template pTemplate="header">
+      <tr class="bg-secondary!">
+        <ng-container *ngFor="let col of columns; index as i">
+          <th
+            [pSortableColumn]="col.field"
+            pResizableColumn
+            [ngClass]="{ 'border-r': i !== columns.length - 1 }"
+            *ngIf="col.visible"
+            class="py-2! border-gray-400! bg-transparent!"
+          >
+            <div class="w-full gap-1 flex items-center text-white">
+              <p>{{ col.header | translate }}</p>
+
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </div>
+          </th>
+        </ng-container>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row let-i="rowIndex">
+      <tr
+        class="bg-transparent! text-text! hover:bg-gray-50 transition-all border-b border-gray-400 h-[20px]"
+      >
+        <td class="w-36 p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            {{ row.firstName }}
+          </div>
+        </td>
+        <td class="w-1/3 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ row.lastName }}
+            </p>
+          </div>
+        </td>
+
+        <td class="w-1/3 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ row.phone }}
+            </p>
+          </div>
+        </td>
+        <td class="w-1/3 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ row.email }}
+            </p>
+          </div>
+        </td>
+
+        <td class="w-1/3 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ row.city }}
+            </p>
+          </div>
+        </td>
+
+        <td class="w-36 p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            {{ row.country }}
+          </div>
+        </td>
+
+        <td class="w-36 p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            {{ row.status }}
+          </div>
+        </td>
+
+        <td class="w-[80px] p-1">
+          <div class="flex items-center gap-2 w-full">
+            <button
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="text-blue-500 text-sm hover:bg-gray-200 py-2 px-5 rounded-full"
+            ></button>
+
+            <button
+              pButton
+              pRipple
+              icon="pi pi-check"
+              class="text-green-500 hover:bg-gray-200 py-2 px-5 rounded-full"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr class="text-center h-[53vh]">
+        <td colspan="12" style="text-align: center">No data available</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

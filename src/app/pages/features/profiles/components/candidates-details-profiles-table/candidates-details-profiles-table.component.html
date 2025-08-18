@@ -1,0 +1,155 @@
+<div class="max-w-[100vw] mx-auto shadow-lg">
+  <p-table
+    #table
+    [value]="profiles().data"
+    [scrollable]="true"
+    scrollHeight="84vh"
+    dataKey="id"
+    [reorderableColumns]="true"
+    [resizableColumns]="true"
+    [paginator]="true"
+    [rows]="25"
+    [first]="request().page"
+    [totalRecords]="profiles().totalItems"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{{ 'SHOWING_ENTRIES' | translate }}"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [lazy]="true"
+    (onLazyLoad)="loadCandidateProfilesLazy($event)"
+    [customSort]="true"
+    (sortFunction)="loadCandidateProfilesLazy($event)"
+    [loading]="isLoading()"
+    class="fullHeightTable"
+    [style]="{ height: '90vh' }"
+  >
+    <ng-template pTemplate="header">
+      <tr class="bg-secondary!">
+        <th class="py-2! w-0! border-gray-400! bg-transparent!">
+          <div class="text-white">
+            <p>{{ "NUMBER" | translate }}</p>
+          </div>
+        </th>
+        <ng-container *ngFor="let col of columns; index as i">
+          <th
+            [ngClass]="{ 'border-r': i !== columns.length - 1 }"
+            *ngIf="col.visible && col.field !== 'number'"
+            class="py-2! border-gray-400! bg-transparent!"
+          >
+            <div class="w-full gap-1 flex items-center text-white">
+              <p>{{ col.header | translate }}</p>
+            </div>
+          </th>
+        </ng-container>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-profile let-i="rowIndex">
+      <tr
+        class="bg-transparent! text-text! hover:bg-gray-50! dark:hover:bg-gray-800! transition-all! border-b! border-gray-400! h-[20px]!"
+      >
+        <td class="p-0">
+          <div class="w-full min-h-[20px] flex items-center line-clamp-1">
+            {{ i + 1 }}
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            {{ profile.profileTitle }}
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            <span
+              class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-md text-xs truncate max-w-[160px]"
+            >
+              {{ profile.category | translate }}
+            </span>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            @if (profile.resumeAttachment?.url) {
+            <a
+              [href]="profile.resumeAttachment?.url"
+              target="_blank"
+              class="text-blue-600! hover:text-blue-700! dark:text-blue-400! dark:hover:text-blue-500! cursor-pointer! flex items-center gap-2"
+            >
+              <i class="pi pi-file-pdf"></i>
+              <span>{{ "VIEW_RESUME" | translate }}</span>
+            </a>
+            } @else {
+            <span>{{ "NO_RESUME" | translate }}</span>
+            }
+          </div>
+        </td>
+        <td class="w-[5%] p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            {{ profile.createdAt | date : "dd/MM/yyyy" }}
+          </div>
+        </td>
+        <td class="w-[5%] p-1">
+          <button
+            pButton
+            pRipple
+            icon="pi pi-ellipsis-v"
+            class="text-text! bg-transparent! p-1! border-0! hover:bg-gray-200! dark:hover:bg-gray-900/90! transition-all!"
+            (click)="selectRowId($event, profile)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr class="text-center h-[59vh] bg-transparent! text-text!">
+        <td colspan="12" style="text-align: center">
+          {{ "NO_DATA_AVAILABLE" | translate }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<app-profiles-actions-menu
+  [profile]="profile"
+  (onDeleteProfile)="deleteProfile()"
+  [isOfferDetails]="false"
+  #profileActionsMenu
+></app-profiles-actions-menu>
+<app-edit-profile-dialog />
+<app-edit-resume-dialog />
+<p-confirmDialog
+  [style]="{ minWidth: '450px' }"
+  [draggable]="false"
+  [rejectVisible]="true"
+  acceptLabel="{{ 'YES' | translate }}"
+  rejectLabel="{{ 'NO' | translate }}"
+  acceptIcon="pi pi-check"
+  rejectIcon="pi pi-times"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span class="font-medium text-text!">{{
+        "DELETE_PROFILE" | translate
+      }}</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-info-circle text-blue-500"></i>
+      <span class="text-text!">{{
+        "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_PROFILE" | translate
+      }}</span>
+    </div>
+  </ng-template>
+</p-confirmDialog>

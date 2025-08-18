@@ -1,0 +1,22 @@
+<p-dialog
+  [modal]="true"
+  [visible]="isDialogVisible()"
+  (visibleChange)="setIsDialogVisible($event)"
+  [closable]="true"
+  [dismissableMask]="false"
+  [breakpoints]="{ '1199px': '60vw', '640px': '100vw' }"
+  [style]="{ width: '60vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="closeDialog()"
+  styleClass="overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+      {{ "CREATE_NEW_PROFILE" | translate }}
+    </h2>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <app-add-edit-candidate-profile-form />
+  </ng-template>
+</p-dialog>

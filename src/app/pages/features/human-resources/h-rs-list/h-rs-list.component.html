@@ -1,0 +1,19 @@
+<div class="w-full h-screen mb-16">
+  <div class="flex sm:items-center flex-col sm:flex-row justify-between my-5">
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
+      {{ "HUMAN_RESOURCES" | translate }}
+    </h1>
+    <button
+      pButton
+      pRipple
+      label="{{ 'ADD_HR' | translate }}"
+      icon="pi pi-plus"
+      class="p-button-outlined text-primary! hover:text-primary! dark:border-none! dark:bg-secondary! dark:text-white!"
+    ></button>
+  </div>
+  <div class="w-full flex flex-col gap-4">
+    <app-h-r-filter-form />
+
+    <app-h-rs-table />
+  </div>
+</div>

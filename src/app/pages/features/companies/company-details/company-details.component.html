@@ -1,0 +1,10 @@
+<app-loader [isLoading]="isCompanyLoading"></app-loader>
+<div class="flex flex-col gap-4" *ngIf="!isCompanyLoading()">
+  <div class="flex justify-start items-center gap-4">
+    <h1 class="text-2xl font-semibold text-text">
+      {{ "COMPANY_DETAILS" | translate }} : {{ company()?.name }}
+    </h1>
+  </div>
+
+  <app-company-details-tabs></app-company-details-tabs>
+</div>

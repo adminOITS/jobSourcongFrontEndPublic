@@ -1,0 +1,141 @@
+<div class="max-w-[100vw] mx-auto shadow-lg">
+  <p-table
+    #table
+    [value]="candidateAiProcessingHistoryResponseDto().data"
+    [scrollable]="true"
+    scrollHeight="82vh"
+    dataKey="id"
+    [reorderableColumns]="true"
+    [resizableColumns]="true"
+    [paginator]="true"
+    [rows]="request().size"
+    [totalRecords]="candidateAiProcessingHistoryResponseDto().totalItems"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [lazy]="true"
+    (onLazyLoad)="loadCandidatesLazy($event)"
+    [loading]="isLoading()"
+    class="fullHeightTable"
+    [style]="{ height: '90vh' }"
+    currentPageReportTemplate="{{ 'SHOWING_ENTRIES' | translate }}"
+    [showCurrentPageReport]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr class="bg-secondary!">
+        <th class="py-2! border-gray-400! bg-transparent!">
+          <div class="w-[60px] gap-1 flex items-center text-white">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ "NUMBER" | translate }}
+            </p>
+          </div>
+        </th>
+        <ng-container *ngFor="let col of columns; index as i">
+          <th
+            pResizableColumn
+            [ngClass]="{ 'border-r': i !== columns.length - 1 }"
+            *ngIf="col.visible && col.field !== 'id'"
+            class="py-2! border-gray-400! bg-transparent!"
+          >
+            <div class="w-full gap-1 flex items-center text-white">
+              <p>{{ col.header | translate }}</p>
+            </div>
+          </th>
+        </ng-container>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row let-i="rowIndex">
+      <tr
+        class="bg-transparent! text-text! hover:bg-gray-50 dark:hover:bg-gray-800! transition-all border-b border-gray-400 h-[20px]"
+      >
+        <td class="p-0 w-[60px]">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ i + 1 }}
+            </p>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div
+            class="w-full min-w-32 min-h-[20px] flex items-center line-clamp-1"
+          >
+            @if (row.resumeAttachment?.url) {
+            <a
+              [href]="row.resumeAttachment?.url"
+              target="_blank"
+              class="text-blue-600! hover:text-blue-700! dark:text-blue-400! dark:hover:text-blue-500! cursor-pointer! flex items-center gap-2"
+            >
+              <i class="pi pi-file-pdf"></i>
+              <span>{{ "VIEW_RESUME" | translate }}</span>
+            </a>
+            } @else {
+            <span>{{ "NO_RESUME" | translate }}</span>
+            }
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <span [class]="getStatusClasses(row.status)">
+              <i [class]="getStatusIcon(row.status)" class="mr-2"></i>
+              {{ row.status | translate }}
+            </span>
+          </div>
+        </td>
+
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ row.createdAt | date : "EEEE dd MMMM yyyy" }}
+            </p>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ row.createdAt | date : "HH:mm" }}
+            </p>
+          </div>
+        </td>
+        <td class="p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            @if(row.candidate){
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ row.candidate.firstName }} {{ row.candidate.lastName }}
+              <i
+                class="pi pi-external-link text-xl! cursor-pointer ml-2 text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-200 transition-opacity duration-200"
+                (click)="viewCandidate(row.candidate.id)"
+              ></i>
+            </p>
+            } @else {
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ "N/A" | translate }}
+            </p>
+            }
+          </div>
+        </td>
+        <td class="w-[80px] p-1">
+          <button
+            pButton
+            pRipple
+            icon="pi pi-ellipsis-v"
+            class="text-text! bg-transparent! p-1! border-0! hover:bg-gray-200! dark:hover:bg-gray-900/90! transition-all!"
+            (click)="selectRowId($event, row)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr class="text-center h-[75vh] bg-transparent! text-text!">
+        <td colspan="12" style="text-align: center">
+          {{ "NO_DATA_AVAILABLE" | translate }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<app-candidates-ai-processing-history-table-actions-menu
+  [candidateAiProcessingHistoryResponseDto]="
+    selectedCandidateAiProcessingHistoryResponseDto
+  "
+  #candidatesAiProcessingHistoryTableActionsMenu
+/>

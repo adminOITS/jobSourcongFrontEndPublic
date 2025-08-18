@@ -1,0 +1,48 @@
+<!-- Social Links Section -->
+<div
+  class="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 mb-6 border border-slate-200 dark:border-slate-700"
+>
+  <div class="flex justify-between items-start mb-4">
+    <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">
+      {{ "SOCIAL_LINKS" | translate }}
+    </h2>
+
+    <button
+      *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+      pButton
+      icon="pi pi-pencil"
+      [label]="'EDIT_SOCIAL_LINKS' | translate"
+      (click)="onEditClick()"
+      class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
+    ></button>
+  </div>
+
+  <!-- Social Links Display -->
+  <div class="grid grid-cols-1 gap-4">
+    <ng-container *ngFor="let link of getSocialLinks()">
+      <div
+        *ngIf="link.url"
+        class="flex items-center p-3 bg-slate-50 hover:bg-slate-100 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-lg border border-slate-100 dark:border-slate-600 transition-colors duration-200 cursor-pointer group"
+        (click)="window.open(link.url, '_blank')"
+        [title]="link.url"
+      >
+        <i [class]="'pi ' + link.icon + ' text-blue-500 text-xl'"></i>
+        <span class="ml-3 flex-grow text-slate-700 dark:text-slate-200">{{
+          link.label.toUpperCase() | translate
+        }}</span>
+        <span
+          class="hidden md:block text-slate-400 dark:text-slate-300 text-sm mr-4"
+          >{{ link.url }}</span
+        >
+        <i
+          class="pi pi-external-link text-slate-400 dark:text-slate-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        ></i>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<!-- Dialog Component -->
+<app-add-edit-candidate-social-links-dialog
+  *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+></app-add-edit-candidate-social-links-dialog>

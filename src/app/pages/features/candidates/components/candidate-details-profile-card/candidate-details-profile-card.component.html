@@ -1,0 +1,34 @@
+<div
+  class="flex justify-between p-3 bg-slate-50 hover:bg-slate-100 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-lg border border-slate-100 dark:border-slate-600 transition-colors duration-200 group"
+>
+  <!-- Content Section -->
+  <div class="flex items-center space-x-3">
+    <i [class]="'pi ' + icon + ' text-blue-500 text-xl'"></i>
+    <div class="flex flex-col flex-grow">
+      <span class="text-sm text-slate-500 dark:text-slate-400">{{
+        label | translate
+      }}</span>
+      <span
+        [class]="
+          text
+            ? 'text-slate-700 dark:text-slate-200'
+            : 'text-slate-400 dark:text-slate-500 italic'
+        "
+      >
+        {{ text || (fallbackText | translate) }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Copy Button Section -->
+  <div class="flex justify-end mt-2" *ngIf="getCanCopy()">
+    <button
+      pButton
+      class="bg-slate-50! text-text! border-0 hover:bg-slate-100! dark:bg-slate-700! dark:hover:bg-slate-600! rounded-full! text-sm! opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+      [icon]="isCopied ? 'pi pi-check' : 'pi pi-copy'"
+      [pTooltip]="copyTooltip | translate"
+      (click)="onCopyClick()"
+      tooltipPosition="left"
+    ></button>
+  </div>
+</div>

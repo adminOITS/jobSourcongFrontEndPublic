@@ -1,0 +1,193 @@
+<p-dialog
+  [modal]="true"
+  [visible]="isEditHrDialogVisible()"
+  (visibleChange)="setDialogVisible($event)"
+  [closable]="true"
+  [dismissableMask]="false"
+  [breakpoints]="{ '1199px': '75vw', '640px': '100vw' }"
+  [style]="{ width: '65vw' }"
+  (onHide)="onHide()"
+  [draggable]="false"
+  class="overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <h2 class="text-xl font-semibold flex items-center gap-2 text-text!">
+      <i class="pi pi-user text-blue-600"></i>
+      {{ "EDIT_MEMBER_INFORMATION" | translate }}
+    </h2>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <form
+      [formGroup]="companyStaffForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-4"
+      autocomplete="off"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-1">
+          <label for="firstName" class="block text-sm font-medium text-text/85">
+            <i class="pi pi-user text-blue-500 mr-2"></i>
+            {{ "FIRST_NAME" | translate }}
+          </label>
+          <input
+            id="firstName"
+            type="text"
+            pInputText
+            formControlName="firstName"
+            class="w-full rounded-md! hover:ring-1! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white! bg-card! text-card-foreground!"
+            [class.ng-invalid]="
+              companyStaffForm.get('firstName')?.invalid &&
+              companyStaffForm.get('firstName')?.touched
+            "
+          />
+          <div class="h-4 -mb-1">
+            <small
+              class="text-red-500 dark:text-red-400"
+              *ngIf="
+                companyStaffForm.get('firstName')?.invalid &&
+                companyStaffForm.get('firstName')?.touched
+              "
+            >
+              {{ "FIRST_NAME_REQUIRED" | translate }}
+            </small>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label for="lastName" class="block text-sm font-medium text-text/85">
+            <i class="pi pi-user text-blue-500 mr-2"></i>
+            {{ "LAST_NAME" | translate }}
+          </label>
+          <input
+            id="lastName"
+            type="text"
+            pInputText
+            formControlName="lastName"
+            class="w-full rounded-md! hover:ring-1! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white! bg-card! text-card-foreground!"
+            [class.ng-invalid]="
+              companyStaffForm.get('lastName')?.invalid &&
+              companyStaffForm.get('lastName')?.touched
+            "
+          />
+          <div class="h-2">
+            <small
+              class="text-red-500 dark:text-red-400"
+              *ngIf="
+                companyStaffForm.get('lastName')?.invalid &&
+                companyStaffForm.get('lastName')?.touched
+              "
+            >
+              {{ "LAST_NAME_REQUIRED" | translate }}
+            </small>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label for="email" class="block text-sm font-medium text-text/85">
+            <i class="pi pi-envelope text-green-600 mr-2"></i>
+            {{ "EMAIL" | translate }}
+          </label>
+          <input
+            id="email"
+            type="email"
+            pInputText
+            formControlName="email"
+            class="w-full rounded-md! hover:ring-1! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white! bg-card! text-card-foreground!"
+            [class.ng-invalid]="
+              companyStaffForm.get('email')?.invalid &&
+              companyStaffForm.get('email')?.touched
+            "
+          />
+          <div class="h-4">
+            <small
+              class="text-red-500 dark:text-red-400"
+              *ngIf="
+                companyStaffForm.get('email')?.invalid &&
+                companyStaffForm.get('email')?.touched
+              "
+            >
+              {{ "EMAIL_INVALID" | translate }}
+            </small>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label for="phone" class="block text-sm font-medium text-text/85">
+            <i class="pi pi-phone text-orange-600 mr-2"></i>
+            {{ "PHONE" | translate }}
+          </label>
+          <input
+            id="phone"
+            type="text"
+            pInputText
+            formControlName="phone"
+            class="w-full rounded-md! hover:ring-1! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white! bg-card! text-card-foreground!"
+            [class.ng-invalid]="
+              companyStaffForm.get('phone')?.invalid &&
+              companyStaffForm.get('phone')?.touched
+            "
+          />
+          <div class="h-5">
+            <small
+              class="text-red-500 dark:text-red-400"
+              *ngIf="
+                companyStaffForm.get('phone')?.invalid &&
+                companyStaffForm.get('phone')?.touched
+              "
+            >
+              {{ "PHONE_INVALID" | translate }}
+            </small>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label for="country" class="block text-sm font-medium text-text/85">
+            <i class="pi pi-globe text-blue-600 mr-2"></i>
+            {{ "COUNTRY" | translate }}
+          </label>
+          <input
+            id="country"
+            type="text"
+            pInputText
+            formControlName="country"
+            class="w-full rounded-md! hover:ring-1! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white! bg-card! text-card-foreground!"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label for="city" class="block text-sm font-medium text-text/85">
+            <i class="pi pi-building text-purple-600 mr-2"></i>
+            {{ "CITY" | translate }}
+          </label>
+          <input
+            id="city"
+            type="text"
+            pInputText
+            formControlName="city"
+            class="w-full rounded-md! hover:ring-1! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white! bg-card! text-card-foreground!"
+          />
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end pt-6 gap-2">
+        <button
+          pButton
+          type="button"
+          label="{{ 'CANCEL' | translate }}"
+          class="p-button-text"
+          (click)="onHide()"
+          [disabled]="isStaffRequestLoading()"
+        ></button>
+        <button
+          type="submit"
+          pButton
+          [label]="'SAVE_MEMBER' | translate"
+          icon="pi pi-check"
+          [disabled]="!companyStaffForm.valid || isStaffRequestLoading()"
+          class="px-6"
+        ></button>
+      </div>
+    </form>
+  </ng-template>
+</p-dialog>

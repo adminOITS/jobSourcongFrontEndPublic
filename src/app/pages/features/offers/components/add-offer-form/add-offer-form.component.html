@@ -1,0 +1,1321 @@
+<form [formGroup]="offerForm" autocomplete="off" class="w-full p-4 space-y-2">
+  <p-stepper [value]="value()">
+    <p-step-list>
+      <p-step [value]="1">{{ "JOB_DETAILS" | translate }}</p-step>
+      <p-step [value]="2">{{ "DESIRED_PROFILE" | translate }}</p-step>
+      <p-step [value]="3">{{ "ADDITIONAL_INFO" | translate }}</p-step>
+    </p-step-list>
+    <p-step-panels>
+      <p-step-panel [value]="1">
+        <ng-template #content>
+          <div class="space-y-6">
+            <!-- Job Details Section -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+              <div class="flex items-center gap-2 mb-6 text-text!">
+                <i class="pi pi-briefcase text-blue-600"></i>
+                <h2 class="text-xl font-semibold">
+                  {{ "JOB_DETAILS" | translate }}
+                </h2>
+              </div>
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Left Column -->
+                <div class="space-y-6">
+                  <!-- Job Title -->
+                  <div class="space-y-2">
+                    <label
+                      for="title"
+                      class="block text-sm font-medium text-text/85"
+                    >
+                      <i class="pi pi-briefcase text-blue-500 mr-2"></i>
+                      {{ "JOB_TITLE" | translate }}*
+                    </label>
+                    <input
+                      id="title"
+                      type="text"
+                      pInputText
+                      formControlName="title"
+                      class="w-full rounded-md! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                    />
+                    <div class="h-2">
+                      <small
+                        class="text-red-500 dark:text-red-400"
+                        *ngIf="
+                          offerForm.get('title')?.invalid &&
+                          offerForm.get('title')?.touched
+                        "
+                      >
+                        {{ "REQUIRED" | translate }}
+                      </small>
+                    </div>
+                  </div>
+
+                  <!-- Work Mode -->
+                  <div class="space-y-2">
+                    <label
+                      for="workMode"
+                      class="block text-sm font-medium text-text/85"
+                    >
+                      <i class="pi pi-desktop text-orange-600 mr-2"></i>
+                      {{ "WORK_MODE" | translate }}*
+                    </label>
+                    <p-select
+                      id="workMode"
+                      formControlName="workMode"
+                      [options]="workModes"
+                      optionLabel="name"
+                      optionValue="value"
+                      class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                    ></p-select>
+                    <div class="h-2">
+                      <small
+                        class="text-red-500 dark:text-red-400"
+                        *ngIf="
+                          offerForm.get('workMode')?.invalid &&
+                          offerForm.get('workMode')?.touched
+                        "
+                      >
+                        {{ "REQUIRED" | translate }}
+                      </small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-6">
+                  <!-- Employment Type -->
+                  <div class="space-y-2">
+                    <label
+                      for="employmentType"
+                      class="block text-sm font-medium text-text/85"
+                    >
+                      <i class="pi pi-clock text-green-600 mr-2"></i>
+                      {{ "EMPLOYMENT_TYPE" | translate }}*
+                    </label>
+                    <p-select
+                      id="employmentType"
+                      formControlName="employmentType"
+                      [options]="employmentTypes"
+                      optionLabel="name"
+                      optionValue="value"
+                      class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                    ></p-select>
+                    <div class="h-2">
+                      <small
+                        class="text-red-500 dark:text-red-400"
+                        *ngIf="
+                          offerForm.get('employmentType')?.invalid &&
+                          offerForm.get('employmentType')?.touched
+                        "
+                      >
+                        {{ "REQUIRED" | translate }}
+                      </small>
+                    </div>
+                  </div>
+                  <div class="space-y-2">
+                    <label
+                      for="contractType"
+                      class="block text-sm font-medium text-text/85"
+                    >
+                      {{ "CONTRACT_TYPE" | translate }}*
+                    </label>
+                    <p-select
+                      id="contractType"
+                      formControlName="contractType"
+                      [options]="contractTypeOptions"
+                      optionLabel="name"
+                      optionValue="value"
+                      class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                    ></p-select>
+                    <div class="h-2">
+                      <small
+                        class="text-red-500 dark:text-red-400"
+                        *ngIf="
+                          offerForm.get('contractType')?.invalid &&
+                          offerForm.get('contractType')?.touched
+                        "
+                      >
+                        {{ "REQUIRED" | translate }}
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Location Section -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+              <h3 class="text-lg font-semibold mb-6 text-text">
+                <i class="pi pi-map-marker text-red-600 mr-2"></i>
+                {{ "LOCATION" | translate }}
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-2">
+                  <label
+                    for="country"
+                    class="block text-sm font-medium text-text/85"
+                  >
+                    {{ "COUNTRY" | translate }}*
+                  </label>
+                  <input
+                    id="country"
+                    type="text"
+                    pInputText
+                    formControlName="country"
+                    class="w-full rounded-md! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                  />
+
+                  <div class="h-2">
+                    <small
+                      class="text-red-500 dark:text-red-400"
+                      *ngIf="
+                        offerForm.get('country')?.invalid &&
+                        offerForm.get('country')?.touched
+                      "
+                    >
+                      {{ "REQUIRED" | translate }}
+                    </small>
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <label
+                    for="city"
+                    class="block text-sm font-medium text-text/85"
+                  >
+                    {{ "CITY" | translate }}*
+                  </label>
+                  <input
+                    id="city"
+                    type="text"
+                    pInputText
+                    formControlName="city"
+                    class="w-full rounded-md! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                  />
+
+                  <div class="h-2">
+                    <small
+                      class="text-red-500 dark:text-red-400"
+                      *ngIf="
+                        offerForm.get('city')?.invalid &&
+                        offerForm.get('city')?.touched
+                      "
+                    >
+                      {{ "REQUIRED" | translate }}
+                    </small>
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <label
+                    for="zipCode"
+                    class="block text-sm font-medium text-text/85"
+                  >
+                    {{ "ZIP_CODE" | translate }}*
+                  </label>
+                  <input
+                    id="zipCode"
+                    type="text"
+                    pInputText
+                    formControlName="zipCode"
+                    class="w-full rounded-md! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                  />
+                  <div class="h-2">
+                    <small
+                      class="text-red-500 dark:text-red-400"
+                      *ngIf="
+                        offerForm.get('zipCode')?.invalid &&
+                        offerForm.get('zipCode')?.touched
+                      "
+                    >
+                      {{ "REQUIRED" | translate }}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Section -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+              <h3 class="text-lg font-semibold mb-6 text-text!">
+                <i class="pi pi-tags text-yellow-600 mr-2"></i>
+                {{ "CATEGORY" | translate }}
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                  <label
+                    for="category"
+                    class="block text-sm font-medium text-text/85"
+                  >
+                    {{ "CATEGORY" | translate }}*
+                  </label>
+                  <p-select
+                    inputId="category"
+                    styleClass="small-select"
+                    formControlName="category"
+                    [options]="jobCategories"
+                    [showClear]="true"
+                    [filter]="true"
+                    [filterPlaceholder]="'SEARCH_CATEGORY' | translate"
+                    optionLabel="name"
+                    optionValue="value"
+                    class="w-full rounded-md! py-0! bg-card! text-text!  hover:border-primary! focus:border-primary! focus:ring-primary!"
+                    pSize="small"
+                  ></p-select>
+                  <!-- <input
+                    id="category"
+                    type="text"
+                    pInputText
+                    formControlName="category"
+                    class="w-full rounded-md! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                  /> -->
+                  <div class="h-2">
+                    <small
+                      class="text-red-500 dark:text-red-400"
+                      *ngIf="
+                        offerForm.get('category')?.invalid &&
+                        offerForm.get('category')?.touched
+                      "
+                    >
+                      {{ "REQUIRED" | translate }}
+                    </small>
+                  </div>
+                </div>
+
+                <!-- <div *ngIf="showCustomCategory" class="space-y-2">
+                  <label
+                    for="customCategory"
+                    class="block text-sm font-medium text-text/85"
+                  >
+                    {{ "CUSTOM_CATEGORY" | translate }}*
+                  </label>
+                  <input
+                    id="customCategory"
+                    type="text"
+                    pInputText
+                    formControlName="customCategory"
+                    class="w-full rounded-md! bg-card! text-text! px-4! hover:border-primary! focus:border-primary! focus:ring-primary!"
+                  />
+                  <div class="h-2">
+                    <small
+                      class="text-red-500"
+                      *ngIf="
+                        offerForm.get('customCategory')?.invalid &&
+                        offerForm.get('customCategory')?.touched
+                      "
+                    >
+                      {{ "REQUIRED" | translate }}
+                    </small>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+
+            <!-- Remuneration Section -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+              <h3 class="text-lg font-semibold mb-4 text-text!">
+                <i class="pi pi-money-bill text-green-600 mr-2"></i>
+                {{ "REMUNERATION" | translate }}
+              </h3>
+              <div class="space-y-6">
+                <!-- Currency Selection -->
+                <div class="field">
+                  <label
+                    for="currency"
+                    class="block text-sm font-medium text-text mb-2"
+                  >
+                    {{ "CURRENCY" | translate }}
+                  </label>
+                  <p-select
+                    id="currency"
+                    [options]="currencies"
+                    formControlName="currency"
+                    optionLabel="name"
+                    placeholder="{{ 'SELECT_CURRENCY' | translate }}"
+                    class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                    [ngClass]="{
+                      'p-invalid':
+                        offerForm.get('currency')?.invalid &&
+                        offerForm.get('currency')?.touched
+                    }"
+                  >
+                    <ng-template let-currency pTemplate="item">
+                      <div class="flex items-center gap-2">
+                        <span>{{ currency.name }}</span>
+                        <span class="text-text/60"
+                          >({{ currency.symbol }})</span
+                        >
+                      </div>
+                    </ng-template>
+                    <ng-template let-currency pTemplate="selectedItem">
+                      <div class="flex items-center gap-2">
+                        <span>{{ currency.name }}</span>
+                        <span class="text-text/60"
+                          >({{ currency.symbol }})</span
+                        >
+                      </div>
+                    </ng-template>
+                  </p-select>
+                  <small
+                    *ngIf="
+                      offerForm.get('currency')?.invalid &&
+                      offerForm.get('currency')?.touched
+                    "
+                    class="block mt-1 dark:text-red-400 text-red-500"
+                  >
+                    {{ "CURRENCY_REQUIRED" | translate }}
+                  </small>
+                </div>
+
+                <!-- Remuneration Range -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="field">
+                    <label
+                      for="minRemuneration"
+                      class="block text-sm font-medium text-text mb-2"
+                    >
+                      {{ "MIN_REMUNERATION" | translate }}
+                    </label>
+                    <p-inputNumber
+                      id="minRemuneration"
+                      formControlName="minRemuneration"
+                      mode="currency"
+                      [currency]="offerForm.get('currency')?.value?.code"
+                      [locale]="offerForm.get('currency')?.value?.locale"
+                      class="w-full rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                      [ngClass]="{
+                        'p-invalid':
+                          offerForm.get('minRemuneration')?.invalid &&
+                          offerForm.get('minRemuneration')?.touched
+                      }"
+                    ></p-inputNumber>
+                    <small
+                      *ngIf="
+                        offerForm.get('minRemuneration')?.invalid &&
+                        offerForm.get('minRemuneration')?.touched
+                      "
+                      class="text-red-500 block mt-1 dark:text-red-400"
+                    >
+                      <span
+                        *ngIf="offerForm.get('minRemuneration')?.errors?.['required']"
+                      >
+                        {{ "MIN_REMUNERATION_REQUIRED" | translate }}
+                      </span>
+                      <span
+                        *ngIf="offerForm.get('minRemuneration')?.errors?.['min']"
+                      >
+                        {{ "VALUE_GREATER_THAN_ZERO" | translate }}
+                      </span>
+                    </small>
+                  </div>
+
+                  <div class="">
+                    <label
+                      for="maxRemuneration"
+                      class="block text-sm font-medium text-text mb-2"
+                    >
+                      {{ "MAX_REMUNERATION" | translate }}
+                    </label>
+                    <p-inputNumber
+                      id="maxRemuneration"
+                      formControlName="maxRemuneration"
+                      mode="currency"
+                      [currency]="offerForm.get('currency')?.value?.code"
+                      [locale]="offerForm.get('currency')?.value?.locale"
+                      class="w-full! rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                      [ngClass]="{
+                        'p-invalid':
+                          offerForm.get('maxRemuneration')?.invalid &&
+                          offerForm.get('maxRemuneration')?.touched
+                      }"
+                    ></p-inputNumber>
+                    <small
+                      *ngIf="
+                        offerForm.get('maxRemuneration')?.invalid &&
+                        offerForm.get('maxRemuneration')?.touched
+                      "
+                      class="text-red-500 block mt-1 dark:text-red-400"
+                    >
+                      <span
+                        *ngIf="offerForm.get('maxRemuneration')?.errors?.['required']"
+                      >
+                        {{ "MAX_REMUNERATION_REQUIRED" | translate }}
+                      </span>
+                      <span
+                        *ngIf="offerForm.get('maxRemuneration')?.errors?.['min']"
+                      >
+                        {{ "VALUE_GREATER_THAN_ZERO" | translate }}
+                      </span>
+                      <span
+                        *ngIf="offerForm.get('maxRemuneration')?.errors?.['maxLessThanMin']"
+                      >
+                        {{ "MAX_GREATER_THAN_MIN" | translate }}
+                      </span>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description Section -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+              <h3 class="text-lg font-semibold mb-4 text-text!">
+                <i class="pi pi-file-edit text-blue-600 mr-2"></i>
+                {{ "DESCRIPTION" | translate }}
+              </h3>
+              <p-editor
+                formControlName="description"
+                placeholder="Enter job description"
+                [style]="{ height: '320px' }"
+                class="w-full"
+                [class.ng-invalid]="
+                  offerForm.get('description')?.invalid &&
+                  offerForm.get('description')?.touched
+                "
+              >
+                <ng-template #header>
+                  <span class="ql-formats">
+                    <button
+                      type="button"
+                      class="ql-bold"
+                      aria-label="Bold"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-italic"
+                      aria-label="Italic"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-underline"
+                      aria-label="Underline"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-strike"
+                      aria-label="Strikethrough"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-list"
+                      value="ordered"
+                      aria-label="Ordered List"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-list"
+                      value="bullet"
+                      aria-label="Bullet List"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-align"
+                      value=""
+                      aria-label="Align Left"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-align"
+                      value="center"
+                      aria-label="Align Center"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-align"
+                      value="right"
+                      aria-label="Align Right"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-align"
+                      value="justify"
+                      aria-label="Justify"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-blockquote"
+                      aria-label="Blockquote"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-header"
+                      value="1"
+                      aria-label="Heading 1"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-header"
+                      value="2"
+                      aria-label="Heading 2"
+                    ></button>
+                  </span>
+                  <select class="ql-size" aria-label="Font Size">
+                    <option value="small">{{ "SMALL" | translate }}</option>
+                    <option selected>{{ "NORMAL" | translate }}</option>
+                    <option value="large">{{ "LARGE" | translate }}</option>
+                    <option value="huge">{{ "HUGE" | translate }}</option>
+                  </select>
+                </ng-template>
+              </p-editor>
+              <small
+                class="text-red-500 dark:text-red-400"
+                *ngIf="
+                  offerForm.get('description')?.invalid &&
+                  offerForm.get('description')?.touched
+                "
+              >
+                {{ "REQUIRED" | translate }}
+              </small>
+            </div>
+          </div>
+          <div class="flex pt-6 justify-end">
+            <p-button
+              (onClick)="onStepChange(2)"
+              label="Next"
+              icon="pi pi-arrow-right"
+              iconPos="right"
+            />
+          </div>
+        </ng-template>
+      </p-step-panel>
+      <p-step-panel [value]="2">
+        <ng-template #content let-activateCallback="activateCallback">
+          <div class="space-y-4">
+            <!-- Skills Section -->
+            <div
+              formArrayName="skills"
+              class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-4"
+            >
+              <div class="w-full flex justify-between">
+                <div>
+                  <h3 class="text-xl font-semibold text-text">
+                    {{ "SKILLS" | translate }}
+                  </h3>
+                  <p class="text-sm text-text">
+                    {{ "ADD_SKILL" | translate }}
+                  </p>
+                </div>
+                <button
+                  class="bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-lg transition-colors duration-200 font-medium cursor-pointer flex items-center gap-2"
+                  type="button"
+                  (click)="addSkill()"
+                >
+                  <i class="pi pi-plus text-sm"></i>
+                  {{ "ADD_SKILL" | translate }}
+                </button>
+              </div>
+              <div
+                *ngFor="let skill of skills?.controls; let i = index"
+                [formGroupName]="i"
+                class="space-y-4 my-4 relative"
+              >
+                <div class="bg-card p-8 rounded-lg shadow-sm">
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                  >
+                    <div>
+                      <label for="skillName-{{ i }}" class="text-text/80!">{{
+                        "SKILL_NAME" | translate
+                      }}</label>
+                      <input
+                        [id]="'skillName-' + i"
+                        type="text"
+                        pInputText
+                        formControlName="skillName"
+                        class="w-full rounded-md bg-card! py-[9px] text-text/80! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                        placeholder="{{ 'ENTER_SKILL_NAME' | translate }}"
+                      />
+                    </div>
+                    <div>
+                      <label for="proficiency-{{ i }}" class="text-text/80!">{{
+                        "PROFICIENCY" | translate
+                      }}</label>
+                      <p-select
+                        [id]="'proficiency-' + i"
+                        formControlName="proficiency"
+                        [options]="proficiencyOptions"
+                        optionLabel="name"
+                        styleClass="small-select"
+                        placeholder=" {{ 'SELECT_PROFICIENCY' | translate }}"
+                        class="w-full rounded-md! py-0! bg-card! text-text! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      ></p-select>
+                    </div>
+                    <div>
+                      <label
+                        [for]="'requirementLevel-' + i"
+                        class="text-text/80"
+                        >{{ "REQUIRED_LEVEL" | translate }}</label
+                      >
+                      <p-select
+                        [id]="'requirementLevel-' + i"
+                        formControlName="requirementLevel"
+                        [options]="requirementLevelOptions"
+                        optionLabel="name"
+                        styleClass="small-select"
+                        placeholder="{{
+                          'SELECT_IMPORTANCE_LEVEL' | translate
+                        }}"
+                        class="w-full rounded-md! py-0! bg-card! text-text! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      ></p-select>
+                    </div>
+                    <div>
+                      <label [for]="'skillType-' + i" class="text-text/80">{{
+                        "SKILL_TYPE" | translate
+                      }}</label>
+                      <p-select
+                        [id]="'skillType-' + i"
+                        formControlName="skillType"
+                        [options]="skillTypes"
+                        optionLabel="name"
+                        styleClass="small-select"
+                        placeholder="{{ 'SELECT_SKILL_TYPE' | translate }}"
+                        class="w-full rounded-md! py-0! bg-card! text-text! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      ></p-select>
+                    </div>
+                  </div>
+                  <div class="mt-4">
+                    <label for="description-{{ i }}" class="text-text/80!">{{
+                      "DESCRIPTION" | translate
+                    }}</label>
+                    <textarea
+                      [id]="'description-' + i"
+                      pTextarea
+                      formControlName="description"
+                      class="w-full rounded-md! bg-card! text-text! small-input dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                      pSize="small"
+                      rows="5"
+                      [autoResize]="true"
+                    ></textarea>
+                  </div>
+                </div>
+                <button
+                  pButton
+                  icon="pi pi-times"
+                  type="button"
+                  (click)="removeSkill(i)"
+                  class="absolute! top-1! right-2! border-none! bg-transparent! cursor-pointer! text-red-500! hover:text-red-600! hover:bg-red-100/30! rounded-full! transition duration-300"
+                ></button>
+              </div>
+            </div>
+
+            <!-- Experience Section -->
+            <div
+              formArrayName="experiences"
+              class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-4"
+            >
+              <div class="w-full flex justify-between">
+                <div>
+                  <h3 class="text-xl font-semibold text-text">
+                    {{ "WORK_EXPERIENCE" | translate }}
+                  </h3>
+                  <p class="text-sm text-text">
+                    {{ "ADD_WORK_EXPERIENCE" | translate }}
+                  </p>
+                </div>
+                <button
+                  class="bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-lg transition-colors duration-200 font-medium cursor-pointer flex items-center gap-2"
+                  type="button"
+                  (click)="addExperience()"
+                >
+                  <i class="pi pi-plus text-sm"></i>
+                  {{ "ADD_EXPERIENCE" | translate }}
+                </button>
+              </div>
+              <div
+                *ngFor="let exp of experiences?.controls; let i = index"
+                [formGroupName]="i"
+                class="space-y-4 my-4 relative"
+              >
+                <div class="bg-card p-8 rounded-lg shadow-sm">
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                  >
+                    <div>
+                      <label for="title-{{ i }}" class="text-text/80!">{{
+                        "TITLE" | translate
+                      }}</label>
+                      <input
+                        [id]="'title-' + i"
+                        type="text"
+                        pInputText
+                        formControlName="title"
+                        class="w-full rounded-md bg-card! py-[9px] text-text/80! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      />
+                    </div>
+                    <div>
+                      <label for="companyName-{{ i }}" class="text-text/80!">{{
+                        "COMPANY" | translate
+                      }}</label>
+                      <input
+                        [id]="'companyName-' + i"
+                        type="text"
+                        pInputText
+                        formControlName="companyName"
+                        class="w-full rounded-md bg-card! py-[9px] text-text/80! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        for="yearsRequired-{{ i }}"
+                        class="text-text/80!"
+                        >{{ "YEARS_REQUIRED" | translate }}</label
+                      >
+                      <p-inputnumber
+                        [id]="'yearsRequired-' + i"
+                        formControlName="yearsRequired"
+                        class="w-full rounded-md! py-0! bg-card! text-text! small-input dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                        [min]="0"
+                      ></p-inputnumber>
+                    </div>
+                    <div>
+                      <label
+                        [for]="'requirementLevel-' + i"
+                        class="text-text/80"
+                        >{{ "REQUIRED_LEVEL" | translate }}</label
+                      >
+                      <p-select
+                        [id]="'requirementLevel-' + i"
+                        formControlName="requirementLevel"
+                        [options]="requirementLevelOptions"
+                        optionLabel="name"
+                        styleClass="small-select"
+                        placeholder="{{
+                          'SELECT_IMPORTANCE_LEVEL' | translate
+                        }}"
+                        class="w-full rounded-md! py-0! bg-card! text-text! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      ></p-select>
+                    </div>
+                  </div>
+                  <div class="mt-4">
+                    <label for="description-{{ i }}" class="text-text/80!">{{
+                      "DESCRIPTION" | translate
+                    }}</label>
+                    <textarea
+                      [id]="'description-' + i"
+                      pTextarea
+                      formControlName="description"
+                      class="w-full rounded-md! bg-card! text-text! small-input dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                      pSize="small"
+                      rows="5"
+                      [autoResize]="true"
+                    ></textarea>
+                  </div>
+                </div>
+                <button
+                  pButton
+                  icon="pi pi-times"
+                  type="button"
+                  (click)="removeExperience(i)"
+                  class="absolute! top-1! right-2! border-none! bg-transparent! cursor-pointer! text-red-500! hover:text-red-600! hover:bg-red-100! rounded-full! transition duration-300"
+                ></button>
+              </div>
+            </div>
+
+            <!-- Education Section -->
+            <div
+              formArrayName="education"
+              class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-4"
+            >
+              <div class="w-full flex justify-between">
+                <div>
+                  <h3 class="text-xl font-semibold text-text">
+                    {{ "EDUCATION" | translate }}
+                  </h3>
+                  <p class="text-sm text-text">
+                    {{ "ADD_EDUCATION" | translate }}
+                  </p>
+                </div>
+                <button
+                  class="bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-lg transition-colors duration-200 font-medium cursor-pointer flex items-center gap-2"
+                  type="button"
+                  (click)="addEducation()"
+                >
+                  <i class="pi pi-plus text-sm"></i>
+                  {{ "ADD_EDUCATION" | translate }}
+                </button>
+              </div>
+              <div
+                *ngFor="let e of education?.controls; let i = index"
+                [formGroupName]="i"
+                class="space-y-4 my-4 relative"
+              >
+                <div class="bg-card p-8 rounded-lg shadow-sm">
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                  >
+                    <div>
+                      <label for="degree-{{ i }}" class="text-text/80!">{{
+                        "DEGREE" | translate
+                      }}</label>
+                      <input
+                        [id]="'degree-' + i"
+                        type="text"
+                        pInputText
+                        formControlName="degree"
+                        class="w-full rounded-md bg-card! py-[9px] text-text/80! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      />
+                    </div>
+                    <div>
+                      <label for="field-{{ i }}" class="text-text/80!">{{
+                        "FIELD" | translate
+                      }}</label>
+                      <input
+                        [id]="'field-' + i"
+                        type="text"
+                        pInputText
+                        formControlName="field"
+                        class="w-full rounded-md bg-card! py-[9px] text-text/80! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      />
+                    </div>
+                    <div>
+                      <label for="institution-{{ i }}" class="text-text/80!">{{
+                        "INSTITUTION" | translate
+                      }}</label>
+                      <input
+                        [id]="'institution-' + i"
+                        type="text"
+                        pInputText
+                        formControlName="institution"
+                        class="w-full rounded-md bg-card! py-[9px] text-text/80! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        [for]="'requirementLevel-' + i"
+                        class="text-text/80"
+                        >{{ "REQUIRED_LEVEL" | translate }}</label
+                      >
+                      <p-select
+                        [id]="'requirementLevel-' + i"
+                        formControlName="requirementLevel"
+                        [options]="requirementLevelOptions"
+                        optionLabel="name"
+                        styleClass="small-select"
+                        placeholder="{{
+                          'SELECT_IMPORTANCE_LEVEL' | translate
+                        }}"
+                        class="w-full rounded-md! py-0! bg-card! text-text! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      ></p-select>
+                    </div>
+                  </div>
+                  <div class="mt-4">
+                    <label for="description-{{ i }}" class="text-text/80!">{{
+                      "DESCRIPTION" | translate
+                    }}</label>
+                    <textarea
+                      [id]="'description-' + i"
+                      pTextarea
+                      formControlName="description"
+                      class="w-full rounded-md! bg-card! text-text! small-input dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                      pSize="small"
+                      rows="5"
+                      [autoResize]="true"
+                    ></textarea>
+                  </div>
+                </div>
+                <button
+                  pButton
+                  icon="pi pi-times"
+                  type="button"
+                  (click)="removeEducation(i)"
+                  class="absolute! top-1! right-2! border-none! bg-transparent! cursor-pointer! text-red-500! hover:text-red-600! hover:bg-red-100! rounded-full! transition duration-300"
+                ></button>
+              </div>
+            </div>
+
+            <!-- Languages Section -->
+            <div
+              formArrayName="languages"
+              class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-4"
+            >
+              <div class="w-full flex justify-between">
+                <div>
+                  <h3 class="text-xl font-semibold text-text">
+                    {{ "LANGUAGES" | translate }}
+                  </h3>
+                  <p class="text-sm text-text">
+                    {{ "ADD_LANGUAGES" | translate }}
+                  </p>
+                </div>
+                <button
+                  class="bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-lg transition-colors duration-200 font-medium cursor-pointer flex items-center gap-2"
+                  type="button"
+                  (click)="addLanguage()"
+                >
+                  <i class="pi pi-plus text-sm"></i>
+                  {{ "ADD_LANGUAGE" | translate }}
+                </button>
+              </div>
+              <div
+                *ngFor="let e of languages?.controls; let i = index"
+                [formGroupName]="i"
+                class="space-y-4 my-4 relative"
+              >
+                <div class="bg-card p-8 rounded-lg shadow-sm">
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                  >
+                    <div>
+                      <label for="language-{{ i }}" class="text-text/80!">{{
+                        "LANGUAGE" | translate
+                      }}</label>
+                      <p-select
+                        [id]="'language-' + i"
+                        formControlName="language"
+                        [options]="languageOptions"
+                        optionLabel="name"
+                        optionValue="value"
+                        [filter]="true"
+                        filterBy="name"
+                        [showClear]="true"
+                        [placeholder]="'SELECT_LANGUAGE' | translate"
+                        class="w-full rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary!"
+                        pSize="small"
+                        styleClass="small-select"
+                      ></p-select>
+                    </div>
+                    <div>
+                      <label for="proficiency-{{ i }}" class="text-text/80!">{{
+                        "PROFICIENCY" | translate
+                      }}</label>
+                      <p-select
+                        [id]="'proficiency-' + i"
+                        formControlName="proficiency"
+                        [options]="languageProficiencyOptions"
+                        optionLabel="name"
+                        styleClass="small-select"
+                        class="w-full rounded-md! py-0! bg-card! text-text! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        placeholder="{{ 'SELECT_PROFICIENCY' | translate }}"
+                        pSize="small"
+                      ></p-select>
+                    </div>
+                    <div>
+                      <label
+                        [for]="'requirementLevel-' + i"
+                        class="text-text/80"
+                        >{{ "REQUIRED_LEVEL" | translate }}</label
+                      >
+                      <p-select
+                        [id]="'requirementLevel-' + i"
+                        formControlName="requirementLevel"
+                        [options]="requirementLevelOptions"
+                        optionLabel="name"
+                        styleClass="small-select"
+                        placeholder="{{
+                          'SELECT_IMPORTANCE_LEVEL' | translate
+                        }}"
+                        class="w-full rounded-md! py-0! bg-card! text-text! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      ></p-select>
+                    </div>
+                  </div>
+                  <div class="mt-4">
+                    <label for="description-{{ i }}" class="text-text/80!">{{
+                      "DESCRIPTION" | translate
+                    }}</label>
+                    <textarea
+                      [id]="'description-' + i"
+                      pTextarea
+                      formControlName="description"
+                      class="w-full rounded-md! bg-card! text-text! small-input dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                      pSize="small"
+                      rows="5"
+                      [autoResize]="true"
+                    ></textarea>
+                  </div>
+                </div>
+                <button
+                  pButton
+                  icon="pi pi-times"
+                  type="button"
+                  (click)="removeLanguage(i)"
+                  class="absolute! top-1! right-2! border-none! bg-transparent! cursor-pointer! text-red-500! hover:text-red-600! hover:bg-red-100! rounded-full! transition duration-300"
+                ></button>
+              </div>
+            </div>
+
+            <!-- Additional Info Section -->
+            <div
+              formArrayName="additionalInfos"
+              class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-4"
+            >
+              <div class="w-full flex justify-between">
+                <div>
+                  <h3 class="text-xl font-semibold text-text">
+                    {{ "ADDITIONAL_INFO" | translate }}
+                  </h3>
+                  <p class="text-sm text-text">
+                    {{ "ADD_ADDITIONAL_INFO" | translate }}
+                  </p>
+                </div>
+                <button
+                  class="bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-lg transition-colors duration-200 font-medium cursor-pointer flex items-center gap-2"
+                  type="button"
+                  (click)="addAdditionalInfo()"
+                >
+                  <i class="pi pi-plus text-sm"></i>
+                  {{ "ADD_ADDITIONAL_INFO" | translate }}
+                </button>
+              </div>
+              <div
+                *ngFor="let info of additionalInfos?.controls; let i = index"
+                [formGroupName]="i"
+                class="space-y-4 my-4 relative"
+              >
+                <div class="bg-card p-8 rounded-lg shadow-sm">
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                  >
+                    <div>
+                      <label for="name-{{ i }}" class="text-text/80!">{{
+                        "NAME" | translate
+                      }}</label>
+                      <input
+                        [id]="'name-' + i"
+                        type="text"
+                        pInputText
+                        formControlName="name"
+                        class="w-full rounded-md bg-card! py-[9px] text-text/80! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        [for]="'requirementLevel-' + i"
+                        class="text-text/80"
+                        >{{ "REQUIRED_LEVEL" | translate }}</label
+                      >
+                      <p-select
+                        [id]="'requirementLevel-' + i"
+                        formControlName="requirementLevel"
+                        [options]="requirementLevelOptions"
+                        optionLabel="name"
+                        styleClass="small-select"
+                        placeholder="{{
+                          'SELECT_IMPORTANCE_LEVEL' | translate
+                        }}"
+                        class="w-full rounded-md! py-0! bg-card! text-text! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      ></p-select>
+                    </div>
+                    <div>
+                      <label [for]="'skillType-' + i" class="text-text/80">{{
+                        "SKILL_TYPE" | translate
+                      }}</label>
+                      <p-select
+                        [id]="'skillType-' + i"
+                        formControlName="skillType"
+                        [options]="skillTypes"
+                        optionLabel="name"
+                        styleClass="small-select"
+                        placeholder="{{ 'SELECT_SKILL_TYPE' | translate }}"
+                        class="w-full rounded-md! py-0! bg-card! text-text! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                        pSize="small"
+                      ></p-select>
+                    </div>
+                  </div>
+                  <div class="mt-4">
+                    <label for="description-{{ i }}" class="text-text/80!">{{
+                      "DESCRIPTION" | translate
+                    }}</label>
+                    <textarea
+                      [id]="'description-' + i"
+                      pTextarea
+                      formControlName="description"
+                      class="w-full rounded-md! bg-card! text-text! small-input dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+                      pSize="small"
+                      rows="5"
+                      [autoResize]="true"
+                    ></textarea>
+                  </div>
+                </div>
+                <button
+                  pButton
+                  icon="pi pi-times"
+                  type="button"
+                  (click)="removeAdditionalInfo(i)"
+                  class="absolute! top-1! right-2! border-none! bg-transparent! cursor-pointer! text-red-500! hover:text-red-600! hover:bg-red-100! rounded-full! transition duration-300"
+                ></button>
+              </div>
+            </div>
+          </div>
+          <div class="flex pt-6 justify-between">
+            <p-button
+              (onClick)="onStepChange(1)"
+              label="Back"
+              severity="secondary"
+              icon="pi pi-arrow-left"
+            />
+            <p-button
+              (onClick)="onStepChange(3)"
+              label="Next"
+              icon="pi pi-arrow-right"
+              iconPos="right"
+            />
+          </div>
+        </ng-template>
+      </p-step-panel>
+      <p-step-panel [value]="3">
+        <ng-template #content>
+          <div class="space-y-6">
+            <!-- Benefits Section -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+              <h3 class="text-lg font-semibold mb-4 text-text!">
+                <i class="pi pi-star text-yellow-600 mr-2"></i>
+                {{ "BENEFITS" | translate }}
+              </h3>
+              <p-editor
+                formControlName="benefits"
+                [placeholder]="'ADD_BENEFITS' | translate"
+                [style]="{ height: '250px' }"
+                class="w-full"
+              >
+                <ng-template #header>
+                  <span class="ql-formats">
+                    <button
+                      type="button"
+                      class="ql-bold"
+                      aria-label="Bold"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-italic"
+                      aria-label="Italic"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-underline"
+                      aria-label="Underline"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-list"
+                      value="ordered"
+                      aria-label="Ordered List"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-list"
+                      value="bullet"
+                      aria-label="Bullet List"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-align"
+                      value=""
+                      aria-label="Align Left"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-align"
+                      value="center"
+                      aria-label="Align Center"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-align"
+                      value="right"
+                      aria-label="Align Right"
+                    ></button>
+                  </span>
+                </ng-template>
+              </p-editor>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+              <h3 class="text-lg font-semibold mb-4 text-text!">
+                <i class="pi pi-file-edit text-blue-600 mr-2"></i>
+                {{ "NOTES" | translate }}
+              </h3>
+              <p-editor
+                formControlName="notes"
+                [placeholder]="'ADD_NOTES' | translate"
+                [style]="{ height: '250px' }"
+                class="w-full"
+              >
+                <ng-template #header>
+                  <span class="ql-formats">
+                    <button
+                      type="button"
+                      class="ql-bold"
+                      aria-label="Bold"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-italic"
+                      aria-label="Italic"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-underline"
+                      aria-label="Underline"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-list"
+                      value="ordered"
+                      aria-label="Ordered List"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-list"
+                      value="bullet"
+                      aria-label="Bullet List"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-align"
+                      value=""
+                      aria-label="Align Left"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-align"
+                      value="center"
+                      aria-label="Align Center"
+                    ></button>
+                    <button
+                      type="button"
+                      class="ql-align"
+                      value="right"
+                      aria-label="Align Right"
+                    ></button>
+                  </span>
+                </ng-template>
+              </p-editor>
+            </div>
+          </div>
+
+          <div class="flex pt-6 justify-between">
+            <p-button
+              (onClick)="onStepChange(2)"
+              label="Back"
+              severity="secondary"
+              icon="pi pi-arrow-left"
+              [disabled]="isLoading()"
+            />
+            <p-button
+              type="Submit"
+              label="Submit"
+              (onClick)="onSubmit()"
+              [disabled]="offerForm.invalid || isLoading()"
+              [loading]="isLoading()"
+            />
+          </div>
+        </ng-template>
+      </p-step-panel>
+    </p-step-panels>
+  </p-stepper>
+</form>

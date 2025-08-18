@@ -1,0 +1,324 @@
+<p-dialog
+  [modal]="true"
+  [visible]="visible()"
+  (visibleChange)="setIsCompanyAddDialogVisible($event)"
+  [closable]="true"
+  [breakpoints]="{ '1199px': '75vw', '640px': '100vw' }"
+  [style]="{ width: '65vw' }"
+  (onHide)="onHideDialog()"
+  [draggable]="false"
+  class="p-0!"
+>
+  <ng-template pTemplate="header">
+    <h2 class="text-xl font-semibold text-text!">
+      {{ "EDIT_COMPANY" | translate }}
+      {{ company()?.name }}
+    </h2>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <form [formGroup]="editCompanyForm">
+      <div class="grid gap-4 grid-cols-1 lg:grid-cols-2 w-full">
+        <!-- First Section -->
+        <div class="col-span-2 grid gap-4 lg:grid-cols-2 grid-cols-1">
+          <!-- Company Name -->
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-building text-blue-500"></i>
+              <label for="name" class="text-sm font-medium text-text/85"
+                >{{ "COMPANY_NAME" | translate }} *</label
+              >
+            </div>
+            <input
+              id="name"
+              type="text"
+              pInputText
+              formControlName="name"
+              class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+              pSize="small"
+            />
+          </div>
+
+          <!-- Contact -->
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-phone text-orange-500"></i>
+              <label for="contact" class="text-sm font-medium text-text/85"
+                >{{ "CONTACT_PERSON" | translate }} *</label
+              >
+            </div>
+            <input
+              id="contact"
+              type="text"
+              pInputText
+              formControlName="contact"
+              class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+              pSize="small"
+            />
+          </div>
+
+          <!-- Email -->
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-envelope text-red-500"></i>
+              <label for="email" class="text-sm font-medium text-text/85"
+                >{{ "EMAIL" | translate }} *</label
+              >
+            </div>
+            <input
+              id="email"
+              type="email"
+              pInputText
+              formControlName="email"
+              class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+              pSize="small"
+            />
+          </div>
+
+          <!-- Website Link -->
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-link text-cyan-500"></i>
+              <label
+                for="webSiteLink"
+                class="text-sm font-medium text-text/85"
+                >{{ "WEBSITE" | translate }}</label
+              >
+            </div>
+            <input
+              id="webSiteLink"
+              type="text"
+              pInputText
+              formControlName="webSiteLink"
+              placeholder="https://www.example.com"
+              class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+              pSize="small"
+            />
+          </div>
+
+          <!-- Sector -->
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-briefcase text-indigo-500"></i>
+              <label for="sector" class="text-sm font-medium text-text/85"
+                >{{ "SECTOR" | translate }} *</label
+              >
+            </div>
+            <input
+              id="sector"
+              type="text"
+              pInputText
+              formControlName="sector"
+              class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+              pSize="small"
+            />
+          </div>
+
+          <!-- Founded Year -->
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-calendar text-yellow-500"></i>
+              <label
+                for="foundedYear"
+                class="text-sm font-medium text-text/85"
+                >{{ "FOUNDED_YEAR" | translate }}</label
+              >
+            </div>
+            <p-datepicker
+              formControlName="foundedYear"
+              id="foundedYear"
+              iconDisplay="input"
+              showIcon
+              size="small"
+              view="year"
+              dateFormat="yy"
+              styleClass="w-full"
+              [maxDate]="maxDate"
+            />
+          </div>
+        </div>
+
+        <!-- Colors -->
+        <div class="flex gap-4 items-center">
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-palette text-pink-500"></i>
+              <label
+                for="primaryColor"
+                class="text-sm font-medium text-text/85"
+                >{{ "PRIMARY_COLOR" | translate }}</label
+              >
+            </div>
+            <p-colorpicker formControlName="primaryColor" inputId="cp-hex" />
+          </div>
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-palette text-pink-500"></i>
+              <label
+                for="secondaryColor"
+                class="text-sm font-medium text-text/85"
+                >{{ "SECONDARY_COLOR" | translate }}</label
+              >
+            </div>
+            <p-colorpicker formControlName="secondaryColor" inputId="cp-hex" />
+          </div>
+        </div>
+
+        <!-- Company Size -->
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="pi pi-users text-green-500"></i>
+            <label for="companySize" class="text-sm font-medium text-text/85">{{
+              "COMPANY_SIZE" | translate
+            }}</label>
+          </div>
+          <p-select
+            id="companySize"
+            [options]="companySizeOptions"
+            optionLabel="name"
+            optionValue="value"
+            formControlName="companySize"
+            class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+            pSize="small"
+            placeholder="{{ 'SELECT_COMPANY_SIZE' | translate }}"
+            styleClass="small-select"
+          />
+        </div>
+
+        <!-- Address Group -->
+        <div
+          formGroupName="address"
+          class="col-span-2 grid gap-4 grid-cols-1 lg:grid-cols-2"
+        >
+          <!-- Address Line 1 -->
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-map-marker text-green-500"></i>
+              <label for="addressLine1" class="text-sm font-medium text-text/85"
+                >{{ "ADDRESS_LINE_1" | translate }} *</label
+              >
+            </div>
+            <input
+              id="addressLine1"
+              type="text"
+              pInputText
+              formControlName="addressLine1"
+              class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+              pSize="small"
+            />
+          </div>
+
+          <!-- Address Line 2 -->
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-map-marker text-green-500"></i>
+              <label
+                for="addressLine2"
+                class="text-sm font-medium text-text/85"
+                >{{ "ADDRESS_LINE_2" | translate }}</label
+              >
+            </div>
+            <input
+              id="addressLine2"
+              type="text"
+              pInputText
+              formControlName="addressLine2"
+              class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+              pSize="small"
+            />
+          </div>
+
+          <!-- City -->
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-map text-green-500"></i>
+              <label for="city" class="text-sm font-medium text-text/85"
+                >{{ "CITY" | translate }} *</label
+              >
+            </div>
+            <input
+              id="city"
+              type="text"
+              pInputText
+              formControlName="city"
+              class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+              pSize="small"
+            />
+          </div>
+
+          <!-- Zip Code -->
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-map-marker text-green-500"></i>
+              <label for="zipCode" class="text-sm font-medium text-text/85"
+                >{{ "ZIP_CODE" | translate }} *</label
+              >
+            </div>
+            <input
+              id="zipCode"
+              type="text"
+              pInputText
+              formControlName="zipCode"
+              class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+              pSize="small"
+            />
+          </div>
+
+          <!-- Country -->
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="pi pi-globe text-purple-500"></i>
+              <label for="country" class="text-sm font-medium text-text/85"
+                >{{ "COUNTRY" | translate }} *</label
+              >
+            </div>
+            <input
+              id="country"
+              type="text"
+              pInputText
+              formControlName="country"
+              class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+              pSize="small"
+            />
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="col-span-2 flex flex-col">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="pi pi-info-circle text-teal-500"></i>
+            <label for="description" class="text-sm font-medium text-text/85">{{
+              "DESCRIPTION" | translate
+            }}</label>
+          </div>
+          <textarea
+            pTextarea
+            id="description"
+            formControlName="description"
+            class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+            pSize="small"
+            rows="5"
+            [autoResize]="true"
+          ></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 mt-6">
+        <button
+          type="button"
+          pButton
+          label="{{ 'CANCEL' | translate }}"
+          class="p-button-text"
+          (click)="onCancel()"
+          [disabled]="isLoading()"
+        ></button>
+        <button
+          type="submit"
+          (click)="onSave()"
+          pButton
+          label="{{ 'SAVE' | translate }}"
+          [disabled]="editCompanyForm.invalid || isLoading()"
+          [loading]="isLoading()"
+        ></button>
+      </div>
+    </form>
+  </ng-template>
+</p-dialog>

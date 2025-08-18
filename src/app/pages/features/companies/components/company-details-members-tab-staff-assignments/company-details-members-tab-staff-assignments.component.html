@@ -1,0 +1,125 @@
+<!-- Right side - Staff Assignments -->
+<div class="w-full h-full bg-background flex-grow flex flex-col">
+  <!-- <div
+    class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+  >
+    <form [formGroup]="offerFilterForm">
+      <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+        <div class="flex-1">
+          <p-floatlabel variant="on" class="w-full">
+            <label
+              for="search"
+              class="bg-background! text-card-foreground! line-clamp-1! mr-4"
+            >
+              {{ "SEARCH" | translate }}
+            </label>
+            <input
+              id="search"
+              type="text"
+              pInputText
+              formControlName="search"
+              class="w-full rounded-md! bg-white! dark:bg-gray-800! text-card-foreground! dark:hover:border-primary!"
+            />
+          </p-floatlabel>
+        </div>
+
+        <button
+          type="button"
+          (click)="filterPopover.toggle($event)"
+          class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
+        >
+          <i class="pi pi-filter mr-2"></i>
+          <span>{{ "FILTER" | translate }}</span>
+        </button>
+
+        <p-popover #filterPopover>
+          <div
+            class="p-4 space-y-4 bg-white dark:bg-gray-800 shadow-lg w-80 rounded-lg border border-gray-200 dark:border-gray-700"
+          >
+            <h3
+              class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2"
+            >
+              {{ "FILTER_BY_STATUS" | translate }}
+            </h3>
+            <p-select
+              [id]="'offerStatus'"
+              [options]="offerStatusOptions"
+              [formControlName]="'status'"
+              optionLabel="label"
+              optionValue="value"
+              [placeholder]="'SELECT_STATUS' | translate"
+              class="w-full rounded-md! py-0! bg-card! text-card-foreground!"
+              styleClass="w-full"
+            ></p-select>
+          </div>
+        </p-popover>
+      </div>
+    </form>
+  </div> -->
+
+  <!-- Content -->
+  <div class="flex-1 overflow-y-auto p-3 sm:p-4">
+    <!-- No staff selected state -->
+    <div
+      *ngIf="!selectedStaff() && !isOffersLoading()"
+      class="h-full flex flex-col items-center justify-center text-center p-8"
+    >
+      <div
+        class="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-4"
+      >
+        <i class="pi pi-user text-2xl text-gray-400 dark:text-gray-500"></i>
+      </div>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+        {{ "NO_STAFF_SELECTED" | translate }}
+      </h3>
+      <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm">
+        {{ "NO_STAFF_SELECTED_DESCRIPTION" | translate }}
+      </p>
+    </div>
+    <div
+      *ngIf="isOffersLoading()"
+      class="h-full flex items-center justify-center"
+    >
+      <i class="pi pi-spin pi-spinner text-primary text-6xl!"></i>
+    </div>
+
+    <!-- Empty state -->
+    <div
+      *ngIf="
+        selectedStaff() &&
+        !isOffersLoading() &&
+        staffAssignedOffers().data.length === 0
+      "
+      class="h-full flex flex-col items-center justify-center text-center p-8"
+    >
+      <div
+        class="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-4"
+      >
+        <i
+          class="pi pi-briefcase text-2xl text-gray-400 dark:text-gray-500"
+        ></i>
+      </div>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+        {{ "NO_ASSIGNMENTS" | translate }}
+      </h3>
+      <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm">
+        {{ "NO_ASSIGNMENTS_DESCRIPTION" | translate }}
+      </p>
+    </div>
+
+    <!-- Offers Tab -->
+    <div
+      *ngIf="
+        selectedStaff() &&
+        !isOffersLoading() &&
+        staffAssignedOffers().data.length > 0
+      "
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
+    >
+      <app-company-details-members-tab-staff-assignment-card
+        *ngFor="let offer of staffAssignedOffers().data"
+        [offer]="offer"
+      ></app-company-details-members-tab-staff-assignment-card>
+    </div>
+  </div>
+</div>

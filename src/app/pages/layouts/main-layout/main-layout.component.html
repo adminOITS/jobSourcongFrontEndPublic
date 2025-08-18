@@ -1,0 +1,30 @@
+<div class="w-screen h-screen flex flex-col bg-background">
+  <!-- Top Navbar -->
+  <app-toolbar class="flex-none" />
+
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar (fixed) -->
+    <app-sidebar class="flex-none" [sidebarItems]="sidebarItems" />
+
+    <!-- Content Area (scrollable) -->
+    <main
+      class="flex-1 overflow-auto p-4 w-full"
+      [ngClass]="marginLeft()"
+      [ngStyle]="{ maxWidth: 'calc(100% - ' + marginLeft() + ')' }"
+    >
+      <div
+        *ngIf="globalLoading()"
+        class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      >
+        <div class="p-4 rounded-lg">
+          <div class="flex items-center gap-2">
+            <i class="pi pi-spin pi-spinner text-primary text-6xl!"></i>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-[2200px] mx-auto">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+</div>

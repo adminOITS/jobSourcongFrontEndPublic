@@ -1,0 +1,55 @@
+<p-dialog
+  [visible]="isDialogVisible()"
+  (visibleChange)="setDialogVisible($event)"
+  [style]="{ width: '50rem' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="dark:bg-slate-800 overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-comment text-xl text-primary dark:text-blue-400"></i>
+      <span class="text-base font-medium text-slate-700 dark:text-slate-200">
+        {{ action()?.actionLabel! | translate }}
+      </span>
+    </div>
+  </ng-template>
+  <form [formGroup]="applicationsStatusForm" (ngSubmit)="onSubmit()">
+    <div class="flex flex-col gap-2">
+      <label for="comment" class="text-sm text-slate-500 dark:text-slate-200">
+        {{ "ADD_APPLICATION_ACTION_COMMENT" | translate }}
+      </label>
+      <textarea
+        pTextarea
+        id="comment"
+        formControlName="comment"
+        [rows]="4"
+        [autoResize]="true"
+        class="w-full rounded-md! bg-card! text-card-foreground! h-full! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+      ></textarea>
+    </div>
+    <div class="flex justify-end gap-2 mt-6">
+      <button
+        pButton
+        type="button"
+        label="{{ 'CANCEL' | translate }}"
+        icon="pi pi-times"
+        class="p-button-text"
+        (click)="onHide()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        [label]="'SAVE' | translate"
+        icon="pi pi-check"
+        [disabled]="
+          isLoading() ||
+          (action()?.commentRequired && !applicationsStatusForm.value.comment)
+        "
+        [loading]="isLoading()"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

@@ -1,0 +1,83 @@
+<form
+  [formGroup]="filterForm"
+  (ngSubmit)="applyFilters()"
+  autocomplete="off"
+  class="w-full"
+>
+  <div
+    class="w-full flex flex-col items-center justify-between sm:flex-row gap-2"
+  >
+    <!-- Search Input (Name) -->
+    <p-floatlabel variant="on" class="w-full sm:w-2xl">
+      <label
+        for="search"
+        class="bg-background! text-card-foreground! line-clamp-1! mr-4"
+      >
+        {{
+          "SEARCH_COMPANIES_BY_NAME_BY_CITY_BY_COUNTRY_BY_SECTOR_BY_EMAIL"
+            | translate
+        }}
+      </label>
+      <input
+        id="search"
+        type="text"
+        pInputText
+        formControlName="search"
+        class="w-full rounded-md! py-[12px]! bg-background! text-card-foreground! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+        pSize="small"
+      />
+    </p-floatlabel>
+
+    <!-- <p-popover #filterPopover> -->
+    <!-- <div class="p-4 space-y-6 bg-card shadow-lg w-96 rounded-md"> -->
+    <!-- <p-select
+          id="country"
+          [options]="countries"
+          formControlName="country"
+          optionLabel="name"
+          placeholder="{{ 'SELECT_COUNTRY' | translate }}"
+          class="w-full rounded-md! py-0! bg-card! text-card-foreground!"
+          size="small"
+        ></p-select> -->
+
+    <!-- Sector Filter -->
+    <!-- <p-select
+          id="sector"
+          [options]="sectors"
+          formControlName="sector"
+          optionLabel="name"
+          placeholder="{{ 'SELECT_SECTOR' | translate }}"
+          class="w-full rounded-md! py-0! bg-card! text-card-foreground!"
+          size="small"
+        ></p-select> -->
+
+    <!-- Buttons -->
+    <!-- <div class="col-span-2 gap-2 flex justify-between">
+          <button
+            type="submit"
+            pButton
+            label="{{ 'APPLY' | translate }}"
+            class="w-full cursor-pointer rounded-md! bg-card! text-card-foreground!"
+          ></button>
+          <button
+            type="button"
+            pButton
+            label="{{ 'RESET' | translate }}"
+            class="w-full p-2! cursor-pointer rounded-md! bg-card! text-card-foreground!"
+            (click)="resetFilters()"
+          ></button>
+        </div>
+      </div>
+    </p-popover> -->
+
+    <!-- Open Popover Button -->
+    <!-- <button
+      type="button"
+      pButton
+      icon="pi pi-filter"
+      label="{{ 'FILTERS' | translate }}"
+      class="bg-secondary! cursor-pointer border-none! text-white rounded-md px-4 py-[7px]! w-full sm:w-fit dark:hover:text-slate-200! dark:hover:bg-secondary/80!"
+      (click)="filterPopover.toggle($event)"
+    ></button> -->
+  </div>
+</form>

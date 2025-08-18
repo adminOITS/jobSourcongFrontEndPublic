@@ -1,0 +1,189 @@
+<div class="max-w-[100vw] mx-auto shadow-lg">
+  <p-table
+    #table
+    [value]="interviews().data"
+    [scrollable]="true"
+    scrollHeight="64vh"
+    dataKey="id"
+    [reorderableColumns]="true"
+    [resizableColumns]="true"
+    [paginator]="true"
+    [rows]="request().size"
+    [totalRecords]="interviews().totalItems"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{{ 'SHOWING_ENTRIES' | translate }}"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [lazy]="true"
+    (onLazyLoad)="loadInterviews($event)"
+    [loading]="isLoading()"
+    class="fullHeightTable"
+    [style]="{ height: '70vh' }"
+  >
+    <ng-template pTemplate="header">
+      <tr class="bg-secondary!">
+        <ng-container *ngFor="let col of columns; index as i">
+          <th
+            pResizableColumn
+            [ngClass]="{ 'border-r': i !== columns.length - 1 }"
+            *ngIf="col.visible"
+            class="py-2! border-gray-400! bg-transparent!"
+          >
+            <div class="w-full gap-1 flex items-center text-white">
+              <p>{{ col.header | translate }}</p>
+            </div>
+          </th>
+        </ng-container>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-interview>
+      <tr
+        class="bg-transparent! text-text! hover:bg-gray-50! dark:hover:bg-gray-800! transition-all! border-b! border-gray-400! h-[20px]!"
+      >
+        <td class="w-1/4 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ interview?.application?.jobOffer?.title }}
+            </p>
+          </div>
+        </td>
+        <td class="w-1/6 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ interview?.application?.profile?.candidate?.firstName }}
+            </p>
+          </div>
+        </td>
+        <td class="w-1/6 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ interview?.application?.profile?.candidate?.lastName }}
+            </p>
+          </div>
+        </td>
+
+        <td class="w-1/6 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ interview?.interviewerName }}
+            </p>
+          </div>
+        </td>
+        <td class="w-24 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <span
+              class="px-2 py-1 text-[10px] font-semibold rounded-md"
+              [ngClass]="{
+                'bg-blue-100 text-blue-800': interview.type === 'TECHNICAL',
+                'bg-green-100 text-green-800': interview.type === 'HR'
+              }"
+            >
+              {{ interview.type | titlecase }}
+            </span>
+          </div>
+        </td>
+        <td class="w-24 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <div [class]="getInterviewStatusClasses(interview.status)">
+              {{ interview.status | translate }}
+            </div>
+          </div>
+        </td>
+        <td class="w-1/6 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ interview.scheduledDateTime | date : "medium" }}
+            </p>
+          </div>
+        </td>
+        <td class="w-1/6 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ interview.interviewDuration }}
+            </p>
+          </div>
+        </td>
+        <td class="w-1/6 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <p class="text-sm truncate overflow-hidden whitespace-nowrap">
+              {{ interview.createdAt | date : "medium" }}
+            </p>
+          </div>
+        </td>
+        <td class="w-1/6 p-0 px-1">
+          <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
+            <a
+              *ngIf="interview.meetingLink"
+              [href]="interview.meetingLink"
+              target="_blank"
+              class="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
+            >
+              <i class="pi pi-video text-xs"></i>
+              {{ "JOIN_MEETING" | translate }}
+            </a>
+            <p
+              *ngIf="!interview.meetingLink"
+              class="text-xs text-gray-500 italic"
+            >
+              Not available
+            </p>
+          </div>
+        </td>
+        <td class="w-20 p-1">
+          <button
+            pButton
+            pRipple
+            icon="pi pi-ellipsis-v"
+            class="text-text! bg-transparent! p-1! border-0! hover:bg-gray-200! dark:hover:bg-gray-900/90! transition-all!"
+            (click)="onRowSelect($event, interview)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr class="text-center h-[59vh] bg-transparent! text-text!">
+        <td colspan="11" style="text-align: center">
+          {{ "NO_INTERVIEWS_AVAILABLE" | translate }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<app-add-edit-interview-schedule-dialog />
+
+<app-interviews-actions-menu
+  #menu
+  [interview]="selectedInterview"
+  (onRescheduleInterview)="rescheduleInterview()"
+  (onCancelInterview)="cancelInterview()"
+  (onMarkAsNoShow)="markAsNoShow()"
+  (onSendReminder)="sendReminder()"
+  (onGenerateReport)="generateReport()"
+  (onDeleteInterview)="deleteInterview()"
+/>
+<p-confirmDialog
+  [style]="{ minWidth: '450px' }"
+  [draggable]="false"
+  [rejectVisible]="true"
+  acceptLabel="{{ acceptLabel | translate }}"
+  rejectLabel="{{ 'CANCEL' | translate }}"
+  [acceptIcon]="acceptIcon"
+  rejectIcon="pi pi-times"
+  [acceptButtonStyleClass]="acceptButtonStyleClass"
+  rejectButtonStyleClass="p-button-text"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span class="font-medium text-text!">{{
+        confirmationHeader | translate
+      }}</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-info-circle text-blue-500"></i>
+      <span class="text-text!">{{ confirmationMsg | translate }}</span>
+    </div>
+  </ng-template>
+</p-confirmDialog>

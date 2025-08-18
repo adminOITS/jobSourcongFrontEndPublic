@@ -1,0 +1,351 @@
+<p-dialog
+  [visible]="offerJobDetailsService.isDialogVisibleComputed()"
+  (visibleChange)="offerJobDetailsService.setDialogVisible($event)"
+  [style]="{ width: '50rem' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  class="dark:bg-slate-800 overflow-visible"
+>
+  <ng-template pTemplate="header">
+    <span class="font-medium text-primary">
+      <i class="pi pi-file-edit mr-2"></i>
+      {{
+        (isEditMode ? "EDIT_OFFER_DETAILS" : "ADD_OFFER_DETAILS") | translate
+      }}
+    </span>
+  </ng-template>
+
+  <form
+    [formGroup]="offerJobDetailsForm"
+    (ngSubmit)="onSave()"
+    class="space-y-4"
+  >
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Title -->
+      <div class="flex flex-col">
+        <label for="title" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-id-card mr-2"></i>{{ "TITLE" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="title"
+          formControlName="title"
+          class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            offerJobDetailsForm.get('title')?.invalid &&
+            offerJobDetailsForm.get('title')?.touched
+          "
+        />
+        <small
+          *ngIf="
+            offerJobDetailsForm.get('title')?.invalid &&
+            offerJobDetailsForm.get('title')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Category -->
+      <div class="flex flex-col">
+        <label for="category" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-tags mr-2"></i>{{ "CATEGORY" | translate }} *
+        </label>
+        <p-select
+          inputId="category"
+          formControlName="category"
+          [options]="jobCategories"
+          [showClear]="true"
+          [filter]="true"
+          [filterPlaceholder]="'SEARCH_CATEGORY' | translate"
+          optionLabel="name"
+          optionValue="value"
+          class="w-full rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary!"
+        ></p-select>
+        <small
+          *ngIf="
+            offerJobDetailsForm.get('category')?.invalid &&
+            offerJobDetailsForm.get('category')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Employment Type -->
+      <div class="flex flex-col">
+        <label
+          for="employmentType"
+          class="text-sm font-medium text-text/85 mb-1"
+        >
+          <i class="pi pi-briefcase mr-2"></i
+          >{{ "EMPLOYMENT_TYPE" | translate }} *
+        </label>
+        <p-select
+          id="employmentType"
+          formControlName="employmentType"
+          [options]="employmentTypesOptions"
+          optionLabel="name"
+          optionValue="value"
+          placeholder="{{ 'SELECT_EMPLOYMENT_TYPE' | translate }}"
+          class="w-full rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            offerJobDetailsForm.get('employmentType')?.invalid &&
+            offerJobDetailsForm.get('employmentType')?.touched
+          "
+        ></p-select>
+        <small
+          *ngIf="
+            offerJobDetailsForm.get('employmentType')?.invalid &&
+            offerJobDetailsForm.get('employmentType')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Contract Type -->
+      <div class="flex flex-col">
+        <label for="contractType" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-file-contract mr-2"></i
+          >{{ "CONTRACT_TYPE" | translate }} *
+        </label>
+        <p-select
+          id="contractType"
+          formControlName="contractType"
+          [options]="contractTypesOptions"
+          optionLabel="name"
+          optionValue="value"
+          placeholder="{{ 'SELECT_CONTRACT_TYPE' | translate }}"
+          class="w-full rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            offerJobDetailsForm.get('contractType')?.invalid &&
+            offerJobDetailsForm.get('contractType')?.touched
+          "
+        ></p-select>
+        <small
+          *ngIf="
+            offerJobDetailsForm.get('contractType')?.invalid &&
+            offerJobDetailsForm.get('contractType')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Work Mode -->
+      <div class="flex flex-col">
+        <label for="workMode" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-desktop mr-2"></i>{{ "WORK_MODE" | translate }} *
+        </label>
+        <p-select
+          id="workMode"
+          formControlName="workMode"
+          [options]="workModesOptions"
+          optionLabel="name"
+          optionValue="value"
+          placeholder="{{ 'SELECT_WORK_MODE' | translate }}"
+          class="w-full rounded-md! py-0! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            offerJobDetailsForm.get('workMode')?.invalid &&
+            offerJobDetailsForm.get('workMode')?.touched
+          "
+        ></p-select>
+        <small
+          *ngIf="
+            offerJobDetailsForm.get('workMode')?.invalid &&
+            offerJobDetailsForm.get('workMode')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- City -->
+      <div class="flex flex-col">
+        <label for="city" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-map-marker mr-2"></i>{{ "CITY" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="city"
+          formControlName="city"
+          class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            offerJobDetailsForm.get('city')?.invalid &&
+            offerJobDetailsForm.get('city')?.touched
+          "
+        />
+        <small
+          *ngIf="
+            offerJobDetailsForm.get('city')?.invalid &&
+            offerJobDetailsForm.get('city')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Country -->
+      <div class="flex flex-col">
+        <label for="country" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-globe mr-2"></i>{{ "COUNTRY" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="country"
+          formControlName="country"
+          class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            offerJobDetailsForm.get('country')?.invalid &&
+            offerJobDetailsForm.get('country')?.touched
+          "
+        />
+        <small
+          *ngIf="
+            offerJobDetailsForm.get('country')?.invalid &&
+            offerJobDetailsForm.get('country')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Zip Code -->
+      <div class="flex flex-col">
+        <label for="zipCode" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-map mr-2"></i>{{ "ZIP_CODE" | translate }} *
+        </label>
+        <input
+          pInputText
+          id="zipCode"
+          formControlName="zipCode"
+          class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            offerJobDetailsForm.get('zipCode')?.invalid &&
+            offerJobDetailsForm.get('zipCode')?.touched
+          "
+        />
+        <small
+          *ngIf="
+            offerJobDetailsForm.get('zipCode')?.invalid &&
+            offerJobDetailsForm.get('zipCode')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Remuneration Section -->
+
+      <!-- Currency -->
+      <div class="flex flex-col">
+        <label for="currency" class="text-sm font-medium text-text/85 mb-1">
+          <i class="pi pi-dollar mr-2"></i>{{ "CURRENCY" | translate }} *
+        </label>
+        <p-select
+          id="currency"
+          [options]="currencies"
+          formControlName="currency"
+          optionLabel="name"
+          placeholder=" {{ 'SELECT_CURRENCY' | translate }}"
+          class="w-full rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          [class.border-red-500]="
+            offerJobDetailsForm.get('currency')?.invalid &&
+            offerJobDetailsForm.get('currency')?.touched
+          "
+        >
+          <ng-template let-currency pTemplate="item">
+            <div class="flex items-center gap-2">
+              <span>{{ currency.name }}</span>
+              <span class="text-text/60">({{ currency.symbol }})</span>
+            </div>
+          </ng-template>
+          <ng-template let-currency pTemplate="selectedItem">
+            <div class="flex items-center gap-2">
+              <span>{{ currency.name }}</span>
+              <span class="text-text/60">({{ currency.symbol }})</span>
+            </div>
+          </ng-template>
+        </p-select>
+        <small
+          *ngIf="
+            offerJobDetailsForm.get('currency')?.invalid &&
+            offerJobDetailsForm.get('currency')?.touched
+          "
+          class="text-red-500 mt-1"
+        >
+          {{ "REQUIRED" | translate }}
+        </small>
+      </div>
+
+      <!-- Min Remuneration -->
+      <div class="flex flex-col">
+        <label
+          for="minRemuneration"
+          class="text-sm font-medium text-text/85 mb-1"
+        >
+          <i class="pi pi-money-bill mr-2"></i
+          >{{ "MIN_REMUNERATION" | translate }}
+        </label>
+        <p-inputNumber
+          id="minRemuneration"
+          formControlName="minRemuneration"
+          mode="currency"
+          [currency]="offerJobDetailsForm.get('currency')?.value?.code"
+          [locale]="offerJobDetailsForm.get('currency')?.value?.locale"
+          [min]="0"
+          class="w-full hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+        ></p-inputNumber>
+      </div>
+
+      <!-- Max Remuneration -->
+      <div class="flex flex-col">
+        <label
+          for="maxRemuneration"
+          class="text-sm font-medium text-text/85 mb-1"
+        >
+          <i class="pi pi-money-bill mr-2"></i
+          >{{ "MAX_REMUNERATION" | translate }}
+        </label>
+        <p-inputNumber
+          id="maxRemuneration"
+          formControlName="maxRemuneration"
+          mode="currency"
+          [currency]="offerJobDetailsForm.get('currency')?.value?.code"
+          [locale]="offerJobDetailsForm.get('currency')?.value?.locale"
+          [min]="0"
+          class="w-full hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+        ></p-inputNumber>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-6">
+      <button
+        pButton
+        type="button"
+        label="{{ 'CANCEL' | translate }}"
+        class="p-button-text"
+        (click)="onHide()"
+        [disabled]="isLoading()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        [label]="(isEditMode ? 'UPDATE' : 'SAVE') | translate"
+        [disabled]="!offerJobDetailsForm.valid || isLoading()"
+        [loading]="isLoading()"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

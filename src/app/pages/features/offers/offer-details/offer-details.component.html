@@ -1,0 +1,15 @@
+<app-loader [isLoading]="isOfferLoading"></app-loader>
+<div
+  class="flex sm:justify-start justify-between mt-4 px-4 gap-6 items-center"
+  *ngIf="!isOfferLoading()"
+>
+  <h1
+    class="text-2xl sm:text-3xl max-w-[80%] font-bold text-gray-800 dark:text-white"
+  >
+    {{ "OFFER_DETAILS" | translate }} : {{ offer()?.title }}
+  </h1>
+</div>
+<div class="mt-2" *ngIf="!isOfferLoading()">
+  <app-offer-details-tabs *appHasRole="['HR', 'HR_ADMIN', 'RECRUITER']" />
+  <app-offer-details-overview-tab *appHasRole="['VALIDATOR']" />
+</div>

@@ -1,0 +1,106 @@
+<!-- Left side - Staff List -->
+<div class="h-full flex flex-col bg-white dark:bg-gray-800">
+  <!-- Header -->
+  <div
+    class="py-[22px] px-4 border-b border-r border-gray-200 dark:border-gray-700"
+  >
+    <!-- <form [formGroup]="filterForm">
+      <div class="flex gap-2 items-center">
+        <p-floatlabel variant="on" class="w-full sm:w-96">
+          <label
+            for="search"
+            class="bg-background! text-card-foreground! line-clamp-1! mr-4"
+          >
+            {{ "SEARCH" | translate }}
+          </label>
+          <input
+            id="search"
+            type="text"
+            pInputText
+            formControlName="search"
+            class="w-full rounded-md! py-[7px]! bg-white! dark:bg-gray-800! text-card-foreground! dark:hover:border-primary!"
+            pSize="small"
+          />
+        </p-floatlabel>
+
+        <button
+          (click)="filterPopover.toggle($event)"
+          class="px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        >
+          <i class="pi pi-filter"></i>
+        </button>
+
+        <p-popover #filterPopover>
+          <div
+            class="p-4 space-y-4 bg-white dark:bg-gray-800 shadow-lg w-64 rounded-lg border border-gray-200 dark:border-gray-700"
+          >
+            <h3
+              class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2"
+            >
+              {{ "FILTER_BY_ROLE" | translate }}
+            </h3>
+            <p-select
+              id="role"
+              [options]="roleOptions"
+              formControlName="role"
+              optionLabel="label"
+              optionValue="value"
+              [placeholder]="'SELECT_ROLE' | translate"
+              class="w-full rounded-md! py-0! bg-card! text-card-foreground!"
+              styleClass="w-full"
+            ></p-select>
+          </div>
+        </p-popover>
+      </div>
+    </form> -->
+
+    <h2
+      class="text-lg font-semibold text-gray-900 dark:text-gray-100 transition-all duration-300"
+      [ngClass]="{
+        hidden: isStaffListCollapsed()
+      }"
+    >
+      {{ "STAFF_LIST" | translate }}
+    </h2>
+  </div>
+
+  <!-- Scrollable list -->
+  <div
+    class="flex-1 overflow-y-auto p-3 sm:p-4 border-r border-gray-200 dark:border-gray-700"
+    infiniteScroll
+    (scrolled)="onScroll()"
+  >
+    <ng-container *ngIf="staff().data.length > 0">
+      <app-company-details-members-tab-staff-card
+        *ngFor="let staffMember of staff().data"
+        [staff]="signal(staffMember)"
+        class="my-2 transition-all duration-300"
+        [ngClass]="{
+          hidden: isStaffListCollapsed()
+        }"
+      ></app-company-details-members-tab-staff-card>
+    </ng-container>
+
+    <!-- Empty state -->
+    <div
+      *ngIf="staff().data.length === 0"
+      class="h-full flex flex-col items-center justify-center text-center p-4"
+    >
+      <div
+        class="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-3"
+      >
+        <i class="pi pi-users text-xl text-gray-400 dark:text-gray-500"></i>
+      </div>
+      <h3
+        class="text-base font-medium text-gray-900 dark:text-gray-100 mb-1 truncate w-full"
+      >
+        {{ "NO_STAFF_FOUND" | translate }}
+      </h3>
+      <p
+        class="text-xs text-gray-500 dark:text-gray-400 max-w-[200px] truncate"
+      >
+        {{ "NO_STAFF_FOUND_DESCRIPTION" | translate }}
+      </p>
+    </div>
+  </div>
+</div>

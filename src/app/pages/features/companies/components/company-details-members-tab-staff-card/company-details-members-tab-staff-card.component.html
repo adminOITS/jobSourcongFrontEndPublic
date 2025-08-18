@@ -1,0 +1,91 @@
+<div
+  class="my-2 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group"
+  [ngClass]="{
+    'bg-gray-200 dark:bg-gray-700': isSelected()
+  }"
+  (click)="onStaffSelected()"
+>
+  <div class="p-3">
+    <div class="flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 min-w-0">
+        <div class="flex-shrink-0">
+          <!-- Avatar with initials -->
+          <div
+            [ngClass]="{
+              'bg-blue-100 dark:bg-blue-900': staff()?.role === 'RECRUITER',
+              'bg-green-100 dark:bg-green-900': staff()?.role === 'VALIDATOR'
+            }"
+            class="h-8 w-8 rounded-full flex items-center justify-center"
+          >
+            <span
+              [ngClass]="{
+                'text-blue-700 dark:text-blue-200': staff()?.role === 'RECRUITER',
+                'text-green-700 dark:text-green-200': staff()?.role === 'VALIDATOR'
+              }"
+              class="text-xs font-medium"
+            >
+              {{ staff()?.firstName?.charAt(0) }}{{ staff()?.lastName?.charAt(0) }}
+            </span>
+          </div>
+        </div>
+        <div class="min-w-0 flex-1">
+          <p
+            class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate"
+          >
+              {{ staff()?.firstName }} {{ staff()?.lastName }}
+          </p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
+              {{ staff()?.role!| translate }}
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+        (click)="$event.stopPropagation()"
+      >
+        <app-company-staff-card-actions-menu
+          #cardActionsMenu
+          [staff]="staff"
+          (onDeleteStaff)="deleteStaff()"
+          (onEditStaff)="editStaff()"
+          (onViewDetails)="viewDetails()"
+        ></app-company-staff-card-actions-menu>
+        <button
+          type="button"
+          pButton
+          icon="pi pi-ellipsis-v"
+          class="p-button-rounded p-button-text p-button-plain text-text! hover:text-black!"
+          (click)="cardActionsMenu.toggle($event)"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+<p-confirmDialog
+  [style]="{ minWidth: '450px' }"
+  [draggable]="false"
+  [rejectVisible]="true"
+  acceptLabel="{{ 'YES' | translate }}"
+  rejectLabel="{{ 'NO' | translate }}"
+  acceptIcon="pi pi-check"
+  rejectIcon="pi pi-times"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span class="font-medium text-text!">{{
+        "DELETE_MEMBER" | translate
+      }}</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-info-circle text-blue-500"></i>
+      <span class="text-text!">{{
+        "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_MEMBER" | translate
+      }}</span>
+    </div>
+  </ng-template>
+</p-confirmDialog>

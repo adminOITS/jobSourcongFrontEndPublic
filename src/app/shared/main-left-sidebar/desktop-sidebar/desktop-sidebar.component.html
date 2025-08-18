@@ -1,0 +1,11 @@
+<div
+  class="fixed top-[3.5rem] left-0 z-10 p-3 px-4 h-[calc(100vh-3.5rem)] overflow-x-hidden border-r border-border bg-white dark:bg-slate-900"
+  [style.width]="sidebarWidth()"
+>
+  <ng-container *ngFor="let item of sidebarItems">
+    <app-sidebar-item
+      [item]="item"
+      [isExpanded]="isExpanded()"
+    ></app-sidebar-item>
+  </ng-container>
+</div>

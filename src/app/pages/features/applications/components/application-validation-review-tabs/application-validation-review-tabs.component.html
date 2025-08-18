@@ -1,0 +1,32 @@
+<p-tabs
+  [value]="activeTab()"
+  scrollable="true"
+  lazy="true"
+  (valueChange)="onTabChange($event)"
+>
+  <p-tablist>
+    <p-tab value="profile">{{ "PROFILE" | translate }}</p-tab>
+    <p-tab value="interviews">{{ "INTERVIEWS" | translate }}</p-tab>
+    <p-tab value="offer">{{ "OFFER" | translate }}</p-tab>
+  </p-tablist>
+  <p-tabpanels class="min-h-[550px]! p-0!">
+    <p-tabpanel value="profile">
+      <ng-container *ngIf="activeTab() === 'profile'">
+        <app-candidates-details-over-view-tab />
+      </ng-container>
+    </p-tabpanel>
+
+    <p-tabpanel value="interviews">
+      <ng-container *ngIf="activeTab() === 'interviews'">
+        <div class="mt-4">
+          <!-- <app-global-interviews-table /> -->
+        </div>
+      </ng-container>
+    </p-tabpanel>
+    <p-tabpanel value="offer">
+      <ng-container *ngIf="activeTab() === 'offer'">
+        <app-offer-details-overview-tab />
+      </ng-container>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
