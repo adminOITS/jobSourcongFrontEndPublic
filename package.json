@@ -28,6 +28,7 @@
     "date-fns": "^4.1.0",
     "job-sourcing-frontend-v1": "file:",
     "jwt-decode": "^4.0.0",
+    "ngx-extended-pdf-viewer": "^25.0.0-alpha.2",
     "ngx-infinite-scroll": "^19.0.0",
     "or": "^0.2.0",
     "primeicons": "^7.0.0",

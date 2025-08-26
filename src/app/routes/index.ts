@@ -81,4 +81,8 @@ export const ROUTES = {
     EDIT: 'interviews/edit/:interviewId',
     DETAILS: 'interviews/:interviewId',
   },
+  ATS: {
+    BASE: 'ats',
+    DETAILS:'ats/offers/:offerId/candidates/:candidateId/profiles/:profileId'
+  },
 };

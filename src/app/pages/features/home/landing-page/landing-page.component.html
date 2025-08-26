@@ -58,6 +58,7 @@
         data-aos-delay="1000"
       >
         <button
+          (click)="scrollToContact()"
           class="cursor-pointer bg-gradient-to-r from-primary to-secondary text-white pl-1 pr-4 md:pr-6 md:pl-2 rounded-full font-semibold shadow hover:opacity-90 transition text-sm md:text-base flex items-center gap-2 hover:scale-105 transform duration-300"
         >
           <span
@@ -83,7 +84,8 @@
           </span>
         </button>
         <button
-          class="cursor-pointer bg-secondary text-white hover:bg-secondary/80 hover:text-white px-4 md:px-6 py-2.5 md:py-3.5 rounded-full font-semibold transition duration-300 text-sm md:text-base hover:scale-105 transform duration-300"
+          (click)="scrollToContact()"
+          class="cursor-pointer bg-secondary text-white hover:bg-secondary/80 hover:text-white px-4 md:px-6 py-2.5 md:py-3.5 rounded-full font-semibold transition duration-300 text-sm md:text-base hover:scale-105 transform"
         >
           {{ "BOOK_A_DEMO" | translate }}
         </button>
@@ -279,18 +281,14 @@
           data-aos-delay="100"
         >
           <h3
-            class="text-lg md:text-xl font-semibold text-gray-700 dark:text-gray-300 tracking-wide mb-2"
+            class="text-lg md:text-xl font-semibold text-gray-700 dark:text-gray-300 tracking-wide my-2"
           >
             OpenMindJob
           </h3>
           <div
-            class="flex items-baseline justify-center text-3xl md:text-4xl lg:text-5xl font-extrabold text-black dark:text-white mb-4 md:mb-6"
+            class="flex items-center justify-center text-lg md:text-xl lg:text-2xl font-semibold text-black dark:text-white mb-4 mt-2 md:mb-6"
           >
-            €20
-            <span
-              class="text-sm md:text-base font-normal text-gray-500 dark:text-gray-400 ml-1"
-              >/{{ "MONTH" | translate }}</span
-            >
+            {{ "ASK_FOR_QUOTE" | translate }}
           </div>
           <ul
             class="text-gray-600 dark:text-gray-300 mb-6 w-full max-w-xs mx-auto flex flex-col gap-3 md:gap-4"
@@ -329,6 +327,7 @@
             </li>
           </ul>
           <button
+            (click)="scrollToContact()"
             class="cursor-pointer border-2 border-secondary text-secondary hover:bg-secondary hover:text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold transition duration-300 text-sm md:text-base"
           >
             {{ "CONTACT_US" | translate }}
@@ -351,18 +350,14 @@
             >
           </div>
           <h3
-            class="text-lg md:text-xl font-semibold text-gray-700 dark:text-gray-300 tracking-wide mb-2 mt-4 md:mt-6"
+            class="text-lg md:text-xl font-semibold text-gray-700 dark:text-gray-300 tracking-wide my-2"
           >
             {{ "JOB_SOURCING_ON_DEMAND" | translate }}
           </h3>
           <div
-            class="flex items-baseline justify-center text-3xl md:text-4xl lg:text-5xl font-extrabold text-black dark:text-white mb-4 md:mb-6"
+            class="flex items-center justify-center text-lg md:text-xl lg:text-2xl font-semibold text-black dark:text-white mb-4 mt-2 md:mb-6"
           >
-            €299
-            <span
-              class="text-sm md:text-base font-normal text-gray-500 dark:text-gray-400 ml-1"
-              >/{{ "MONTH" | translate }}</span
-            >
+            {{ "ASK_FOR_QUOTE" | translate }}
           </div>
           <ul
             class="text-gray-600 dark:text-gray-300 mb-6 w-full max-w-xs mx-auto flex flex-col gap-3 md:gap-4"
@@ -401,6 +396,7 @@
             </li>
           </ul>
           <button
+            (click)="scrollToContact()"
             class="cursor-pointer border-2 border-secondary text-secondary hover:bg-secondary hover:text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold transition duration-300 text-sm md:text-base"
           >
             {{ "CONTACT_US" | translate }}
@@ -408,24 +404,20 @@
         </div>
         <!-- Job-Sourcing Reserved Card -->
         <div
-          class="rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg px-6 md:px-8 py-8 md:py-12 flex-1 flex flex-col items-center text-center relative hover-lift"
+          class="rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg p-6 md:p-8 flex-1 flex flex-col items-center text-center relative hover-lift"
           data-aos="fade-up"
           data-aos-duration="500"
           data-aos-delay="300"
         >
           <h3
-            class="text-lg md:text-xl font-semibold text-gray-700 dark:text-gray-300 tracking-wide mb-2"
+            class="text-lg md:text-xl font-semibold text-gray-700 dark:text-gray-300 tracking-wide my-2"
           >
             {{ "JOB_SOURCING_RESERVED" | translate }}
           </h3>
           <div
-            class="flex items-baseline justify-center text-3xl md:text-4xl lg:text-5xl font-extrabold text-black dark:text-white mb-4 md:mb-6"
+            class="flex items-center justify-center text-lg md:text-xl lg:text-2xl font-semibold text-black dark:text-white mb-4 mt-2 md:mb-6"
           >
-            €1999
-            <span
-              class="text-sm md:text-base font-normal text-gray-500 dark:text-gray-400 ml-1"
-              >/{{ "YEAR" | translate }}</span
-            >
+            {{ "ASK_FOR_QUOTE" | translate }}
           </div>
           <ul
             class="text-gray-600 dark:text-gray-300 mb-6 w-full max-w-xs mx-auto flex flex-col gap-3 md:gap-4"
@@ -464,6 +456,7 @@
             </li>
           </ul>
           <button
+            (click)="scrollToContact()"
             class="cursor-pointer border-2 border-secondary text-secondary hover:bg-secondary hover:text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold transition duration-300 text-sm md:text-base"
           >
             {{ "CONTACT_US" | translate }}
@@ -671,12 +664,14 @@
             {{ "FREE_TRIAL_DESCRIPTION" | translate }}
           </p>
           <button
+            (click)="scrollToContact()"
             class="cursor-pointer bg-gradient-to-r from-primary to-secondary text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold shadow hover:opacity-90 transition text-sm md:text-base"
           >
             {{ "START_FREE_TRIAL" | translate }}
           </button>
         </div>
         <div
+          id="contact-form"
           class="contact-form w-full lg:flex-1 bg-white bg-opacity-60 dark:bg-gray-800 dark:bg-opacity-60 rounded-xl shadow p-6 md:p-8 hover-lift"
           data-aos="fade-up"
           data-aos-duration="500"
@@ -687,34 +682,134 @@
           >
             {{ "CONTACT_US" | translate }}
           </h3>
-          <form class="flex flex-col gap-3 md:gap-4 w-full">
-            <input
-              type="email"
-              [placeholder]="'ENTER_YOUR_EMAIL' | translate"
-              required
-              class="w-full border border-blue-200 dark:border-blue-700 bg-white bg-opacity-60 dark:bg-gray-700 dark:bg-opacity-60 text-gray-800 dark:text-gray-200 rounded px-3 md:px-4 py-2 md:py-3 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-700 placeholder-gray-400 dark:placeholder-gray-500 text-sm md:text-base"
-            />
-            <input
-              type="text"
-              [placeholder]="'PHONE_NUMBER' | translate"
-              class="w-full border border-blue-200 dark:border-blue-700 bg-white bg-opacity-60 dark:bg-gray-700 dark:bg-opacity-60 text-gray-800 dark:text-gray-200 rounded px-3 md:px-4 py-2 md:py-3 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-700 placeholder-gray-400 dark:placeholder-gray-500 text-sm md:text-base"
-            />
-            <input
-              type="text"
-              [placeholder]="'WRITE_MESSAGE' | translate"
-              class="w-full border border-blue-200 dark:border-blue-700 bg-white bg-opacity-60 dark:bg-gray-700 dark:bg-opacity-60 text-gray-800 dark:text-gray-200 rounded px-3 md:px-4 py-2 md:py-3 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-700 placeholder-gray-400 dark:placeholder-gray-500 text-sm md:text-base"
-            />
-            <label
-              class="flex items-center text-xs md:text-sm text-gray-700 dark:text-gray-300"
-            >
-              <input type="checkbox" required class="mr-2" />
-              {{ "I_AGREE_WITH_TERMS_AND_CONDITION" | translate }}
-            </label>
+          <form
+            [formGroup]="contactForm"
+            (ngSubmit)="onSubmitContactForm()"
+            class="flex flex-col gap-3 md:gap-4 w-full"
+          >
+            <div class="space-y-1">
+              <input
+                type="text"
+                [placeholder]="'NAME' | translate"
+                formControlName="name"
+                class="w-full border border-blue-200 dark:border-blue-700 bg-white bg-opacity-60 dark:bg-gray-700 dark:bg-opacity-60 text-gray-800 dark:text-gray-200 rounded px-3 md:px-4 py-2 md:py-3 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-700 placeholder-gray-400 dark:placeholder-gray-500 text-sm md:text-base"
+                [class.border-red-500]="
+                  contactForm.get('name')?.invalid &&
+                  contactForm.get('name')?.touched
+                "
+              />
+              <small
+                class="text-red-500 dark:text-red-400"
+                *ngIf="
+                  contactForm.get('name')?.invalid &&
+                  contactForm.get('name')?.touched
+                "
+              >
+                {{ "NAME_REQUIRED" | translate }}
+              </small>
+            </div>
+
+            <div class="space-y-1">
+              <input
+                type="email"
+                [placeholder]="'ENTER_YOUR_EMAIL' | translate"
+                formControlName="email"
+                class="w-full border border-blue-200 dark:border-blue-700 bg-white bg-opacity-60 dark:bg-gray-700 dark:bg-opacity-60 text-gray-800 dark:text-gray-200 rounded px-3 md:px-4 py-2 md:py-3 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-700 placeholder-gray-400 dark:placeholder-gray-500 text-sm md:text-base"
+                [class.border-red-500]="
+                  contactForm.get('email')?.invalid &&
+                  contactForm.get('email')?.touched
+                "
+              />
+              <small
+                class="text-red-500 dark:text-red-400"
+                *ngIf="
+                  contactForm.get('email')?.invalid &&
+                  contactForm.get('email')?.touched
+                "
+              >
+                {{ "EMAIL_INVALID" | translate }}
+              </small>
+            </div>
+
+            <div class="space-y-1">
+              <input
+                type="text"
+                [placeholder]="'PHONE_NUMBER' | translate"
+                formControlName="phoneNumber"
+                class="w-full border border-blue-200 dark:border-blue-700 bg-white bg-opacity-60 dark:bg-gray-700 dark:bg-opacity-60 text-gray-800 dark:text-gray-200 rounded px-3 md:px-4 py-2 md:py-3 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-700 placeholder-gray-400 dark:placeholder-gray-500 text-sm md:text-base"
+                [class.border-red-500]="
+                  contactForm.get('phoneNumber')?.invalid &&
+                  contactForm.get('phoneNumber')?.touched
+                "
+              />
+              <small
+                class="text-red-500 dark:text-red-400"
+                *ngIf="
+                  contactForm.get('phoneNumber')?.invalid &&
+                  contactForm.get('phoneNumber')?.touched
+                "
+              >
+                {{ "PHONE_INVALID" | translate }}
+              </small>
+            </div>
+
+            <div class="space-y-1">
+              <textarea
+                [placeholder]="'WRITE_MESSAGE' | translate"
+                formControlName="message"
+                rows="3"
+                class="w-full border border-blue-200 dark:border-blue-700 bg-white bg-opacity-60 dark:bg-gray-700 dark:bg-opacity-60 text-gray-800 dark:text-gray-200 rounded px-3 md:px-4 py-2 md:py-3 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-700 placeholder-gray-400 dark:placeholder-gray-500 text-sm md:text-base resize-none"
+                [class.border-red-500]="
+                  contactForm.get('message')?.invalid &&
+                  contactForm.get('message')?.touched
+                "
+              ></textarea>
+              <small
+                class="text-red-500 dark:text-red-400"
+                *ngIf="
+                  contactForm.get('message')?.invalid &&
+                  contactForm.get('message')?.touched
+                "
+              >
+                {{ "MESSAGE_REQUIRED" | translate }}
+              </small>
+            </div>
+
+            <div class="space-y-1">
+              <label
+                class="flex items-center text-xs md:text-sm text-gray-700 dark:text-gray-300"
+              >
+                <input
+                  type="checkbox"
+                  formControlName="agreeToTerms"
+                  class="mr-2"
+                />
+                {{ "I_AGREE_WITH_TERMS_AND_CONDITION" | translate }}
+              </label>
+              <small
+                class="text-red-500 dark:text-red-400"
+                *ngIf="
+                  contactForm.get('agreeToTerms')?.invalid &&
+                  contactForm.get('agreeToTerms')?.touched
+                "
+              >
+                {{ "TERMS_AGREEMENT_REQUIRED" | translate }}
+              </small>
+            </div>
+
             <button
               type="submit"
-              class="cursor-pointer w-full bg-gradient-to-r from-primary to-secondary text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold shadow hover:opacity-90 transition text-sm md:text-base"
+              [disabled]="isLoading()"
+              class="cursor-pointer w-full bg-gradient-to-r from-primary to-secondary text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold shadow hover:opacity-90 transition text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {{ "SEND_MESSAGE" | translate }}
+              <span *ngIf="!isLoading()">{{ "SEND_MESSAGE" | translate }}</span>
+              <span
+                *ngIf="isLoading()"
+                class="flex items-center justify-center gap-2"
+              >
+                <i class="pi pi-spin pi-spinner"></i>
+                {{ "SENDING" | translate }}...
+              </span>
             </button>
           </form>
         </div>

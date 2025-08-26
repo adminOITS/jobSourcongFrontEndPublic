@@ -1,0 +1,15 @@
+<p-dialog
+  [(visible)]="visible"
+  [maximizable]="true"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="closeModal()"
+  styleClass="dialog-fullscreen"
+>
+  <ng-template pTemplate="content">
+    <app-description-view (fullScreenRequested)="closeModal()">
+    </app-description-view>
+  </ng-template>
+</p-dialog>

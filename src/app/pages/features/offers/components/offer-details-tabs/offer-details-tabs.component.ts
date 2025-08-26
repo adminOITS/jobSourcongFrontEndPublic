@@ -19,11 +19,9 @@ import { InterviewService } from '../../../../../core/services/interview/intervi
     TranslateModule,
     OfferDetailsOverviewTabComponent,
     TabsModule,
-    OfferDetailsRecruitmentPipelineTabComponent,
     OfferDetailsInterviewsTabComponent,
     OfferDetailsApplicationsTabComponent,
     OfferDetailsProfilesTabComponent,
-    HasRoleDirective,
   ],
   templateUrl: './offer-details-tabs.component.html',
 })
@@ -48,10 +46,10 @@ export class OfferDetailsTabsComponent {
         this.activeTab.set('1');
         this.updateQueryParamWithoutNavigation('active', '1');
         break;
-      case '2':
-        this.activeTab.set('2');
-        this.updateQueryParamWithoutNavigation('active', '2');
-        break;
+      // case '2':
+      //   this.activeTab.set('2');
+      //   this.updateQueryParamWithoutNavigation('active', '2');
+      //   break;
       case '3':
         this.activeTab.set('3');
         this.updateQueryParamWithoutNavigation('active', '3');

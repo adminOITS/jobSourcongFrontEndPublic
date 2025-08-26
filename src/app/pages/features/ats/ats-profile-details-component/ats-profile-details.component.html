@@ -1,0 +1,55 @@
+<!-- Main Layout - Two Column -->
+<app-loader [isLoading]="isLoading"></app-loader>
+
+<div class="max-w-full mx-auto h-full">
+  <!-- Content when loaded -->
+  <div
+    *ngIf="!isLoading() && profile()"
+    class="grid grid-cols-1 xl:grid-cols-2 gap-8 h-full"
+  >
+    <!-- Left Column - Resume View -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden hidden lg:block">
+      <app-resume-view> </app-resume-view>
+    </div>
+
+    <!-- Right Column - Description View -->
+    <app-description-view (fullScreenRequested)="onFullScreenRequested()">
+    </app-description-view>
+  </div>
+
+  <!-- Error State -->
+  <div
+    *ngIf="!isLoading() && !profile()"
+    class="flex items-center justify-center h-64"
+  >
+    <div class="text-center max-w-md mx-auto p-6">
+      <div
+        class="w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4"
+      >
+        <i
+          class="pi pi-exclamation-triangle text-red-600 dark:text-red-400 text-2xl"
+        ></i>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+        {{ "PROFILE_NOT_FOUND" | translate }}
+      </h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">
+        {{ "PROFILE_NOT_FOUND_DESCRIPTION" | translate }}
+      </p>
+      <button
+        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+        (click)="router.navigate(['/'])"
+      >
+        <i class="pi pi-home mr-2"></i>
+        {{ "GO_TO_DASHBOARD" | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-ats-modal
+  [visible]="showModal()"
+  (visibleChange)="showModal.set($event)"
+  (onClose)="closeModal()"
+>
+</app-ats-modal>

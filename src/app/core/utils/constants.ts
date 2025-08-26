@@ -15,6 +15,7 @@ export const RECENT_OFFERS_VIEWS_DOMAIN =
   'STATISTICS-SERVICE/api/v1/recent-offers';
 export const USER_SERVICE_DOMAIN = 'IDENTITY-SERVICE/api/v1/users';
 export const AUTH_SERVICE_DOMAIN = 'IDENTITY-SERVICE/api/v1/auth';
+export const ATS_SERVICE_DOMAIN = 'ATS-SERVICE/api/v1/ats';
 
 export const DEFAULT_JOB_OFFER_PAGE = 0;
 export const DEFAULT_JOB_OFFER_SIZE = 25;

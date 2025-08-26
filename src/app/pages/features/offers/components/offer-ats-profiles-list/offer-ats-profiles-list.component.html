@@ -1,0 +1,180 @@
+<div class="space-y-6">
+  <!-- Header with Limit Control -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+        ATS Matched Profiles
+      </h3>
+    </div>
+
+    <!-- Limit Selector -->
+    <div class="flex items-center gap-2">
+      <label class="text-sm text-gray-600 dark:text-gray-400">Show:</label>
+      <select
+        [value]="currentLimit()"
+        (change)="changeLimit($event)"
+        class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      >
+        <option *ngFor="let limit of availableLimits" [value]="limit">
+          {{ limit }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div
+    *ngIf="isLoading() && profiles()?.data?.length === 0"
+    class="text-center py-12"
+  >
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"
+    ></div>
+    <p class="text-gray-600 dark:text-gray-400">Loading ATS profiles...</p>
+  </div>
+
+  <!-- No Profiles State -->
+  <div
+    *ngIf="
+      !isLoading() && (!profiles()?.data || profiles()?.data?.length === 0)
+    "
+    class="text-center py-12"
+  >
+    <div
+      class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4"
+    >
+      <i class="pi pi-users text-2xl text-gray-400"></i>
+    </div>
+    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+      No ATS Profiles Found
+    </h3>
+    <p class="text-gray-600 dark:text-gray-400">
+      No candidate profiles match the current criteria.
+    </p>
+  </div>
+
+  <!-- Profiles Grid -->
+  <div
+    *ngIf="profiles()?.data && profiles().data.length > 0"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+  >
+    <div
+      *ngFor="let profile of profiles()?.data; trackBy: trackByProfileId"
+      class="profile-card bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 relative"
+    >
+      <!-- Score Badge -->
+      <div class="score-badge">
+        <p-tag
+          *ngIf="profile.score"
+          [value]="profile.score + '%'"
+          class="text-xs font-semibold"
+          [severity]="getSeverity(profile.score)"
+        ></p-tag>
+      </div>
+
+      <!-- Profile Header -->
+      <div class="mb-4">
+        <h4 class="font-semibold text-gray-900 dark:text-white text-lg mb-1">
+          {{ getCandidateName(profile) }}
+        </h4>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">
+          {{ profile.profileTitle || "No Title" }}
+        </p>
+      </div>
+
+      <!-- Score Progress Bar -->
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >Match Score</span
+          >
+          <span class="text-sm text-gray-600 dark:text-gray-400"
+            >{{ profile.score }}%</span
+          >
+        </div>
+        <p-progressBar
+          *ngIf="profile.score"
+          [value]="profile.score"
+          [styleClass]="'h-2'"
+          [style]="{ '--value-background': getScoreBgColor(profile.score) }"
+        ></p-progressBar>
+      </div>
+
+      <!-- Skills Tags -->
+      <div class="mb-4">
+        <h5 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Key Skills
+        </h5>
+        <div class="flex flex-wrap gap-2">
+          <p-tag
+            *ngFor="let skill of getProfileSkills(profile)"
+            [value]="skill"
+            severity="secondary"
+            class="text-xs"
+          ></p-tag>
+        </div>
+      </div>
+
+      <!-- Profile Actions -->
+      <div
+        class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700"
+      >
+        <div class="text-xs text-gray-500 dark:text-gray-400">
+          ID: {{ profile.id ? profile.id.substring(0, 8) : "N/A" }}...
+        </div>
+        <button
+          class="px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 cursor-pointer text-white rounded-md transition-colors duration-200"
+          (click)="viewProfileDetails(profile)"
+        >
+          View Details
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div
+    *ngIf="profiles()?.data && profiles().data.length > 0"
+    class="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700"
+  >
+    <div class="text-sm text-gray-600 dark:text-gray-400">
+      Showing {{ profiles().data.length }} profiles
+    </div>
+
+    <div class="flex items-center gap-2">
+      <!-- Previous Button (disabled if no previous) -->
+      <button
+        [disabled]="!hasNext() || isLoading()"
+        class="px-4 py-2 text-sm font-medium text-gray-500 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+      >
+        <i class="pi pi-chevron-left mr-1"></i>
+        Previous
+      </button>
+
+      <!-- Load More Button -->
+      <button
+        *ngIf="hasNext()"
+        (click)="loadMore()"
+        [disabled]="isLoading()"
+        class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 border border-transparent rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+      >
+        <span *ngIf="!isLoading()">Load More</span>
+        <span *ngIf="isLoading()" class="flex items-center gap-2">
+          <div
+            class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"
+          ></div>
+          Loading...
+        </span>
+      </button>
+
+      <!-- Next Button (disabled if no next) -->
+      <button
+        [disabled]="!hasNext() || isLoading()"
+        class="px-4 py-2 text-sm font-medium text-gray-500 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+      >
+        Next
+        <i class="pi pi-chevron-right ml-1"></i>
+      </button>
+    </div>
+  </div>
+</div>

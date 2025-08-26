@@ -43,6 +43,7 @@
     class="flex items-center px-4 py-3 mb-1 text-sidebar-foreground hover:bg-secondary/40 dark:hover:bg-accent/80! rounded-md transition-colors"
     [pTooltip]="!isExpanded ? (item.label | translate) : ''"
     tooltipPosition="right"
+    (click)="navigateClick()"
   >
     <i class="{{ item.icon }} w-5 h-5"></i>
     <span *ngIf="isExpanded" class="ml-2">{{ item.label | translate }}</span>

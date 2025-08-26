@@ -3,13 +3,13 @@
     <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
       {{ "CANDIDATES" | translate }}
     </h1>
-    <div class="flex gap-2">
+    <div class="flex flex-col sm:flex-row gap-2">
       <button
         pButton
         pRipple
         label="{{ 'ADD_CANDIDATE' | translate }}"
         icon="pi pi-plus"
-        class="rounded-md! border-none! shadow-md! bg-secondary! text-primary-text! dark:hover:text-slate-200! dark:hover:bg-secondary/80! hover:opacity-90!"
+        class="rounded-md! w-full! sm:w-fit! border-none! shadow-md! bg-secondary! text-primary-text! dark:hover:text-slate-200! dark:hover:bg-secondary/80! hover:opacity-90!"
         (click)="candidateService.openAddDialog()"
       ></button>
       <button
@@ -17,7 +17,7 @@
         pRipple
         label="{{ 'AI_PARSE' | translate }}"
         icon="pi pi-sparkles"
-        class="bg-gradient-to-r! rounded-md! from-secondary! to-primary! text-white! shadow-md! border-none! transition-colors duration-150 hover:opacity-90!"
+        class="bg-gradient-to-r! w-full! sm:w-fit! rounded-md! from-secondary! to-primary! text-white! shadow-md! border-none! transition-colors duration-150 hover:opacity-90!"
         title="{{ 'PARSE_RESUME_WITH_AI' | translate }}"
         (click)="onGenerateCandidate()"
       ></button>

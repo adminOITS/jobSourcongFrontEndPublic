@@ -73,6 +73,13 @@ export const RecruiterRoutes: Routes = [
             '../pages/features/interviews/interviews-list/interviews-list.component'
           ).then((m) => m.InterviewsListComponent),
       },
+      {
+        path: ROUTES.ATS.DETAILS,
+        loadComponent: () =>
+          import(
+            '../pages/features/ats/ats-profile-details-component/ats-profile-details.component'
+          ).then((m) => m.AtsProfileDetailsComponent),
+      },
     ],
   },
 ];

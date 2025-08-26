@@ -67,4 +67,9 @@ export class AttachmentService {
       )
       .pipe(take(1));
   }
+  getResumeUrl(id: string): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/resume/${id}`, {
+      responseType: 'blob', // important: treat the response as binary
+    });
+  }
 }

@@ -187,8 +187,12 @@
     @apply overflow-visible!;
   }
   .p-dialog {
-    @apply bg-card!  max-h-full! h-full!  sm:h-auto! sm:max-h-[90%]! border-none! rounded-lg!;
+    @apply bg-card!    sm:h-auto!  border-none! rounded-lg!;
   }
+  .p-dialog .small-dialog {
+    @apply bg-card!  h-auto!  border-none! rounded-lg!;
+  }
+
   .p-tablist-tab-list {
     @apply bg-transparent!;
   }
@@ -247,13 +251,19 @@
     @apply text-text!;
   }
   .p-step-title {
-    @apply text-text/80!;
+    @apply text-text/80! text-xs! sm:text-base!;
   }
   .p-stepper-separator {
     @apply bg-secondary! dark:bg-muted-foreground!;
   }
+  .p-step {
+    @apply p-0!;
+  }
+  .p-step-header {
+    @apply p-2! sm:p-4! gap-0.5! sm:gap-2!;
+  }
   .p-step-number {
-    @apply bg-gray-400!;
+    @apply bg-gray-400! text-xs! sm:text-base! -scale-[0.7]! sm:scale-100!;
   }
   .p-step-active .p-step-number {
     @apply bg-secondary!;
@@ -291,6 +301,15 @@
   }
   .p-datepicker-time-picker {
     @apply text-text!;
+  }
+  .p-tablist-nav-button {
+    @apply text-text! bg-background/80!;
+  }
+  .p-toast-top-right {
+    @apply top-2.5! right-2.5! sm:top-5! sm:right-5!;
+  }
+  .p-toast {
+    @apply max-w-[96%]! sm:max-w-fit!;
   }
 }
 
@@ -435,4 +454,153 @@
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* Custom PDF Viewer Styles */
+.custom-pdf-viewer {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Enhanced dark mode for PDF viewer toolbar */
+.dark .custom-pdf-viewer ::ng-deep .toolbar {
+  background-color: #1f2937 !important; /* dark:bg-gray-800 */
+  border-bottom: 1px solid #374151 !important; /* dark:border-gray-700 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .toolbarButton {
+  background-color: #374151 !important; /* dark:bg-gray-700 */
+  color: #d1d5db !important; /* dark:text-gray-300 */
+  border: 1px solid #4b5563 !important; /* dark:border-gray-600 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .toolbarButton:hover {
+  background-color: #4b5563 !important; /* dark:bg-gray-600 */
+  border-color: #6b7280 !important; /* dark:border-gray-500 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .toolbarButton[aria-pressed="true"] {
+  background-color: #1d4ed8 !important; /* dark:bg-blue-700 */
+  border-color: #2563eb !important; /* dark:border-blue-600 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .toolbarButton[aria-pressed="true"]:hover {
+  background-color: #1e40af !important; /* dark:bg-blue-800 */
+}
+
+/* Dark mode for secondary toolbar */
+.dark .custom-pdf-viewer ::ng-deep .secondaryToolbar {
+  background-color: #1f2937 !important; /* dark:bg-gray-800 */
+  border: 1px solid #374151 !important; /* dark:border-gray-700 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .secondaryToolbarButton {
+  background-color: #374151 !important; /* dark:bg-gray-700 */
+  color: #d1d5db !important; /* dark:text-gray-300 */
+  border: 1px solid #4b5563 !important; /* dark:border-gray-600 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .secondaryToolbarButton:hover {
+  background-color: #4b5563 !important; /* dark:bg-gray-600 */
+}
+
+/* Dark mode for find bar */
+.dark .custom-pdf-viewer ::ng-deep .findbar {
+  background-color: #1f2937 !important; /* dark:bg-gray-800 */
+  border-top: 1px solid #374151 !important; /* dark:border-gray-700 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .findbar input {
+  background-color: #374151 !important; /* dark:bg-gray-700 */
+  color: #f9fafb !important; /* dark:text-gray-100 */
+  border: 1px solid #4b5563 !important; /* dark:border-gray-600 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .findbar input:focus {
+  border-color: #3b82f6 !important; /* dark:border-blue-500 */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Dark mode for sidebar */
+.dark .custom-pdf-viewer ::ng-deep .sidebar {
+  background-color: #1f2937 !important; /* dark:bg-gray-800 */
+  border-right: 1px solid #374151 !important; /* dark:border-gray-700 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .sidebar .outlineItem {
+  color: #d1d5db !important; /* dark:text-gray-300 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .sidebar .outlineItem:hover {
+  background-color: #374151 !important; /* dark:bg-gray-700 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .sidebar .outlineItem.selected {
+  background-color: #1d4ed8 !important; /* dark:bg-blue-700 */
+  color: #ffffff !important;
+}
+
+/* Dark mode support for PDF viewer */
+.dark .custom-pdf-viewer ::ng-deep {
+  background-color: #1f2937 !important; /* dark:bg-gray-800 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .page {
+  background-color: #374151 !important; /* dark:bg-gray-700 */
+}
+
+.dark .custom-pdf-viewer ::ng-deep .textLayer {
+  background-color: transparent !important;
+}
+
+.dark .custom-pdf-viewer ::ng-deep .annotationLayer {
+  background-color: transparent !important;
+}
+
+/* Dark mode for PDF viewer controls */
+.dark .custom-pdf-viewer ::ng-deep .toolbarButton {
+  background-color: #374151 !important;
+  color: #d1d5db !important;
+}
+
+.dark .custom-pdf-viewer ::ng-deep .toolbarButton:hover {
+  background-color: #4b5563 !important;
+}
+
+.dark .custom-pdf-viewer ::ng-deep .toolbarButton[aria-pressed="true"] {
+  background-color: #1d4ed8 !important;
+}
+
+/* Dark mode for scrollbars */
+.dark .custom-pdf-viewer ::ng-deep ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark .custom-pdf-viewer ::ng-deep ::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark .custom-pdf-viewer ::ng-deep ::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 4px;
+}
+
+.dark .custom-pdf-viewer ::ng-deep ::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Dark mode for PDF page shadows and borders */
+.dark .custom-pdf-viewer ::ng-deep .page {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid #4b5563 !important;
+}
+
+/* Dark mode for loading and error states */
+.dark .custom-pdf-viewer ::ng-deep .loading-indicator {
+  color: #d1d5db !important;
+}
+
+.dark .custom-pdf-viewer ::ng-deep .error-message {
+  color: #fca5a5 !important;
 }

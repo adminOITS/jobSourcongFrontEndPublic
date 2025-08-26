@@ -1,0 +1,78 @@
+<div class="h-full flex flex-col bg-gray-50 dark:bg-gray-900">
+  <!-- PDF Viewer Content -->
+  <div class="flex-1 relative">
+    <!-- Loading State -->
+    <div
+      *ngIf="isLoading()"
+      class="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-900 z-10"
+    >
+      <div class="text-center">
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"
+        ></div>
+        <p class="text-gray-600 dark:text-gray-400">
+          {{ "LOADING_PDF_DOCUMENT" | translate }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div
+      *ngIf="hasError()"
+      class="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-900 z-10"
+    >
+      <div class="text-center max-w-md mx-auto p-6">
+        <div
+          class="w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4"
+        >
+          <i
+            class="pi pi-exclamation-triangle text-red-600 dark:text-red-400 text-2xl"
+          ></i>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+          {{ "FAILED_TO_LOAD_PDF" | translate }}
+        </h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-4">
+          {{ errorMessage() }}
+        </p>
+        <div class="flex gap-2 justify-center">
+          <button
+            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            (click)="retryLoad()"
+          >
+            <i class="pi pi-refresh mr-2"></i>
+            {{ "COMMON.RETRY" | translate }}
+          </button>
+          <button
+            class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+            (click)="openInNewTab()"
+          >
+            <i class="pi pi-external-link mr-2"></i>
+            {{ "OPEN_EXTERNALLY" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ngx Extended PDF Viewer -->
+    <ngx-extended-pdf-viewer
+      *ngIf="!isLoading() && !hasError() && pdfUrl"
+      [src]="pdfUrl()"
+      [height]="height"
+      [showToolbar]="showToolbar"
+      [showSidebarButton]="true"
+      [showFindButton]="true"
+      [showPagingButtons]="true"
+      [showZoomButtons]="true"
+      [showPrintButton]="true"
+      [showDownloadButton]="true"
+      [showSecondaryToolbarButton]="true"
+      [showRotateButton]="true"
+      [showHandToolButton]="true"
+      [showSpreadButton]="true"
+      [showPropertiesButton]="true"
+      class="w-full h-full"
+      styleClass="custom-pdf-viewer"
+    ></ngx-extended-pdf-viewer>
+  </div>
+</div>

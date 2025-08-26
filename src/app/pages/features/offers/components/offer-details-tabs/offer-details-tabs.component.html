@@ -6,9 +6,9 @@
   >
     <p-tablist>
       <p-tab value="1">{{ "OVERVIEW" | translate }}</p-tab>
-      <p-tab value="2" *appHasRole="'HR_ADMIN'">{{
+      <!-- <p-tab value="2" *appHasRole="'HR_ADMIN'">{{
         "RECRUITMENT_PIPELINE" | translate
-      }}</p-tab>
+      }}</p-tab> -->
       <p-tab value="3">{{ "APPLICATIONS" | translate }}</p-tab>
       <p-tab value="4">{{ "INTERVIEWS" | translate }}</p-tab>
       <p-tab value="5">{{ "PROFILES" | translate }}</p-tab>
@@ -19,11 +19,11 @@
           <app-offer-details-overview-tab />
         </ng-container>
       </p-tabpanel>
-      <p-tabpanel value="2" *appHasRole="'HR_ADMIN'">
+      <!-- <p-tabpanel value="2" *appHasRole="'HR_ADMIN'">
         <ng-container *ngIf="activeTab() === '2'">
           <app-offer-details-recruitment-pipeline-tab />
         </ng-container>
-      </p-tabpanel>
+      </p-tabpanel> -->
       <p-tabpanel value="3">
         <ng-container *ngIf="activeTab() === '3'">
           <app-offer-details-applications-tab />

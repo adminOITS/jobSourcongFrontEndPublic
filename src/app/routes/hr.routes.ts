@@ -120,6 +120,13 @@ export const HrRoutes: Routes = [
             '../pages/features/settings/settings-page/settings-page.component'
           ).then((m) => m.SettingsPageComponent),
       },
+      {
+        path: ROUTES.ATS.DETAILS,
+        loadComponent: () =>
+          import(
+            '../pages/features/ats/ats-profile-details-component/ats-profile-details.component'
+          ).then((m) => m.AtsProfileDetailsComponent),
+      },
     ],
   },
 ];

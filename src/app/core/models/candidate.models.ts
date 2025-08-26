@@ -140,7 +140,7 @@ export interface SocialLinksResponse {
   otherUrl: string;
 }
 
-export interface CandidateShortResponse {
+export interface CandidateShortResponse extends BaseEntity {
   id: string;
   firstName: string;
   lastName: string;

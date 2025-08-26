@@ -1,9 +1,9 @@
-<div class="max-w-full mx-auto px-4 py-6">
+<div class="max-w-full mx-auto sm:px-6 py-3 sm:py-6">
   <!-- Hero Section -->
-  <div class="relative mb-8">
+  <div class="relative mb-6 sm:mb-8">
     <!-- Background Banner -->
     <div
-      class="h-48 w-full rounded-2xl"
+      class="h-48 w-full rounded-xl sm:rounded-2xl"
       [ngStyle]="{
         background:
           'linear-gradient(135deg, ' +
@@ -16,12 +16,66 @@
 
     <!-- Company Info Overlay -->
     <div
-      class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent rounded-b-2xl"
+      class="absolute bottom-0 left-0 right-0 p-3 sm:p-6 bg-gradient-to-t from-black/60 to-transparent rounded-b-xl sm:rounded-b-2xl"
     >
-      <div (click)="openHrEditDialog()">ediiiir</div>
-      <div class="flex items-end gap-6">
-        <!-- Logo -->
+      <!-- Mobile Layout: Logo centered at top, text at bottom -->
+      <div class="flex flex-col sm:hidden items-center">
+        <!-- Logo centered at top -->
+        <div class="relative mb-4">
+          <div
+            class="w-20 h-20 bg-white rounded-xl overflow-hidden border-white relative group"
+          >
+            <p-skeleton
+              *ngIf="isImageLoading()"
+              size="100%"
+              styleClass=""
+            ></p-skeleton>
+            @if (company()?.logoAttachment?.url) {
 
+            <img
+              (load)="onImageLoaded()"
+              (error)="onImageError()"
+              [src]="company()?.logoAttachment?.url"
+              [class.visible]="!isImageLoading()"
+              alt="Company Logo"
+              class="h-full w-full object-contain"
+            />
+            }
+            <!-- Edit Logo Button -->
+            <button
+              class="absolute inset-0 cursor-pointer bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl flex items-center justify-center"
+              (click)="editLogo()"
+              title="Edit Logo"
+            >
+              <i class="pi pi-pencil text-white text-xl"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Company Name and Edit Button at bottom -->
+        <div class="w-full text-center">
+          <h1 class="text-lg font-bold text-white mb-3 truncate px-2">
+            {{ company()?.name }}
+          </h1>
+          <!-- Edit Company Info Button positioned at bottom right -->
+          <div class="flex justify-end">
+            <button
+              class="flex items-center gap-2 px-3 py-2 bg-white/20 text-white rounded-lg transition-all duration-300 hover:bg-white/30 hover:scale-105"
+              (click)="editCompanyInfo()"
+              title="Edit Company Information"
+            >
+              <i class="pi pi-pencil text-sm"></i>
+              <span class="text-sm font-medium">
+                {{ "EDIT" | translate }}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Layout: Original side-by-side layout -->
+      <div class="hidden sm:flex items-end gap-6">
+        <!-- Logo -->
         <div class="relative">
           <div
             class="w-24 h-24 bg-white rounded-xl overflow-hidden border-white relative group"
@@ -56,7 +110,7 @@
         <!-- Company Name and Sector -->
         <div class="flex-1">
           <div class="flex items-center justify-between mb-2">
-            <h1 class="text-3xl font-bold text-white">
+            <h1 class="text-2xl lg:text-3xl font-bold text-white">
               {{ company()?.name }}
             </h1>
             <!-- Edit Company Info Button -->
@@ -66,15 +120,19 @@
               title="Edit Company Information"
             >
               <i class="pi pi-pencil text-sm"></i>
-              <span class="text-sm font-medium">Edit</span>
+              <span class="text-sm font-medium">
+                {{ "EDIT" | translate }}
+              </span>
             </button>
           </div>
-          <div class="flex items-center gap-4">
+          <div
+            class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4"
+          >
             <p-tag
               [value]="company()?.sector || 'N/A'"
               [style]="{
                 'border-radius': '0.75rem',
-                padding: '0.5rem 1.25rem'
+                padding: '0.375rem 1rem'
               }"
               class="text-sm font-medium bg-accent-foreground text-accent-foreground-foreground"
             ></p-tag>
@@ -84,7 +142,7 @@
               target="_blank"
               class="flex items-center gap-2 px-4 py-2 bg-white/20 text-white rounded-lg transition-all duration-300 hover:bg-white/30"
             >
-              <i class="pi pi-globe"></i>
+              <i class="pi pi-globe text-sm"></i>
               <span class="text-sm font-medium">
                 {{ "VISIT_WEBSITE" | translate }}
               </span>
@@ -97,54 +155,66 @@
   </div>
 
   <!-- Main Content Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
     <!-- Left Column: Description and Location -->
-    <div class="lg:col-span-8 space-y-6">
+    <div class="lg:col-span-8 space-y-4 sm:space-y-6">
       <!-- Description Card -->
-      <div class="bg-white dark:bg-slate-800 rounded-xl p-6">
-        <div class="flex items-center gap-3 mb-4">
+      <div
+        class="bg-white dark:bg-slate-800 rounded-lg sm:rounded-xl p-4 sm:p-6"
+      >
+        <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
           <div
-            class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center"
           >
             <i
-              class="pi pi-info-circle text-lg text-purple-600 dark:text-purple-400"
+              class="pi pi-info-circle text-base sm:text-lg text-purple-600 dark:text-purple-400"
             ></i>
           </div>
-          <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">
+          <h2
+            class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100"
+          >
             {{ "ABOUT_COMPANY" | translate }}
           </h2>
         </div>
-        <div class="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-4">
-          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+        <div class="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3 sm:p-4">
+          <p
+            class="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed"
+          >
             {{ company()?.description || "N/A" }}
           </p>
         </div>
       </div>
 
       <!-- Location Card -->
-      <div class="bg-white dark:bg-slate-800 rounded-xl p-6">
-        <div class="flex items-center gap-3 mb-4">
+      <div
+        class="bg-white dark:bg-slate-800 rounded-lg sm:rounded-xl p-4 sm:p-6"
+      >
+        <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
           <div
-            class="w-10 h-10 rounded-lg bg-red-50 dark:bg-red-900/20 flex items-center justify-center"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-red-50 dark:bg-red-900/20 flex items-center justify-center"
           >
             <i
-              class="pi pi-map-marker text-lg text-red-600 dark:text-red-400"
+              class="pi pi-map-marker text-base sm:text-lg text-red-600 dark:text-red-400"
             ></i>
           </div>
-          <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">
+          <h2
+            class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100"
+          >
             {{ "LOCATION" | translate }}
           </h2>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
           <div
-            class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
+            class="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
           >
-            <i class="pi pi-map text-lg text-red-600 dark:text-red-400"></i>
+            <i
+              class="pi pi-map text-base sm:text-lg text-red-600 dark:text-red-400"
+            ></i>
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {{ "ADDRESS" | translate }}
               </p>
-              <p class="text-gray-800 dark:text-gray-200">
+              <p class="text-sm sm:text-base text-gray-800 dark:text-gray-200">
                 {{ company()?.address?.addressLine1 || "N/A" }}
                 <span *ngIf="company()?.address?.addressLine2"
                   >, {{ company()?.address?.addressLine2 }}</span
@@ -153,46 +223,46 @@
             </div>
           </div>
           <div
-            class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
+            class="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
           >
             <i
-              class="pi pi-flag text-lg text-orange-600 dark:text-orange-400"
+              class="pi pi-flag text-base sm:text-lg text-orange-600 dark:text-orange-400"
             ></i>
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {{ "COUNTRY" | translate }}
               </p>
-              <p class="text-gray-800 dark:text-gray-200">
+              <p class="text-sm sm:text-base text-gray-800 dark:text-gray-200">
                 {{ company()?.address?.country || "N/A" }}
               </p>
             </div>
           </div>
           <div
-            class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
+            class="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
           >
             <i
-              class="pi pi-map-marker text-lg text-green-600 dark:text-green-400"
+              class="pi pi-map-marker text-base sm:text-lg text-green-600 dark:text-green-400"
             ></i>
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {{ "CITY" | translate }}
               </p>
-              <p class="text-gray-800 dark:text-gray-200">
+              <p class="text-sm sm:text-base text-gray-800 dark:text-gray-200">
                 {{ company()?.address?.city || "N/A" }}
               </p>
             </div>
           </div>
           <div
-            class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
+            class="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
           >
             <i
-              class="pi pi-hashtag text-lg text-blue-600 dark:text-blue-400"
+              class="pi pi-hashtag text-base sm:text-lg text-blue-600 dark:text-blue-400"
             ></i>
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {{ "ZIP_CODE" | translate }}
               </p>
-              <p class="text-gray-800 dark:text-gray-200">
+              <p class="text-sm sm:text-base text-gray-800 dark:text-gray-200">
                 {{ company()?.address?.zipCode || "N/A" }}
               </p>
             </div>
@@ -202,33 +272,37 @@
     </div>
 
     <!-- Right Column: Contact and Company Info -->
-    <div class="lg:col-span-4 space-y-6">
+    <div class="lg:col-span-4 space-y-4 sm:space-y-6">
       <!-- Contact Card -->
-      <div class="bg-white dark:bg-slate-800 rounded-xl p-6">
-        <div class="flex items-center gap-3 mb-4">
+      <div
+        class="bg-white dark:bg-slate-800 rounded-lg sm:rounded-xl p-4 sm:p-6"
+      >
+        <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
           <div
-            class="w-10 h-10 rounded-lg bg-green-50 dark:bg-green-900/20 flex items-center justify-center"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-green-50 dark:bg-green-900/20 flex items-center justify-center"
           >
             <i
-              class="pi pi-user text-lg text-green-600 dark:text-green-400"
+              class="pi pi-user text-base sm:text-lg text-green-600 dark:text-green-400"
             ></i>
           </div>
-          <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">
+          <h2
+            class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100"
+          >
             {{ "CONTACT_INFORMATION" | translate }}
           </h2>
         </div>
-        <div class="space-y-3">
+        <div class="space-y-2.5 sm:space-y-3">
           <div
-            class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
+            class="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
           >
             <i
-              class="pi pi-user text-lg text-green-600 dark:text-green-400"
+              class="pi pi-user text-base sm:text-lg text-green-600 dark:text-green-400"
             ></i>
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {{ "CONTACT_PERSON" | translate }}
               </p>
-              <p class="text-gray-800 dark:text-gray-200">
+              <p class="text-sm sm:text-base text-gray-800 dark:text-gray-200">
                 {{ company()?.contact || "N/A" }}
               </p>
             </div>
@@ -236,16 +310,16 @@
           @if (company()?.email) {
           <a
             [href]="'mailto:' + company()?.email"
-            class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70 hover:text-blue-600 dark:hover:text-blue-400"
+            class="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70 hover:text-blue-600 dark:hover:text-blue-400"
           >
             <i
-              class="pi pi-envelope text-lg text-blue-600 dark:text-blue-400"
+              class="pi pi-envelope text-base sm:text-lg text-blue-600 dark:text-blue-400"
             ></i>
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {{ "EMAIL" | translate }}
               </p>
-              <p class="text-blue-600 dark:text-blue-400">
+              <p class="text-sm sm:text-base text-blue-600 dark:text-blue-400">
                 {{ company()?.email }}
               </p>
             </div>
@@ -253,14 +327,16 @@
           } @if (company()?.websiteLink) {
           <a
             [href]="company()?.websiteLink"
-            class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70 hover:text-blue-600 dark:hover:text-blue-400"
+            class="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70 hover:text-blue-600 dark:hover:text-blue-400"
           >
-            <i class="pi pi-globe text-lg text-blue-600 dark:text-blue-400"></i>
+            <i
+              class="pi pi-globe text-base sm:text-lg text-blue-600 dark:text-blue-400"
+            ></i>
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {{ "WEBSITE" | translate }}
               </p>
-              <p class="text-blue-600 dark:text-blue-400">
+              <p class="text-sm sm:text-base text-blue-600 dark:text-blue-400">
                 {{ company()?.websiteLink }}
               </p>
             </div>
@@ -270,61 +346,65 @@
       </div>
 
       <!-- Company Info Card -->
-      <div class="bg-white dark:bg-slate-800 rounded-xl p-6">
-        <div class="flex items-center gap-3 mb-4">
+      <div
+        class="bg-white dark:bg-slate-800 rounded-lg sm:rounded-xl p-4 sm:p-6"
+      >
+        <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
           <div
-            class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center"
           >
             <i
-              class="pi pi-building text-lg text-indigo-600 dark:text-indigo-400"
+              class="pi pi-building text-base sm:text-lg text-indigo-600 dark:text-indigo-400"
             ></i>
           </div>
-          <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">
+          <h2
+            class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100"
+          >
             {{ "COMPANY_INFORMATION" | translate }}
           </h2>
         </div>
-        <div class="space-y-3">
+        <div class="space-y-2.5 sm:space-y-3">
           <div
-            class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
+            class="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
           >
             <i
-              class="pi pi-briefcase text-lg text-indigo-600 dark:text-indigo-400"
+              class="pi pi-briefcase text-base sm:text-lg text-indigo-600 dark:text-indigo-400"
             ></i>
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {{ "SECTOR" | translate }}
               </p>
-              <p class="text-gray-800 dark:text-gray-200">
+              <p class="text-sm sm:text-base text-gray-800 dark:text-gray-200">
                 {{ company()?.sector || "N/A" }}
               </p>
             </div>
           </div>
           <div
-            class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
+            class="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
           >
             <i
-              class="pi pi-users text-lg text-indigo-600 dark:text-indigo-400"
+              class="pi pi-users text-base sm:text-lg text-indigo-600 dark:text-indigo-400"
             ></i>
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {{ "COMPANY_SIZE" | translate }}
               </p>
-              <p class="text-gray-800 dark:text-gray-200">
+              <p class="text-sm sm:text-base text-gray-800 dark:text-gray-200">
                 {{ company()?.companySize || "N/A" }}
               </p>
             </div>
           </div>
           <div
-            class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
+            class="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-slate-700/70"
           >
             <i
-              class="pi pi-calendar text-lg text-indigo-600 dark:text-indigo-400"
+              class="pi pi-calendar text-base sm:text-lg text-indigo-600 dark:text-indigo-400"
             ></i>
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {{ "FOUNDED_YEAR" | translate }}
               </p>
-              <p class="text-gray-800 dark:text-gray-200">
+              <p class="text-sm sm:text-base text-gray-800 dark:text-gray-200">
                 {{ company()?.foundedYear || "N/A" }}
               </p>
             </div>

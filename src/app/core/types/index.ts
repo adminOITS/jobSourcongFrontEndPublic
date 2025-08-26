@@ -11,6 +11,13 @@ export type RoleAction = {
   action: () => void;
   show?: boolean;
 };
+export interface ContactUsRequest {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  message: string;
+  agreeToTerms: boolean;
+}
 
 export interface SubItem {
   label: string;

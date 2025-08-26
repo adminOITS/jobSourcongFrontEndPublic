@@ -111,12 +111,13 @@ export const HrAdminRoutes: Routes = [
             '../pages/features/interviews/add-edit-interview-data/add-edit-interview-data.component'
           ).then((m) => m.AddEditInterviewDataComponent),
       },
+
       {
-        path: ROUTES.PROFILES.LIST,
+        path: ROUTES.ATS.DETAILS,
         loadComponent: () =>
           import(
-            '../pages/features/profiles/profiles-list/profiles-list.component'
-          ).then((m) => m.ProfilesListComponent),
+            '../pages/features/ats/ats-profile-details-component/ats-profile-details.component'
+          ).then((m) => m.AtsProfileDetailsComponent),
       },
     ],
   },

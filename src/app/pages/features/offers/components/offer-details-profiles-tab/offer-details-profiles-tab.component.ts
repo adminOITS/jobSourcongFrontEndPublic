@@ -1,4 +1,11 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  Input,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { TranslateModule } from '@ngx-translate/core';
@@ -13,8 +20,11 @@ import { ProfileFilterRequest } from '../../../../../core/models/profile.models'
 import { OfferDetailsProfilesTableComponent } from '../../../profiles/components/offer-details-profiles-table/app-offer-details-profiles-table.component';
 import { ProfilesFilterFormComponent } from '../../../profiles/components/profiles-filter-form/profiles-filter-form.component';
 
+import { OfferAtsProfilesListComponent } from '../offer-ats-profiles-list';
+
 @Component({
   selector: 'app-offer-details-profiles-tab',
+  standalone: true,
   imports: [
     CommonModule,
     FloatLabelModule,
@@ -23,11 +33,16 @@ import { ProfilesFilterFormComponent } from '../../../profiles/components/profil
     InputTextModule,
     OfferDetailsProfilesTableComponent,
     ProfilesFilterFormComponent,
+    OfferAtsProfilesListComponent,
   ],
   templateUrl: './offer-details-profiles-tab.component.html',
   styles: ``,
 })
 export class OfferDetailsProfilesTabComponent implements OnInit {
+  @Input() offerId!: string;
+
+  activeTab: 'all' | 'ats' = 'all';
+
   request = signal<ProfileFilterRequest>({
     page: DEFAULT_PROFILE_PAGE,
     size: DEFAULT_PROFILE_SIZE,
