@@ -131,14 +131,7 @@ export class OfferAtsProfilesListComponent implements OnInit {
     );
   }
 
-  /**
-   * Get profile skills as tags
-   */
-  getProfileSkills(profile: ProfileShortResponseDto): string[] {
-    // This would need to be implemented based on your profile data structure
-    // For now, returning a placeholder
-    return ['Java', 'Spring Boot', 'AWS'];
-  }
+ 
 
   /**
    * Track profiles by ID for ngFor optimization
