@@ -1260,5 +1260,9 @@
   "PROFILE_NOT_FOUND": "Profil non trouvé",
   "PROFILE_NOT_FOUND_DESCRIPTION": "Le profil demandé n'a pas pu être chargé. Veuillez vérifier l'URL et réessayer.",
   "GO_TO_DASHBOARD": "Aller au tableau de bord",
-  "ASK_FOR_QUOTE": "Demandez un devis"
+  "ASK_FOR_QUOTE": "Demandez un devis",
+  "ALL_PROFILES": "Tous les profils",
+  "VIEW_AND_MANAGE_ALL_CANDIDATE_PROFILES": "Voir et gérer tous les profils de candidats",
+  "ATS_PROFILES": "Profils ATS",
+  "AI_POWERED_CANDIDATE_MATCHING_AND_SCORING": "Correspondance et évaluation de candidats par IA"
 }

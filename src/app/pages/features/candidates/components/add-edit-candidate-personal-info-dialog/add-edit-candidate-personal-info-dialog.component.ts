@@ -66,7 +66,7 @@ export class AddEditCandidatePersonalInfoDialogComponent {
     });
 
     effect(() => {
-      const selectedCandidate = this.candidateService.candidateDetails();
+      const selectedCandidate = this.candidateService.CandidatePersonalInfo();
       setTimeout(() => {
         if (selectedCandidate) {
           this.patchFormWithCandidateData(selectedCandidate);

@@ -12,7 +12,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TagModule } from 'primeng/tag';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatchingResultService } from '../../../../../core/services/ats/matching-result.service';
 import { ProfileShortResponseDto } from '../../../../../core/models/ats.models';
 import { AuthService } from '../../../../../core/services/auth/auth.service';
@@ -50,10 +50,10 @@ import { AuthService } from '../../../../../core/services/auth/auth.service';
   ],
 })
 export class OfferAtsProfilesListComponent implements OnInit {
-  @Input() offerId!: string;
-
+  offerId!: string;
   private matchingResultService = inject(MatchingResultService);
   private router = inject(Router);
+  route = inject(ActivatedRoute);
 
   // Pagination state
   currentLimit = signal<number>(10);
@@ -67,14 +67,14 @@ export class OfferAtsProfilesListComponent implements OnInit {
   readonly hasNext = computed(() => this.profiles()?.hasNext || false);
 
   ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.offerId = params['offerId'];
+    });
     if (this.offerId) {
       this.loadProfiles();
     }
   }
 
-  /**
-   * Load profiles with current filters and limit
-   */
   loadProfiles(): void {
     if (!this.offerId) return;
 
@@ -92,9 +92,6 @@ export class OfferAtsProfilesListComponent implements OnInit {
     this.matchingResultService.loadMoreTopMatches(this.offerId);
   }
 
-  /**
-   * Change the limit and reload profiles
-   */
   changeLimit(event: Event): void {
     const newLimit = Number((event.target as HTMLSelectElement).value);
     this.currentLimit.set(newLimit);
@@ -102,20 +99,12 @@ export class OfferAtsProfilesListComponent implements OnInit {
     this.loadProfiles();
   }
 
-  /**
-   * Get score color based on score value
-   */
   getScoreColor(score: number): string {
     if (score >= 80) return 'success';
     if (score >= 60) return 'warning';
     return 'danger';
   }
 
-  /**
-   * Get severity level based on score value
-   * Returns PrimeNG severity values: 'success', 'info', 'warn', 'danger'
-   * Note: 'info' severity has poor contrast in dark mode, so we use 'success' for high scores
-   */
   getSeverity(score: number): 'success' | 'warn' | 'danger' {
     if (score >= 80) return 'success';
     if (score >= 60) return 'warn';

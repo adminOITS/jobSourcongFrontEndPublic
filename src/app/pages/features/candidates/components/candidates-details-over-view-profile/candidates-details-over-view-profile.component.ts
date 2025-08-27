@@ -69,6 +69,10 @@ export class CandidatesDetailsOverViewProfileComponent {
     // }
   }
 
+  openEditDialog() {
+    this.candidateService.openEditDialog(this.candidate()!);
+  }
+
   onReject() {
     this.messageService.clear('confirm');
     // this.copySuccessToastVisible = false;

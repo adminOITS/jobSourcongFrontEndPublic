@@ -23,9 +23,11 @@
           <i class="pi pi-users text-xl"></i>
         </div>
         <div class="flex-1">
-          <h3 class="font-semibold text-lg mb-1">All Profiles</h3>
+          <h3 class="font-semibold text-lg mb-1">
+            {{ "ALL_PROFILES" | translate }}
+          </h3>
           <p class="text-sm opacity-75">
-            View and manage all candidate profiles
+            {{ "VIEW_AND_MANAGE_ALL_CANDIDATE_PROFILES" | translate }}
           </p>
         </div>
         <div
@@ -63,9 +65,11 @@
           <i class="pi pi-sparkles text-xl"></i>
         </div>
         <div class="flex-1">
-          <h3 class="font-semibold text-lg mb-1">ATS Profiles</h3>
+          <h3 class="font-semibold text-lg mb-1">
+            {{ "ATS_PROFILES" | translate }}
+          </h3>
           <p class="text-sm opacity-75">
-            AI-powered candidate matching and scoring
+            {{ "AI_POWERED_CANDIDATE_MATCHING_AND_SCORING" | translate }}
           </p>
         </div>
         <div
@@ -92,7 +96,7 @@
 
     <!-- ATS Profiles Tab Content -->
     <div *ngIf="activeTab === 'ats'" class="space-y-4">
-      <app-offer-ats-profiles-list [offerId]="offerId" />
+      <app-offer-ats-profiles-list />
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, effect, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
@@ -12,6 +12,8 @@ import { CandidatesDetailsOverViewEducationComponent } from '../candidates-detai
 import { CandidatesDetailsOverViewLanguagesComponent } from '../candidates-details-over-view-languages/candidates-details-over-view-languages.component';
 import { CandidatesDetailsOverViewSocialLinksComponent } from '../candidates-details-over-view-social-links/candidates-details-over-view-social-links.component';
 import { CandidateService } from '../../../../../core/services/candidate/candidate.service';
+import { AppSettingsService } from '../../../../../core/services/app-settings.service';
+import { TranslateService } from '@ngx-translate/core';
 
 type TagSeverity =
   | 'success'
@@ -40,4 +42,21 @@ type TagSeverity =
   templateUrl: './candidates-details-over-view-tab.component.html',
   styles: [],
 })
-export class CandidatesDetailsOverViewTabComponent {}
+export class CandidatesDetailsOverViewTabComponent {
+  appSettingsService = inject(AppSettingsService);
+  translateService = inject(TranslateService);
+  candidateService = inject(CandidateService);
+  candidate = this.candidateService.candidateDetails;
+  constructor() {
+    effect(() => {
+      const language = this.appSettingsService.language();
+      this.translateService.get('CANDIDATE_DETAILS').subscribe((res) => {
+        const title =
+          this.candidate()?.firstName && this.candidate()?.lastName
+            ? this.candidate()?.firstName + ' ' + this.candidate()?.lastName
+            : '...';
+        this.appSettingsService.setTitle(res + ' : ' + title);
+      });
+    });
+  }
+}

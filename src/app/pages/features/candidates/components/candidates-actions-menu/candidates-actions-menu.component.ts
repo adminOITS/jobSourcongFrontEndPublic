@@ -64,7 +64,7 @@ export class CandidatesActionsMenuComponent implements OnInit {
         label: 'MARK_AS_VALID',
         icon: 'pi pi-check-circle',
         iconColor: 'text-green-600',
-        can: () => this.candidate()?.candidateCreationSource !== 'MANUAL',
+        can: () => true,
         action: () => this.validateCandidate(),
       },
       {
@@ -72,7 +72,9 @@ export class CandidatesActionsMenuComponent implements OnInit {
         label: 'MARK_AS_INVALID',
         icon: 'pi pi-times-circle',
         iconColor: 'text-red-600',
-        can: () => this.candidate()?.candidateCreationSource !== 'MANUAL',
+        can: () =>
+          this.candidate()?.candidateValidationStatus !==
+          CandidateValidationStatusEnum.INVALIDATED,
         action: () => this.markAsInvalid(),
       },
       {
@@ -116,7 +118,7 @@ export class CandidatesActionsMenuComponent implements OnInit {
         label: 'MARK_AS_VALID',
         icon: 'pi pi-check-circle',
         iconColor: 'text-green-600',
-        can: () => this.candidate()?.candidateCreationSource !== 'MANUAL',
+        can: () => true,
         action: () => this.validateCandidate(),
       },
       {
@@ -124,7 +126,9 @@ export class CandidatesActionsMenuComponent implements OnInit {
         label: 'MARK_AS_INVALID',
         icon: 'pi pi-times-circle',
         iconColor: 'text-red-600',
-        can: () => this.candidate()?.candidateCreationSource !== 'MANUAL',
+        can: () =>
+          this.candidate()?.candidateValidationStatus !==
+          CandidateValidationStatusEnum.INVALIDATED,
         action: () => this.markAsInvalid(),
       },
       {
@@ -168,7 +172,7 @@ export class CandidatesActionsMenuComponent implements OnInit {
         label: 'MARK_AS_VALID',
         icon: 'pi pi-check-circle',
         iconColor: 'text-green-600',
-        can: () => this.candidate()?.candidateValidationStatus !== 'VERIFIED',
+        can: () => true,
         action: () => this.validateCandidate(),
       },
       {
@@ -177,7 +181,8 @@ export class CandidatesActionsMenuComponent implements OnInit {
         icon: 'pi pi-times-circle',
         iconColor: 'text-red-600',
         can: () =>
-          this.candidate()?.candidateValidationStatus !== 'INVALIDATED',
+          this.candidate()?.candidateValidationStatus !==
+          CandidateValidationStatusEnum.INVALIDATED,
         action: () => this.markAsInvalid(),
       },
       {
@@ -234,18 +239,18 @@ export class CandidatesActionsMenuComponent implements OnInit {
     const candidate = this.candidate();
 
     this.menuItems = actions
-      .filter((action: RoleAction) => {
-        // Hide validate/invalidate actions for manually created candidates
-        if (
-          action.key === 'VALIDATE_CANDIDATE' ||
-          action.key === 'MARK_AS_INVALID'
-        ) {
-          return candidate?.candidateCreationSource !== 'MANUAL';
-        }
+      // .filter((action: RoleAction) => {
+      //   // Hide validate/invalidate actions for manually created candidates
+      //   if (
+      //     action.key === 'VALIDATE_CANDIDATE' ||
+      //     action.key === 'MARK_AS_INVALID'
+      //   ) {
+      //     return candidate?.candidateCreationSource !== 'MANUAL';
+      //   }
 
-        // Show all other actions (including availability actions)
-        return true;
-      })
+      //   // Show all other actions (including availability actions)
+      //   return true;
+      // })
       .map((action: RoleAction) => ({
         label: action.label,
         icon: action.icon + ' ' + action.iconColor,

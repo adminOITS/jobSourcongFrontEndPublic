@@ -39,8 +39,6 @@ import { OfferAtsProfilesListComponent } from '../offer-ats-profiles-list';
   styles: ``,
 })
 export class OfferDetailsProfilesTabComponent implements OnInit {
-  @Input() offerId!: string;
-
   activeTab: 'all' | 'ats' = 'all';
 
   request = signal<ProfileFilterRequest>({

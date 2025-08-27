@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { TabsModule } from 'primeng/tabs';
 import { CandidatesDetailsProfilesTabComponent } from '../candidates-details-profiles-tab/candidates-details-profiles-tab.component';
 import { CandidatesDetailsOverViewTabComponent } from '../candidates-details-over-view-tab/candidates-details-over-view-tab.component';
@@ -7,6 +7,9 @@ import { CandidatesDetailsApplicationsTabComponent } from '../candidates-details
 import { CandidatesDetailsInterviewsTabComponent } from '../candidates-details-interviews-tab/candidates-details-interviews-tab.component';
 import { ActivatedRoute } from '@angular/router';
 import { Location, NgIf } from '@angular/common';
+import { AppSettingsService } from '../../../../../core/services/app-settings.service';
+import { TranslateService } from '@ngx-translate/core';
+import { CandidateService } from '../../../../../core/services/candidate/candidate.service';
 @Component({
   selector: 'app-candidates-details-tabs',
   imports: [
@@ -26,37 +29,56 @@ export class CandidatesDetailsTabsComponent {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private location: Location = inject(Location);
   activeTab = signal<string>('1');
+  appSettingsService = inject(AppSettingsService);
+  translateService = inject(TranslateService);
+  candidateService = inject(CandidateService);
+  candidate = this.candidateService.candidateDetails;
   constructor() {
+    effect(() => {
+      const language = this.appSettingsService.language();
+      this.translateService.get('CANDIDATE_DETAILS').subscribe((res) => {
+        const title =
+          this.candidate()?.firstName && this.candidate()?.lastName
+            ? this.candidate()?.firstName + ' ' + this.candidate()?.lastName
+            : '...';
+        this.appSettingsService.setTitle(res + ' : ' + title);
+      });
+    });
+
     this.route.params.subscribe((params) => {
       this.candidateId = params['candidateId'];
     });
     this.route.queryParams.subscribe((params) => {
       const active = params['active'];
-      if (active) {
+      if (
+        active &&
+        ['overview', 'profiles', 'applications', 'interviews'].includes(active)
+      ) {
         this.activeTab.set(active);
       } else {
-        this.activeTab.set('1');
+        this.activeTab.set('overview');
+        this.updateQueryParamWithoutNavigation('active', 'overview');
       }
     });
   }
 
   onTabChange(event: any) {
     switch (event) {
-      case '1':
-        this.activeTab.set('1');
-        this.updateQueryParamWithoutNavigation('active', '1');
+      case 'overview':
+        this.activeTab.set('overview');
+        this.updateQueryParamWithoutNavigation('active', 'overview');
         break;
-      case '2':
-        this.activeTab.set('2');
-        this.updateQueryParamWithoutNavigation('active', '2');
+      case 'profiles':
+        this.activeTab.set('profiles');
+        this.updateQueryParamWithoutNavigation('active', 'profiles');
         break;
-      case '3':
-        this.activeTab.set('3');
-        this.updateQueryParamWithoutNavigation('active', '3');
+      case 'applications':
+        this.activeTab.set('applications');
+        this.updateQueryParamWithoutNavigation('active', 'applications');
         break;
-      case '4':
-        this.activeTab.set('4');
-        this.updateQueryParamWithoutNavigation('active', '4');
+      case 'interviews':
+        this.activeTab.set('interviews');
+        this.updateQueryParamWithoutNavigation('active', 'interviews');
         break;
     }
   }

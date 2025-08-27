@@ -178,7 +178,8 @@
           <div class="flex flex-col gap-2">
             <label for="addressLine1" class="bg-card! text-card-foreground!">
               <i class="pi pi-map text-blue-600 mr-2"></i>
-              {{ "ADDRESS_LINE_1" | translate }}
+              {{ "ADDRESS_LINE_1" | translate
+              }}<span class="text-red-500">*</span>
             </label>
             <input
               id="addressLine1"
@@ -208,7 +209,7 @@
           <div class="flex flex-col gap-2">
             <label for="city" class="bg-card! text-card-foreground!">
               <i class="pi pi-building text-purple-600 mr-2"></i>
-              {{ "CITY" | translate }}
+              {{ "CITY" | translate }}<span class="text-red-500">*</span>
             </label>
             <input
               id="city"
@@ -223,7 +224,7 @@
           <div class="flex flex-col gap-2">
             <label for="zipCode" class="bg-card! text-card-foreground!">
               <i class="pi pi-hashtag text-orange-500 mr-2"></i>
-              {{ "ZIP_CODE" | translate }}
+              {{ "ZIP_CODE" | translate }}<span class="text-red-500">*</span>
             </label>
             <input
               id="zipCode"
@@ -238,7 +239,7 @@
           <div class="flex flex-col gap-2">
             <label for="country" class="bg-card! text-card-foreground!">
               <i class="pi pi-globe text-blue-600 mr-2"></i>
-              {{ "COUNTRY" | translate }}
+              {{ "COUNTRY" | translate }}<span class="text-red-500">*</span>
             </label>
             <input
               id="country"

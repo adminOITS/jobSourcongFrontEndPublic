@@ -1311,5 +1311,9 @@
   "LOADING_PROFILE_DETAILS": "Loading profile details...",
   "PROFILE_NOT_FOUND_DESCRIPTION": "The requested profile could not be loaded. Please check the URL and try again.",
   "GO_TO_DASHBOARD": "Go to Dashboard",
-  "ASK_FOR_QUOTE": "Ask for a quote"
+  "ASK_FOR_QUOTE": "Ask for a quote",
+  "ALL_PROFILES": "All Profiles",
+  "VIEW_AND_MANAGE_ALL_CANDIDATE_PROFILES": "View and manage all candidate profiles",
+  "ATS_PROFILES": "ATS Profiles",
+  "AI_POWERED_CANDIDATE_MATCHING_AND_SCORING": "AI-powered candidate matching and scoring"
 }

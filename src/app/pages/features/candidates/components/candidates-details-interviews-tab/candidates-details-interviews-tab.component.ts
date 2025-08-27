@@ -8,6 +8,9 @@ import {
 } from '../../../../../core/utils/constants';
 import { InterviewService } from '../../../../../core/services/interview/interview.service';
 import { ActivatedRoute } from '@angular/router';
+import { CandidateService } from '../../../../../core/services/candidate/candidate.service';
+import { AppSettingsService } from '../../../../../core/services/app-settings.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-candidates-details-interviews-tab',
@@ -24,7 +27,21 @@ export class CandidatesDetailsInterviewsTabComponent {
   interviewService = inject(InterviewService);
   route = inject(ActivatedRoute);
   candidateId: string = '';
+  appSettingsService = inject(AppSettingsService);
+  translateService = inject(TranslateService);
+  candidateService = inject(CandidateService);
+  candidate = this.candidateService.candidateDetails;
   constructor() {
+    effect(() => {
+      const language = this.appSettingsService.language();
+      this.translateService.get('CANDIDATE_DETAILS').subscribe((res) => {
+        const title =
+          this.candidate()?.firstName && this.candidate()?.lastName
+            ? this.candidate()?.firstName + ' ' + this.candidate()?.lastName
+            : '...';
+        this.appSettingsService.setTitle(res + ' : ' + title);
+      });
+    });
     this.route.params.subscribe((params) => {
       this.candidateId = params['candidateId'];
     });

@@ -35,10 +35,16 @@ export class CompanyDetailsTabsComponent {
   constructor() {
     this.route.queryParams.subscribe((params) => {
       const active = params['active'];
-      if (active) {
+      if (active && ['overview', 'offers', 'members'].includes(active)) {
         this.activeTab.set(active);
       } else {
         this.activeTab.set('overview');
+        updateQueryParamWithoutNavigation(
+          'active',
+          'overview',
+          this.route,
+          this.location
+        );
       }
     });
   }

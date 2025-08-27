@@ -33,34 +33,38 @@ export class OfferDetailsTabsComponent {
   constructor() {
     this.route.queryParams.subscribe((params) => {
       const active = params['active'];
-      if (active) {
+      if (
+        active &&
+        ['overview', 'applications', 'interviews', 'profiles'].includes(active)
+      ) {
         this.activeTab.set(active);
       } else {
-        this.activeTab.set('1');
+        this.activeTab.set('overview');
+        this.updateQueryParamWithoutNavigation('active', 'overview');
       }
     });
   }
   onTabChange(event: any) {
     switch (event) {
-      case '1':
-        this.activeTab.set('1');
-        this.updateQueryParamWithoutNavigation('active', '1');
+      case 'overview':
+        this.activeTab.set('overview');
+        this.updateQueryParamWithoutNavigation('active', 'overview');
         break;
       // case '2':
       //   this.activeTab.set('2');
       //   this.updateQueryParamWithoutNavigation('active', '2');
       //   break;
-      case '3':
-        this.activeTab.set('3');
-        this.updateQueryParamWithoutNavigation('active', '3');
+      case 'applications':
+        this.activeTab.set('applications');
+        this.updateQueryParamWithoutNavigation('active', 'applications');
         break;
-      case '4':
-        this.activeTab.set('4');
-        this.updateQueryParamWithoutNavigation('active', '4');
+      case 'interviews':
+        this.activeTab.set('interviews');
+        this.updateQueryParamWithoutNavigation('active', 'interviews');
         break;
-      case '5':
-        this.activeTab.set('5');
-        this.updateQueryParamWithoutNavigation('active', '5');
+      case 'profiles':
+        this.activeTab.set('profiles');
+        this.updateQueryParamWithoutNavigation('active', 'profiles');
         break;
     }
   }

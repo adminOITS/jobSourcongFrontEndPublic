@@ -43,6 +43,10 @@ export class CandidateService {
   readonly candidateDetails = computed(() => this.selectedCandidate());
   readonly isDialogVisibleComputed = computed(() => this.isDialogVisible());
 
+  CandidatePersonalInfo = linkedSignal({
+    source: () => this.selectedCandidate(),
+    computation: (source) => source ?? null,
+  });
   candidateExperiences = linkedSignal({
     source: () => this.selectedCandidate(),
     computation: (source) => source?.experiences ?? [],
@@ -66,20 +70,24 @@ export class CandidateService {
   });
 
   openAddDialog() {
-    this.selectedCandidate.set(null);
+    this.CandidatePersonalInfo.set(null);
     this.isDialogVisible.set(true);
   }
 
   openEditDialog(Candidate: CandidateResponse) {
-    this.selectedCandidate.set(Candidate);
+    this.CandidatePersonalInfo.set(Candidate);
     this.isDialogVisible.set(true);
   }
   setDialogVisible(visible: boolean) {
     this.isDialogVisible.set(visible);
+    if (!visible) {
+      this.CandidatePersonalInfo.set(null);
+    }
   }
 
   closeDialog() {
     this.isDialogVisible.set(false);
+    this.CandidatePersonalInfo.set(null);
   }
 
   getCandidates(filters?: CandidateSearchRequest) {
