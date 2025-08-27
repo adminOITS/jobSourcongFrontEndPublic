@@ -40,7 +40,7 @@ export class ResumeViewComponent implements OnDestroy {
   width = '100%';
 
   // State management
-  isLoading = signal<boolean>(true);
+  isLoading = signal<boolean>(false);
   hasError = signal<boolean>(false);
   errorMessage = signal<string>('');
   safeUrl = signal<SafeResourceUrl | null>(null);
