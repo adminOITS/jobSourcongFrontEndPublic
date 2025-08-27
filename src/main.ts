@@ -3,6 +3,10 @@ import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { AppComponent } from './app/app.component';
+
+// 👇 Configure PDF.js worker location for standalone setup
+pdfDefaultOptions.assetsFolder = 'assets/';
 
 // Initialize AOS
 AOS.init({
