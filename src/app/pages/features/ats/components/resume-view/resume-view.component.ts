@@ -12,7 +12,7 @@ import { computed } from '@angular/core';
   imports: [CommonModule, TranslateModule, NgxExtendedPdfViewerModule],
   templateUrl: './resume-view.component.html',
 })
-export class ResumeViewComponent implements OnInit, OnDestroy {
+export class ResumeViewComponent implements OnDestroy {
   private matchingResultService = inject(MatchingResultService);
 
   // Get data from service
@@ -23,13 +23,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy {
     const profile = this.profile();
     if (!profile) return '';
 
-    // Try to get resume URL from different possible sources
-    if (profile.resumeLink) return profile.resumeLink;
-    if (profile.resumeUploadResponse?.downloadUrl)
-      return profile.resumeUploadResponse.downloadUrl;
-    if (profile.resumeAttachment?.url) return profile.resumeAttachment.url;
-
-    return '';
+    return profile.resumeAttachment?.url || '';
   });
 
   candidateName = computed(
@@ -53,15 +47,15 @@ export class ResumeViewComponent implements OnInit, OnDestroy {
 
   constructor(private sanitizer: DomSanitizer) {}
 
-  ngOnInit(): void {
-    if (this.pdfUrl()) {
-      this.loadPdf();
-    } else {
-      this.hasError.set(true);
-      this.errorMessage.set('No PDF URL provided');
-      this.isLoading.set(false);
-    }
-  }
+  // ngOnInit(): void {
+  //   if (this.pdfUrl()) {
+  //     this.loadPdf();
+  //   } else {
+  //     this.hasError.set(true);
+  //     this.errorMessage.set('No PDF URL provided');
+  //     this.isLoading.set(false);
+  //   }
+  // }
 
   ngOnDestroy(): void {
     // Cleanup if needed

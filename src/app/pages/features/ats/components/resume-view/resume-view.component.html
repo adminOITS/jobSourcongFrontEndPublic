@@ -56,7 +56,7 @@
 
     <!-- Ngx Extended PDF Viewer -->
     <ngx-extended-pdf-viewer
-      *ngIf="!isLoading() && !hasError() && pdfUrl"
+      *ngIf="!isLoading() && !hasError() && pdfUrl()"
       [src]="pdfUrl()"
       [height]="height"
       [showToolbar]="showToolbar"
