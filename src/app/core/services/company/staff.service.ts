@@ -154,6 +154,7 @@ export class StaffService {
     this._selectedStaff.set(null);
     this._isStaffDetailsDialogVisible.set(false);
     this._selectedStaffForDetails.set(null);
+    this._staffDetails.set(null);
   }
   closeDialog(): void {
     this._isAddEditStaffDialogVisible.set(false);
@@ -187,6 +188,8 @@ export class StaffService {
     offerId: string,
     role: StaffRole
   ): void {
+    this.resetOfferValidatorsList();
+    this.resetOfferRecruitersList();
     this._isStaffRequestLoading.set(true);
     this.http
       .get<OfferStaffResponse[]>(
@@ -210,6 +213,7 @@ export class StaffService {
       });
   }
   getStaffById(staffId: string, companyId: string): void {
+    this._staffDetails.set(null);
     this._isStaffRequestLoading.set(true);
     this.http
       .get<StaffResponse>(`${this.baseUrl}/${companyId}/staff/${staffId}`)

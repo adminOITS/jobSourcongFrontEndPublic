@@ -103,11 +103,75 @@ export function detectContentType(file: File): ContentType {
     ? (extension as ContentType)
     : ContentType.OTHER;
 }
+/**
+ * Convert a DB timestamp string (UTC but missing 'Z') into a proper UTC Date.
+ */
+function parseUtc(value: string | Date): Date {
+  if (value instanceof Date) return value;
+  if (!value) return new Date(NaN);
+
+  // normalize (replace space with T, trim microseconds > 3 digits)
+  const normalized = value.replace(' ', 'T').replace(/(\.\d{3})\d+$/, '$1');
+
+  // already has timezone info (Z or ±HH:MM)? use native parser
+  const hasTimezone = /(?:Z|[+-]\d{2}:?\d{2})$/.test(normalized);
+  if (hasTimezone) {
+    return new Date(normalized);
+  }
+
+  // split date/time manually → treat as UTC
+  const [datePart, timePart = '00:00:00'] = normalized.split('T');
+  const [year, month, day] = datePart.split('-').map(Number);
+
+  const [hour = '0', minute = '0', secondWithMs = '0'] = timePart.split(':');
+  const [second, ms = '0'] = secondWithMs.split('.');
+
+  return new Date(
+    Date.UTC(
+      year,
+      month - 1, // JS months are 0-based
+      day,
+      Number(hour),
+      Number(minute),
+      Number(second),
+      Number(ms)
+    )
+  );
+}
+
+/**
+ * Format a DB UTC timestamp into a relative "time ago" string.
+ */
 export function timeAgo(dateString: string, locale: string = 'fr'): string {
-  return formatDistanceToNow(new Date(dateString), {
+  const date = parseUtc(dateString);
+
+  console.log(
+    'dateString:',
+    dateString,
+    '\nnew Date(dateString):',
+    new Date(dateString),
+    '\nparseUtc(dateString):',
+    date,
+    '\nnew Date():',
+    new Date()
+  );
+
+  return formatDistanceToNow(date, {
     addSuffix: true,
     locale: locale === 'fr' ? fr : undefined,
   });
+}
+
+function toUtcDate(value: string | Date): Date {
+  if (value instanceof Date) return value;
+  if (!value) return new Date(NaN);
+
+  // normalize space separator
+  const normalized = value.replace(' ', 'T');
+
+  // if no timezone info, force UTC by appending Z
+  const hasTimezone = /(?:Z|[+-]\d{2}:?\d{2})$/.test(normalized);
+  return new Date(hasTimezone ? normalized : normalized + 'Z');
 }
 export const dateRangeValidator: ValidatorFn = (
   group: AbstractControl

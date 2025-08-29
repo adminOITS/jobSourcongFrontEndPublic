@@ -130,6 +130,7 @@ export class CompanyService {
   }
 
   getCompanyById(id: string) {
+    this.companySignal.set(null);
     this._isCompanyLoading.set(true);
     this.http
       .get<CompanyResponse>(`${this.baseUrl}/${id}`)

@@ -333,6 +333,7 @@ export class ProfileService {
   }
 
   getProfilesByCandidateId(filters?: ProfileFilterRequest) {
+    this.emptyProfiles();
     const candidateId = this.candidateService.candidateDetails()?.id;
     if (!candidateId) {
       return;
@@ -367,6 +368,7 @@ export class ProfileService {
   }
 
   getProfileById(profileId: string) {
+    this._selectedProfile.set(null);
     const candidateId = this.candidateService.candidateDetails()?.id;
 
     this._isProfileLoading.set(true);
