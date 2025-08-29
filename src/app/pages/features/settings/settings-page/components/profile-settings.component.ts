@@ -57,13 +57,13 @@ export class ProfileSettingsComponent {
       phone: formData.phone,
       city: this.staffDetails()?.city || '',
       country: this.staffDetails()?.country || '',
-      email: this.staffDetails()?.appUser?.email!,
+      email: this.staffDetails()?.user?.email!,
     };
 
     this.staffService.editStaff(
       this.staffDetails()?.id!,
       staffRequest,
-      this.staffDetails()?.appUser?.companyId!
+      this.staffDetails()?.user?.companyId!
     );
   }
 

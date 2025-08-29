@@ -24,7 +24,7 @@ export interface StaffResponse extends BaseEntity {
   email: string;
   role: StaffRole;
   isEnabled: boolean;
-  appUser?: AppUser;
+  user?: AppUser;
 }
 export interface AppUser {
   id: string;
