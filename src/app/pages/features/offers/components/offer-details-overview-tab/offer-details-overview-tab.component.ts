@@ -1,11 +1,9 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
-import { TooltipModule } from 'primeng/tooltip';
 import { TagModule } from 'primeng/tag';
 import {
   OfferDescription,
@@ -24,17 +22,19 @@ import { OfferOverViewTabBenefitsSectionComponent } from '../offer-over-view-tab
 import { OfferOverViewTabNotesSectionComponent } from '../offer-over-view-tab-notes-section/offer-over-view-tab-notes-section.component';
 import { OfferService } from '../../../../../core/services/offer/offer.service';
 import { HasRoleDirective } from '../../../../../core/directives/has-role.directive';
+import { TranslateModule } from '@ngx-translate/core';
+import { TooltipModule } from 'primeng/tooltip';
 @Component({
   selector: 'app-offer-details-overview-tab',
   standalone: true,
   imports: [
     CommonModule,
-    TranslateModule,
     CardModule,
+    TranslateModule,
+    TooltipModule,
     DividerModule,
     ButtonModule,
     ChipModule,
-    TooltipModule,
     TagModule,
     AddEditOfferJobDescriptionDialogComponent,
     OfferOverViewTabLanguagesSectionComponent,

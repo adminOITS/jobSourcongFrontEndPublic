@@ -12,10 +12,12 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TagModule } from 'primeng/tag';
+import { SelectModule } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatchingResultService } from '../../../../../core/services/ats/matching-result.service';
 import { ProfileShortResponseDto } from '../../../../../core/models/ats.models';
-import { AuthService } from '../../../../../core/services/auth/auth.service';
+import { ApplicationService } from '../../../../../core/services/applications/application.service';
 
 @Component({
   selector: 'app-offer-ats-profiles-list',
@@ -23,7 +25,9 @@ import { AuthService } from '../../../../../core/services/auth/auth.service';
   imports: [
     CommonModule,
     TranslateModule,
+    FormsModule,
     ButtonModule,
+    SelectModule,
     CardModule,
     ProgressBarModule,
     TagModule,
@@ -54,10 +58,15 @@ export class OfferAtsProfilesListComponent implements OnInit {
   private matchingResultService = inject(MatchingResultService);
   private router = inject(Router);
   route = inject(ActivatedRoute);
+  private applicationService = inject(ApplicationService);
 
   // Pagination state
   currentLimit = signal<number>(10);
   availableLimits = [10, 25, 50];
+  limitOptions = this.availableLimits.map((l) => ({
+    name: String(l),
+    value: l,
+  }));
 
   // Computed properties from service
   readonly profiles = this.matchingResultService.topMatches;
@@ -65,6 +74,9 @@ export class OfferAtsProfilesListComponent implements OnInit {
     this.matchingResultService.isTopMatchesLoading()
   );
   readonly hasNext = computed(() => this.profiles()?.hasNext || false);
+  readonly isPublishing = computed(() =>
+    this.matchingResultService.isPublishingLoading()
+  );
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -81,6 +93,22 @@ export class OfferAtsProfilesListComponent implements OnInit {
     this.matchingResultService.getTopByTotalMatchAdvanced(this.offerId, {
       limit: this.currentLimit(),
     });
+  }
+
+  /** Handle limit change from p-select */
+  onLimitChange(value: number): void {
+    if (value === this.currentLimit()) return;
+    this.currentLimit.set(Number(value));
+    this.matchingResultService.clearTopMatches();
+    this.loadProfiles();
+  }
+
+  /**
+   * Trigger re-analyze/publish on current offer
+   */
+  reAnalyze(): void {
+    if (!this.offerId || this.isPublishing()) return;
+    this.matchingResultService.publishProfilesForOffer(this.offerId);
   }
 
   /**
@@ -121,19 +149,6 @@ export class OfferAtsProfilesListComponent implements OnInit {
   }
 
   /**
-   * Format candidate name
-   */
-  getCandidateName(profile: ProfileShortResponseDto): string {
-    return (
-      `${profile.candidate?.firstName || ''} ${
-        profile.candidate?.lastName || ''
-      }`.trim() || 'Unknown Candidate'
-    );
-  }
-
- 
-
-  /**
    * Track profiles by ID for ngFor optimization
    */
   trackByProfileId(index: number, profile: ProfileShortResponseDto): string {
@@ -150,5 +165,17 @@ export class OfferAtsProfilesListComponent implements OnInit {
         profile.candidate.id
       }/profiles/${profile.id}`,
     ]);
+  }
+
+  /**
+   * Apply candidate profile to the current offer
+   */
+  applyToOffer(profile: ProfileShortResponseDto): void {
+    if (profile && profile.candidate?.id && profile.id) {
+      this.applicationService.createApplication(
+        profile.candidate.id,
+        profile.id
+      );
+    }
   }
 }

@@ -1,24 +1,43 @@
 <div class="space-y-6">
   <!-- Header with Limit Control -->
-  <div class="flex items-center justify-between">
-    <div>
+  <div
+    class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <div class="flex items-center justify-between gap-2">
       <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-        ATS Matched Profiles
+        {{ "ATS_MATCHED_PROFILES" | translate }}
       </h3>
     </div>
 
-    <!-- Limit Selector -->
-    <div class="flex items-center gap-2">
-      <label class="text-sm text-gray-600 dark:text-gray-400">Show:</label>
-      <select
-        [value]="currentLimit()"
-        (change)="changeLimit($event)"
-        class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-      >
-        <option *ngFor="let limit of availableLimits" [value]="limit">
-          {{ limit }}
-        </option>
-      </select>
+    <div class="flex flex-row gap-2 sm:items-center sm:justify-end">
+      <button
+        pButton
+        type="button"
+        (click)="reAnalyze()"
+        [disabled]="isPublishing()"
+        [label]="
+          !isPublishing()
+            ? ('REANALYZE_CANDIDATES' | translate)
+            : ('PUBLISHING' | translate)
+        "
+        [icon]="'pi pi-refresh'"
+        class="bg-gradient-to-r! w-full! sm:w-fit! rounded-md! from-secondary! to-primary! text-white! shadow-md! border-none! transition-colors duration-150 hover:opacity-90!"
+      ></button>
+
+      <!-- Limit Selector -->
+      <div class="flex items-center gap-2">
+        <label class="text-sm lg:text-base text-gray-600 dark:text-gray-400"
+          >{{ "SHOW" | translate }}:</label
+        >
+        <p-select
+          [options]="limitOptions"
+          [ngModel]="currentLimit()"
+          optionLabel="name"
+          optionValue="value"
+          class="w-fit! rounded-md! bg-card! text-text! hover:border-primary! focus:border-primary! focus:ring-primary! dark:hover:border-white! dark:focus:border-white! dark:focus:ring-white!"
+          (onChange)="onLimitChange($event.value)"
+        ></p-select>
+      </div>
     </div>
   </div>
 
@@ -30,7 +49,9 @@
     <div
       class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"
     ></div>
-    <p class="text-gray-600 dark:text-gray-400">Loading ATS profiles...</p>
+    <p class="text-gray-600 dark:text-gray-400">
+      {{ "LOADING_ATS_PROFILES" | translate }}
+    </p>
   </div>
 
   <!-- No Profiles State -->
@@ -46,10 +67,10 @@
       <i class="pi pi-users text-2xl text-gray-400"></i>
     </div>
     <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-      No ATS Profiles Found
+      {{ "NO_ATS_PROFILES_FOUND" | translate }}
     </h3>
     <p class="text-gray-600 dark:text-gray-400">
-      No candidate profiles match the current criteria.
+      {{ "NO_CANDIDATE_PROFILES_MATCH" | translate }}
     </p>
   </div>
 
@@ -75,19 +96,30 @@
       <!-- Profile Header -->
       <div class="mb-4">
         <h4 class="font-semibold text-gray-900 dark:text-white text-lg mb-1">
-          {{ getCandidateName(profile) }}
+          <ng-container
+            *ngIf="
+              profile.candidate.firstName || profile.candidate.lastName;
+              else unknownCandidate
+            "
+          >
+            {{ profile.candidate.firstName || "" }}
+            {{ profile.candidate.lastName || "" }}
+          </ng-container>
+          <ng-template #unknownCandidate>
+            {{ "UNKNOWN_CANDIDATE" | translate }}
+          </ng-template>
         </h4>
         <p class="text-gray-600 dark:text-gray-400 text-sm">
-          {{ profile.profileTitle || "No Title" }}
+          {{ profile.profileTitle || ("NO_TITLE" | translate) }}
         </p>
       </div>
 
       <!-- Score Progress Bar -->
       <div class="mb-4">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
-            >Match Score</span
-          >
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{
+            "MATCH_SCORE" | translate
+          }}</span>
           <span class="text-sm text-gray-600 dark:text-gray-400"
             >{{ profile.score }}%</span
           >
@@ -100,21 +132,32 @@
         ></p-progressBar>
       </div>
 
-     
-
       <!-- Profile Actions -->
       <div
         class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700"
       >
         <div class="text-xs text-gray-500 dark:text-gray-400">
-          ID: {{ profile.id ? profile.id.substring(0, 8) : "N/A" }}...
+          ID:
+          {{
+            profile.id
+              ? profile.id.substring(0, 8)
+              : ("NOT_AVAILABLE" | translate)
+          }}...
         </div>
-        <button
-          class="px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 cursor-pointer text-white rounded-md transition-colors duration-200"
-          (click)="viewProfileDetails(profile)"
-        >
-          View Details
-        </button>
+        <div class="flex items-center gap-2">
+          <button
+            class="px-3 py-1 text-xs bg-green-600 hover:bg-green-700 cursor-pointer text-white rounded-md transition-colors duration-200"
+            (click)="applyToOffer(profile)"
+          >
+            {{ "APPLY" | translate }}
+          </button>
+          <button
+            class="px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 cursor-pointer text-white rounded-md transition-colors duration-200"
+            (click)="viewProfileDetails(profile)"
+          >
+            {{ "VIEW_DETAILS" | translate }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -125,7 +168,7 @@
     class="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700"
   >
     <div class="text-sm text-gray-600 dark:text-gray-400">
-      Showing {{ profiles().data.length }} profiles
+      {{ "SHOWING_PROFILES" | translate : { count: profiles().data.length } }}
     </div>
 
     <div class="flex items-center gap-2">
@@ -135,7 +178,7 @@
         class="px-4 py-2 text-sm font-medium text-gray-500 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
       >
         <i class="pi pi-chevron-left mr-1"></i>
-        Previous
+        {{ "PREVIOUS" | translate }}
       </button>
 
       <!-- Load More Button -->
@@ -145,12 +188,12 @@
         [disabled]="isLoading()"
         class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 border border-transparent rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
       >
-        <span *ngIf="!isLoading()">Load More</span>
+        <span *ngIf="!isLoading()">{{ "LOAD_MORE" | translate }}</span>
         <span *ngIf="isLoading()" class="flex items-center gap-2">
           <div
             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"
           ></div>
-          Loading...
+          {{ "LOADING_ATS_PROFILES" | translate }}
         </span>
       </button>
 
@@ -159,7 +202,7 @@
         [disabled]="!hasNext() || isLoading()"
         class="px-4 py-2 text-sm font-medium text-gray-500 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
       >
-        Next
+        {{ "NEXT" | translate }}
         <i class="pi pi-chevron-right ml-1"></i>
       </button>
     </div>

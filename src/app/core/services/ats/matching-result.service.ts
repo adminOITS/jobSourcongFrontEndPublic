@@ -114,10 +114,6 @@ export class MatchingResultService {
         next: (response) => {
           this._topMatches.set(response);
         },
-        error: (error) => {
-          console.error('Error fetching top matches:', error);
-          this.messageWrapper.error('FAILED_TO_LOAD_TOP_MATCHES');
-        },
       });
   }
 
@@ -140,10 +136,11 @@ export class MatchingResultService {
       )
       .subscribe({
         next: () => {
-          this.messageWrapper.success('PROFILES_PUBLISH_INITIATED');
+          this.messageWrapper.success(
+            'PROFILES_PUBLISH_INITIATED_PLEASE_WAIT_FOR_COMPLETION'
+          );
         },
         error: (error) => {
-          console.error('Error publishing profiles:', error);
           this.messageWrapper.error('FAILED_TO_PUBLISH_PROFILES');
         },
       });
@@ -184,10 +181,6 @@ export class MatchingResultService {
             data: [...currentMatches.data, ...response.data],
           };
           this._topMatches.set(updatedResponse);
-        },
-        error: (error) => {
-          console.error('Error loading more matches:', error);
-          this.messageWrapper.error('FAILED_TO_LOAD_MORE_MATCHES');
         },
       });
   }

@@ -20,7 +20,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import AOS from 'aos';
+// import AOS from 'aos';
 
 @Component({
   selector: 'app-landing-page',
@@ -66,26 +66,26 @@ export class LandingPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     // Initialize AOS when component initializes
-    AOS.init({
-      duration: 600,
-      easing: 'ease-in-out',
-      once: false,
-      offset: 50,
-      delay: 0,
-      disable: 'mobile', // Disable on mobile for better performance
-    });
+    // AOS.init({
+    //   duration: 600,
+    //   easing: 'ease-in-out',
+    //   once: false,
+    //   offset: 50,
+    //   delay: 0,
+    //   disable: 'mobile', // Disable on mobile for better performance
+    // });
   }
 
   ngAfterViewInit() {
     // Refresh AOS after view is initialized
-    setTimeout(() => {
-      AOS.refresh();
-    }, 500);
+    // setTimeout(() => {
+    //   AOS.refresh();
+    // }, 500);
   }
 
   ngOnDestroy() {
     // Clean up AOS when component is destroyed
-    AOS.refresh();
+    // AOS.refresh();
   }
 
   // Scroll to contact form

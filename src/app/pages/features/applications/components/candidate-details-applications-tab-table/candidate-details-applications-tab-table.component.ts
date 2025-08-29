@@ -4,6 +4,7 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
+  WritableSignal,
   computed,
   inject,
   signal,
@@ -11,7 +12,7 @@ import {
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { Menu, MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
 import { LazyLoadEvent } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -30,6 +31,9 @@ import {
   DEFAULT_APPLICATION_PAGE,
   DEFAULT_APPLICATION_SIZE,
 } from '../../../../../core/utils/constants';
+import { ApplicationActionsMenuComponent } from '../application-actions-menu/application-actions-menu.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ApplicationHistoryRecordListDialogComponent } from '../application-history-record-list-dialog/application-history-record-list-dialog.component';
 @Component({
   selector: 'app-candidate-details-applications-tab-table',
   imports: [
@@ -38,7 +42,11 @@ import {
     MenuModule,
     ButtonModule,
     TranslateModule,
+    ApplicationActionsMenuComponent,
+    ConfirmDialogModule,
+    ApplicationHistoryRecordListDialogComponent,
   ],
+  providers: [ConfirmationService],
   templateUrl: './candidate-details-applications-tab-table.component.html',
   styles: ``,
 })
@@ -57,58 +65,46 @@ export class CandidateDetailsApplicationsTabTableComponent
     () => this.applications().totalItems / this.applications().totalPages
   );
 
-  selectedApplication: ApplicationResponse | null = null;
   menuItems: MenuItem[] | undefined;
 
   columns: Column[] = [];
   private router = inject(Router);
   private translateService = inject(TranslateService);
   private destroy$ = new Subject<void>();
-
+  private confirmationService = inject(ConfirmationService);
+  selectedApplication: WritableSignal<ApplicationResponse | null> =
+    signal(null);
   constructor() {
     this.initColumns();
-    this.initMenuItems();
-    this.translateService.onLangChange
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.initMenuItems();
-      });
   }
 
   getApplicationStatusClasses = getApplicationStatusClasses;
-  initMenuItems() {
-    this.menuItems = [
-      {
-        label: this.translateService.instant('VIEW_DETAILS'),
-        icon: 'pi pi-eye',
-        command: () => this.viewDetails(),
-      },
-      {
-        label: this.translateService.instant('SCHEDULE_INTERVIEW'),
-        icon: 'pi pi-calendar',
-        command: () => this.scheduleInterview(),
-      },
-
-      {
-        label: this.translateService.instant('DELETE'),
-        icon: 'pi pi-trash',
-        command: () => this.deleteApplication(),
-      },
-    ];
-  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  private interviewService = inject(InterviewService);
-  scheduleInterview() {
-    this.interviewService.openAddDialog(this.selectedApplication?.id!);
-  }
+  @ViewChild('actionsMenu') actionsMenu!: ApplicationActionsMenuComponent;
 
+  onRowSelect(event: any, application: ApplicationResponse) {
+    this.selectedApplication.set(application);
+    this.actionsMenu.toggle(event);
+  }
   deleteApplication() {
-    this.applicationService.deleteApplication(this.selectedApplication?.id!);
+    this.confirmationService.confirm({
+      message: 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_APPLICATION',
+      accept: () => {
+        this.applicationService.deleteApplication(
+          this.selectedApplication()?.id!
+        );
+      },
+    });
+  }
+  viewDetails() {
+    this.applicationService.openApplicationHistoryRecordListDialog(
+      this.selectedApplication()?.id!
+    );
   }
 
   loadApplications(event: TableLazyLoadEvent) {
@@ -124,22 +120,6 @@ export class CandidateDetailsApplicationsTabTableComponent
     });
   }
 
-  onRowSelect(event: any, application: ApplicationResponse) {
-    this.selectedApplication = application;
-    this.menu.toggle(event);
-  }
-
-  viewDetails() {
-    if (this.selectedApplication) {
-    }
-  }
-
-  deleteInterview() {
-    if (this.selectedApplication) {
-      console.log('Deleting application:', this.selectedApplication);
-      // Implement delete logic
-    }
-  }
   initColumns() {
     this.columns = [
       {
