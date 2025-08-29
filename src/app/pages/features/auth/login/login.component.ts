@@ -40,6 +40,7 @@ export class LoginComponent {
   errorMessage = this.authService.loginError;
 
   constructor() {
+    this.authService.emptyLoginError();
     this.loginForm = this.fb.group({
       userName: ['', [Validators.required]],
       password: ['', [Validators.required]],

@@ -1282,5 +1282,7 @@
   "CONTACT_PERSON_REQUIRED": "Le contact person est requis",
   "COMPANY_UPDATE_FAILED": "La mise à jour de la société a échoué",
   "TOTAL_ASSIGNED_OFFERS": "Total des offres assignées",
-  "FAILED_TO_PUBLISH_PROFILES": "La publication des profils a échoué"
+  "FAILED_TO_PUBLISH_PROFILES": "La publication des profils a échoué",
+  "ACCEPTED_APPLICATIONS": "Candidatures acceptées",
+  "REJECTED_APPLICATIONS": "Candidatures rejetées"
 }

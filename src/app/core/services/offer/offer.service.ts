@@ -222,8 +222,12 @@ export class OfferService {
       });
   }
 
+  emptyOfferDetails() {
+    this.offerDetailsSignal.set(null);
+  }
   // Get offer by ID
   getOfferById(id: string) {
+    this.emptyOfferDetails();
     this._isOfferLoading.set(true);
     this.http
       .get<OfferResponse>(`${this.baseUrl}/${id}`)

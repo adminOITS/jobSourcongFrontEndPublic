@@ -32,21 +32,6 @@ export class AuthService {
   private forgotPasswordErrorSignal = signal<string | null>(null);
   private forgotPasswordSuccessSignal = signal<string | null>(null);
 
-  // ({
-  //   id: 1,
-  //   username: 'john.doe',
-  //   firstName: 'John',
-  //   lastName: 'Doe',
-  //   email: 'john.doe@example.com',
-  //   companyId: 'a2f6231d-5ae4-4066-a795-fe0d4d26836e',
-  //   // roles: [APP_ROLES.RECRUITER],
-  //   // roles: [APP_ROLES.HR],
-  //   roles: [APP_ROLES.HR_ADMIN],
-  //   // roles: [APP_ROLES.VALIDATOR],
-  //   isActive: true,
-  //   isEmailVerified: true,
-  // });
-
   private _isLoading = signal(false);
   readonly currentUser = computed(() => this.currentUserSignal());
   readonly isLoading = computed(() => this._isLoading());
@@ -57,6 +42,11 @@ export class AuthService {
   readonly forgotPasswordSuccess = computed(() =>
     this.forgotPasswordSuccessSignal()
   );
+
+  emptyLoginError() {
+    this.loginErrorSignal.set(null);
+  }
+
   getRole(): UserRole | '' {
     const roles = this.currentUserSignal()?.roles || [];
 

@@ -1333,5 +1333,7 @@
   "CONTACT_PERSON_REQUIRED": "Contact person is required",
   "COMPANY_UPDATE_FAILED": "Company update failed",
   "TOTAL_ASSIGNED_OFFERS": "Total assigned offers",
-  "FAILED_TO_PUBLISH_PROFILES": "Failed to publish profiles"
+  "FAILED_TO_PUBLISH_PROFILES": "Failed to publish profiles",
+  "ACCEPTED_APPLICATIONS": "Accepted Applications",
+  "REJECTED_APPLICATIONS": "Rejected Applications"
 }

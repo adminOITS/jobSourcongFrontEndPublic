@@ -33,6 +33,7 @@ export class InterviewDataService {
   }
 
   getInterviewData(interviewDataId: string) {
+    this.emptyInterviewData();
     const url = `${this.baseUrl}/${interviewDataId}/data`;
     this._interviewDataLoading.set(true);
     this.http

@@ -66,8 +66,17 @@ export class InterviewService {
     this.isDialogVisible.set(false);
     this.selectedInterview.set(null);
   }
+  emptyInterviews() {
+    this._interviews.set({
+      data: [],
+      totalItems: 0,
+      totalPages: 0,
+      currentPage: 0,
+    });
+  }
 
   getInterviewsByApplicationId(applicationId: string) {
+    this.emptyInterviews();
     const url = `${this.baseUrl}/application/${applicationId}`;
     this._isInterviewsLoading.set(true);
     return this.http
@@ -84,6 +93,7 @@ export class InterviewService {
       });
   }
   getInterviews(filters?: InterviewSearchRequest) {
+    this.emptyInterviews();
     let params = new HttpParams();
     if (filters) {
       Object.entries(filters).forEach(([key, value]) => {
@@ -107,6 +117,7 @@ export class InterviewService {
       });
   }
   getInterviewById(interviewId: string) {
+    this.selectedInterview.set(null);
     const url = `${this.baseUrl}/${interviewId}`;
     this._selectedInterviewLoading.set(true);
     this.http
@@ -171,6 +182,7 @@ export class InterviewService {
       });
   }
   getInterviewsByOfferId(offerId: string, filters?: InterviewSearchRequest) {
+    this.emptyInterviews();
     let params = new HttpParams();
     if (filters) {
       Object.entries(filters).forEach(([key, value]) => {
@@ -196,6 +208,7 @@ export class InterviewService {
     candidateId: string,
     filters?: InterviewSearchRequest
   ) {
+    this.emptyInterviews();
     let params = new HttpParams();
     if (filters) {
       Object.entries(filters).forEach(([key, value]) => {

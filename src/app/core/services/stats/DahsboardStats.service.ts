@@ -33,8 +33,15 @@ export class DashboardStatsService {
     this._dashboardStatsByValidatorSignal()
   );
   isDashboardStatsLoading = computed(() => this._isDashboardStatsLoading());
+  emptyDashboardStats() {
+    this._dashboardStatsSignal.set(null);
+    this._dashboardStatsByCompanyIdSignal.set(null);
+    this._dashboardStatsByRecruiterSignal.set(null);
+    this._dashboardStatsByValidatorSignal.set(null);
+  }
 
   getDashboardStats() {
+    this.emptyDashboardStats();
     this._isDashboardStatsLoading.set(true);
     return this.http
       .get<DashboardStatistics>(`${this.baseUrl}/async`)
