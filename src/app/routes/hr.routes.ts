@@ -86,7 +86,9 @@ export const HrRoutes: Routes = [
       {
         path: ROUTES.SETTINGS.BASE,
         loadComponent: () =>
-          import('../empty/empty.component').then((m) => m.EmptyComponent),
+          import(
+            '../pages/features/settings/settings-page/settings-page.component'
+          ).then((m) => m.SettingsPageComponent),
       },
       {
         path: ROUTES.INTERVIEW.LIST,

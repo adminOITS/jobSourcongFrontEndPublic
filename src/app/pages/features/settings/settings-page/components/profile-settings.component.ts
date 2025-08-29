@@ -37,13 +37,15 @@ export class ProfileSettingsComponent {
       phone: [''],
     });
     effect(() => {
-      if (this.staffDetails()) {
-        this.profileForm = this.fb.group({
-          firstName: [this.staffDetails()?.firstName],
-          lastName: [this.staffDetails()?.lastName],
-          phone: [this.staffDetails()?.phone],
-        });
-      }
+      setTimeout(() => {
+        if (this.staffDetails()) {
+          this.profileForm = this.fb.group({
+            firstName: [this.staffDetails()?.firstName],
+            lastName: [this.staffDetails()?.lastName],
+            phone: [this.staffDetails()?.phone],
+          });
+        }
+      }, 100);
     });
   }
 

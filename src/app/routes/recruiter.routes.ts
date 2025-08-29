@@ -57,7 +57,9 @@ export const RecruiterRoutes: Routes = [
       {
         path: ROUTES.MAILING.LIST,
         loadComponent: () =>
-          import('../empty/empty.component').then((m) => m.EmptyComponent),
+          import(
+            '../pages/features/settings/settings-page/settings-page.component'
+          ).then((m) => m.SettingsPageComponent),
       },
       {
         path: ROUTES.SETTINGS.BASE,

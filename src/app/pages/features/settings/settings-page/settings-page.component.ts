@@ -18,7 +18,7 @@ import { StaffService } from '../../../../core/services/company/staff.service';
     GenericSettingsComponent,
     ProfileSettingsComponent,
     SecuritySettingsComponent,
-    // HasRoleDirective,
+    HasRoleDirective,
   ],
   templateUrl: './settings-page.component.html',
 })
