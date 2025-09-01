@@ -3,7 +3,6 @@ import {
   inject,
   Input,
   OnDestroy,
-  Signal,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -24,13 +23,7 @@ import {
   OFFER_STATUS_OPTIONS,
   WORK_MODES,
 } from '../../../../../core/utils/constants';
-import {
-  count,
-  debounceTime,
-  distinctUntilChanged,
-  Subject,
-  takeUntil,
-} from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { JobOfferFilterRequest } from '../../../../../core/models/offer.models';
 
 @Component({

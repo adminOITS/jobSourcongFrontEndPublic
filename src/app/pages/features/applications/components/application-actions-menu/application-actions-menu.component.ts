@@ -23,6 +23,7 @@ import { AuthService } from '../../../../../core/services/auth/auth.service';
 import { InterviewService } from '../../../../../core/services/interview/interview.service';
 import { ApplicationCommentActionDialogComponent } from '../application-comment-action-dialog/application-comment-action-dialog.component';
 import { Router } from '@angular/router';
+import { ApplicationEmailService } from '../../../../../core/services/applications/application-email.service';
 
 @Component({
   selector: 'app-application-actions-menu',
@@ -169,6 +170,26 @@ export class ApplicationActionsMenuComponent implements OnInit {
         action: () => this.acceptByValidator(),
       },
       {
+        key: 'SEND_ACCEPTANCE_EMAIL',
+        label: 'SEND_ACCEPTANCE_EMAIL_Action',
+        icon: 'pi pi-envelope',
+        iconColor: 'text-blue-500',
+        can: () =>
+          ['ACCEPTED_BY_VALIDATOR'].includes(this.application()?.status!),
+        action: () => this.sendAcceptanceEmail(),
+      },
+      {
+        key: 'SEND_REFUSAL_EMAIL',
+        label: 'SEND_REFUSAL_EMAIL_Action',
+        icon: 'pi pi-envelope',
+        iconColor: 'text-blue-500',
+        can: () =>
+          ['ACCEPTED_BY_VALIDATOR', 'REJECTED_BY_VALIDATOR'].includes(
+            this.application()?.status!
+          ),
+        action: () => this.sendRefusalEmail(),
+      },
+      {
         key: 'REJECT_APPLICATION',
         label: 'REJECTED_BY_VALIDATOR_Action',
         icon: 'pi pi-times-circle',
@@ -262,6 +283,26 @@ export class ApplicationActionsMenuComponent implements OnInit {
         action: () => this.rejectByValidator(),
       },
       {
+        key: 'SEND_ACCEPTANCE_EMAIL',
+        label: 'SEND_ACCEPTANCE_EMAIL_Action',
+        icon: 'pi pi-envelope',
+        iconColor: 'text-blue-500',
+        can: () =>
+          ['ACCEPTED_BY_VALIDATOR'].includes(this.application()?.status!),
+        action: () => this.sendAcceptanceEmail(),
+      },
+      {
+        key: 'SEND_REFUSAL_EMAIL',
+        label: 'SEND_REFUSAL_EMAIL_Action',
+        icon: 'pi pi-envelope',
+        iconColor: 'text-blue-500',
+        can: () =>
+          ['ACCEPTED_BY_VALIDATOR', 'REJECTED_BY_VALIDATOR'].includes(
+            this.application()?.status!
+          ),
+        action: () => this.sendRefusalEmail(),
+      },
+      {
         key: 'CANCEL_BY_HR',
         label: 'CANCELLED_BY_HR_Action',
         icon: 'pi pi-times',
@@ -341,12 +382,18 @@ export class ApplicationActionsMenuComponent implements OnInit {
   }
   private interviewService = inject(InterviewService);
   private router = inject(Router);
-
+  private applicationEmailService = inject(ApplicationEmailService);
   viewValidationDetails() {
     this.router.navigate([
       '/validator/applications/validation-review',
       this.application()?.id,
     ]);
+  }
+  private sendAcceptanceEmail() {
+    this.applicationEmailService.sendAcceptanceEmail(this.application()?.id!);
+  }
+  private sendRefusalEmail() {
+    this.applicationEmailService.sendRefusalEmail(this.application()?.id!);
   }
   viewDetails() {
     this.onViewDetails.emit();

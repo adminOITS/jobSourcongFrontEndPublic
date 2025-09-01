@@ -65,7 +65,8 @@
         <td class="w-1/6 p-0 px-1">
           <div class="px-0 min-h-[20px] max-h-[20px] flex items-center">
             <p class="text-sm truncate overflow-hidden whitespace-nowrap">
-              {{ interview?.interviewerName }}
+              {{ interview?.interviewer?.firstName }}
+              {{ interview?.interviewer?.lastName }}
             </p>
           </div>
         </td>

@@ -145,17 +145,6 @@ function parseUtc(value: string | Date): Date {
 export function timeAgo(dateString: string, locale: string = 'fr'): string {
   const date = parseUtc(dateString);
 
-  console.log(
-    'dateString:',
-    dateString,
-    '\nnew Date(dateString):',
-    new Date(dateString),
-    '\nparseUtc(dateString):',
-    date,
-    '\nnew Date():',
-    new Date()
-  );
-
   return formatDistanceToNow(date, {
     addSuffix: true,
     locale: locale === 'fr' ? fr : undefined,

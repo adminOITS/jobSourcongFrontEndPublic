@@ -1,6 +1,7 @@
 import { Currency } from '../types';
 import { WorkMode } from '../models/offer.models';
 import { JobCategory } from '../models/category.models';
+import { ApplicationStatusEnum } from '../models/application.models';
 
 export const CANDIDATE_SERVICE_DOMAIN = 'CANDIDATE-SERVICE/api/v1/candidates';
 export const OFFER_SERVICE_DOMAIN = 'JOB-OFFER-SERVICE/api/v1/job-offers';
@@ -16,6 +17,7 @@ export const RECENT_OFFERS_VIEWS_DOMAIN =
 export const USER_SERVICE_DOMAIN = 'IDENTITY-SERVICE/api/v1/users';
 export const AUTH_SERVICE_DOMAIN = 'IDENTITY-SERVICE/api/v1/auth';
 export const ATS_SERVICE_DOMAIN = 'ATS-SERVICE/api/v1/ats';
+export const EMAIL_SERVICE_DOMAIN = 'MAILING-SERVICE/api/email';
 
 export const DEFAULT_JOB_OFFER_PAGE = 0;
 export const DEFAULT_JOB_OFFER_SIZE = 25;
@@ -51,6 +53,19 @@ export const OFFER_STATUS_OPTIONS = [
   { name: 'OPEN', value: 'OPEN' },
   { name: 'HOLD', value: 'HOLD' },
   { name: 'CLOSE', value: 'CLOSE' },
+];
+
+export const APPLICATION_STATUS_OPTIONS = Object.values(
+  ApplicationStatusEnum
+).map((status) => ({
+  name: status,
+  value: status,
+}));
+
+export const APPLICATION_STATUS_VALIDATOR_OPTIONS = [
+  { name: 'PUSHED_TO_VALIDATOR', value: 'PUSHED_TO_VALIDATOR' },
+  { name: 'ACCEPTED_BY_VALIDATOR', value: 'ACCEPTED_BY_VALIDATOR' },
+  { name: 'REJECTED_BY_VALIDATOR', value: 'REJECTED_BY_VALIDATOR' },
 ];
 
 export const SKILL_TYPES = [

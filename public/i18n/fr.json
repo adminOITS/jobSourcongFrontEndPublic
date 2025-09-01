@@ -10,6 +10,8 @@
   "PROCESSING_DATE": "Date de traitement",
   "PROCESSING_TIME": "Temps de traitement",
   "PENDING": "En attente",
+  "SELECT_APPLICATION_STATUS": "Sélectionnez le statut de la candidature",
+  "NEW": "Nouveau",
   "FAILED": "Échoué",
   "ERROR_UPLOADING_FILE": "Erreur lors de l'envoi du fichier veuillez réessayer",
   "APPLICATIONS": "Candidatures",

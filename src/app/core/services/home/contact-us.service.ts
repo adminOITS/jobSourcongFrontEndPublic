@@ -4,12 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { MessageWrapperService } from '../message-wrapper.service';
 import { finalize } from 'rxjs';
 import { ContactUsRequest } from '../../types';
+import { EMAIL_SERVICE_DOMAIN } from '../../utils/constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContactUsService {
-  private readonly baseUrl = environment.domain;
+  private readonly baseUrl = environment.domain + EMAIL_SERVICE_DOMAIN;
   private http = inject(HttpClient);
   private messageWrapper = inject(MessageWrapperService);
   private _isContactUsLoading = signal<boolean>(false);
