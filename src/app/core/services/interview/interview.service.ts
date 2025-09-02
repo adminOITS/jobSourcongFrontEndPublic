@@ -76,8 +76,9 @@ export class InterviewService {
   }
 
   getInterviewsByApplicationId(applicationId: string) {
+    const pageSize = 50;
     this.emptyInterviews();
-    const url = `${this.baseUrl}/application/${applicationId}`;
+    const url = `${this.baseUrl}/applications/${applicationId}?size=${pageSize}`;
     this._isInterviewsLoading.set(true);
     return this.http
       .get<PaginatedResponse<InterviewResponse>>(url)

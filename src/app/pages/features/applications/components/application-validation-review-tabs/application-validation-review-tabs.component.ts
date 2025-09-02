@@ -14,6 +14,7 @@ import { GlobalInterviewsTableComponent } from '../../../interviews/components/g
 import { ApplicationService } from '../../../../../core/services/applications/application.service';
 import { CandidateService } from '../../../../../core/services/candidate/candidate.service';
 import { InterviewService } from '../../../../../core/services/interview/interview.service';
+import { InterviewCardsListComponent } from '../interview-cards-list';
 
 @Component({
   selector: 'app-application-validation-review-tabs',
@@ -23,6 +24,7 @@ import { InterviewService } from '../../../../../core/services/interview/intervi
     TabsModule,
     OfferDetailsOverviewTabComponent,
     CandidatesDetailsOverViewTabComponent,
+    InterviewCardsListComponent,
   ],
   templateUrl: './application-validation-review-tabs.component.html',
   styles: ``,

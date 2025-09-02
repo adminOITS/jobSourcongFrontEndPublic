@@ -1,0 +1,129 @@
+<div class="w-full">
+  <!-- Header -->
+  <div class="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+    <div
+      class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center"
+    >
+      <i
+        class="pi pi-comments text-base sm:text-lg text-blue-600 dark:text-blue-400"
+      ></i>
+    </div>
+    <h2
+      class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100"
+    >
+      {{ "INTERVIEWS" | translate }}
+    </h2>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+  <div class="flex items-center justify-center py-8">
+    <div class="flex items-center gap-3">
+      <i
+        class="pi pi-spin pi-spinner text-xl text-blue-600 dark:text-blue-400"
+      ></i>
+      <span class="text-gray-600 dark:text-gray-400">{{
+        "LOADING_INTERVIEWS" | translate
+      }}</span>
+    </div>
+  </div>
+  }
+
+  <!-- No Interviews State -->
+  @if (!isLoading() && !hasInterviews()) {
+  <div class="bg-white dark:bg-slate-800 rounded-lg sm:rounded-xl p-6 sm:p-8">
+    <div class="text-center">
+      <div
+        class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center"
+      >
+        <i class="pi pi-comments text-2xl text-gray-400 dark:text-gray-500"></i>
+      </div>
+      <h3 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">
+        {{ "NO_INTERVIEWS_FOUND" | translate }}
+      </h3>
+      <p class="text-gray-600 dark:text-gray-400">
+        {{ "NO_INTERVIEWS_DESCRIPTION" | translate }}
+      </p>
+    </div>
+  </div>
+  }
+
+  <!-- Interviews Grid -->
+  @if (!isLoading() && hasInterviews()) {
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+    @for (interview of interviews(); track interview.id) {
+    <div
+      class="bg-white dark:bg-slate-800 rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer transform"
+      (click)="viewInterview(interview)"
+    >
+      <!-- Card Header -->
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <div
+            class="w-8 h-8 rounded-lg flex items-center justify-center"
+            [ngClass]="getTypeColor(interview.type)"
+          >
+            <i [class]="getTypeIcon(interview.type) + ' text-sm'"></i>
+          </div>
+          <div>
+            <h3
+              class="font-semibold text-gray-800 dark:text-gray-200 text-sm sm:text-base"
+            >
+              {{ interview.type | translate }}
+            </h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              {{ "INTERVIEW" | translate }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Status Badge -->
+        <div
+          class="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium"
+          [ngClass]="getStatusColor(interview.status)"
+        >
+          <i [class]="getStatusIcon(interview.status) + ' text-xs'"></i>
+          <span>{{ interview.status | translate }}</span>
+        </div>
+      </div>
+
+      <!-- Interview Details -->
+      <div class="space-y-3">
+        <!-- Scheduled Date & Time -->
+        <div class="flex items-center gap-2 text-sm">
+          <i class="pi pi-calendar text-gray-400 dark:text-gray-500"></i>
+          <span class="text-gray-600 dark:text-gray-400">
+            {{ formatDateTime(interview.scheduledDateTime) }}
+          </span>
+        </div>
+
+        <!-- Duration -->
+        <div class="flex items-center gap-2 text-sm">
+          <i class="pi pi-clock text-gray-400 dark:text-gray-500"></i>
+          <span class="text-gray-600 dark:text-gray-400">
+            {{ interview.interviewDuration }} {{ "MINUTES" | translate }}
+          </span>
+        </div>
+
+        <!-- Interviewer -->
+        <div class="flex items-center gap-2 text-sm">
+          <i class="pi pi-user text-gray-400 dark:text-gray-500"></i>
+          <span class="text-gray-600 dark:text-gray-400">
+            {{ interview.interviewer.firstName }}
+            {{ interview.interviewer.lastName }}
+          </span>
+        </div>
+
+        <!-- Created Date -->
+        <div class="flex items-center gap-2 text-sm">
+          <i class="pi pi-history text-gray-400 dark:text-gray-500"></i>
+          <span class="text-gray-600 dark:text-gray-400">
+            {{ getTimeAgo(interview.createdAt) }}
+          </span>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>

@@ -1,0 +1,25 @@
+/* Component-specific styles if needed */
+.interview-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.interview-card:hover {
+  transform: translateY(-2px);
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.type-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+@media (max-width: 640px) {
+  .type-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
