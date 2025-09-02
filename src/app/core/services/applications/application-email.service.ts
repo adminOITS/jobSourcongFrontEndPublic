@@ -21,7 +21,10 @@ export class ApplicationEmailService {
   sendRefusalEmail(applicationId: string) {
     this._isApplicationEmailLoading.set(true);
     this.http
-      .post(`${this.baseUrl}/${applicationId}/mailings/send-refusal-email`, {})
+      .post(
+        `${this.baseUrl}/${applicationId}/mailings/send-refusal-message`,
+        {}
+      )
       .pipe(finalize(() => this._isApplicationEmailLoading.set(false)))
       .subscribe({
         next: () => {
@@ -37,7 +40,7 @@ export class ApplicationEmailService {
     this._isApplicationEmailLoading.set(true);
     this.http
       .post(
-        `${this.baseUrl}/${applicationId}/mailings/send-acceptance-email`,
+        `${this.baseUrl}/${applicationId}/mailings/send-congratulations`,
         {}
       )
       .pipe(finalize(() => this._isApplicationEmailLoading.set(false)))
@@ -61,7 +64,7 @@ export class ApplicationEmailService {
       .pipe(finalize(() => this._isApplicationEmailLoading.set(false)))
       .subscribe({
         next: () => {
-            this.messageWrapper.success('EMAIL_SENT_SUCCESSFULLY');
+          this.messageWrapper.success('EMAIL_SENT_SUCCESSFULLY');
         },
         error: () => {
           this.messageWrapper.error('EMAIL_SENT_FAILED');
