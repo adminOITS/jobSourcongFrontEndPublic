@@ -46,7 +46,6 @@ export class HRFilterFormComponent {
   ];
   applyFilters() {
     const filters = this.filterForm.value;
-    console.log('Filters Applied:', filters);
   }
 
   resetFilters() {

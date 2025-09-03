@@ -40,7 +40,6 @@ export class ProfilesActionsMenuComponent implements OnInit {
   constructor() {
     effect(() => {
       if (this.profile()) {
-        console.log(this.isOfferDetails);
         this.updateMenuItems();
       }
     });

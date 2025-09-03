@@ -19,12 +19,12 @@
   @if (isLoading()) {
   <div class="flex items-center justify-center py-8">
     <div class="flex items-center gap-3">
-      <i
-        class="pi pi-spin pi-spinner text-xl text-blue-600 dark:text-blue-400"
-      ></i>
-      <span class="text-gray-600 dark:text-gray-400">{{
-        "LOADING_INTERVIEWS" | translate
-      }}</span>
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"
+      ></div>
+      <p class="text-gray-600 dark:text-gray-400">
+        {{ "LOADING_INTERVIEWS" | translate }}
+      </p>
     </div>
   </div>
   }

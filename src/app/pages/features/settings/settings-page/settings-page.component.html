@@ -1,20 +1,22 @@
 <div class="flex min-h-[calc(100vh-210px)] max-w-[1600px] mx-auto">
   <!-- Main Content -->
-  <main class="flex-1 p-2 sm:p-8 w-full">
-    <div class="space-y-8">
+  <main class="flex-1 p-2 sm:p-4 md:p-8 w-full">
+    <div class="space-y-4 sm:space-y-6 md:space-y-8">
       <!-- Generic Settings -->
       <div
         class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
       >
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <div
+          class="px-3 py-3 sm:px-6 sm:py-4 border-b border-gray-200 dark:border-gray-700"
+        >
           <h2
-            class="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-3"
+            class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3"
           >
-            <i class="pi pi-cog text-lg"></i>
+            <i class="pi pi-cog text-base sm:text-lg"></i>
             {{ "GENERIC_SETTINGS" | translate }}
           </h2>
         </div>
-        <div class="p-6">
+        <div class="p-3 sm:p-4 md:p-6">
           <app-generic-settings></app-generic-settings>
         </div>
       </div>
@@ -25,15 +27,17 @@
         *appHasRole="['HR', 'RECRUITER', 'VALIDATOR']"
         class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
       >
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <div
+          class="px-3 py-3 sm:px-6 sm:py-4 border-b border-gray-200 dark:border-gray-700"
+        >
           <h2
-            class="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-3"
+            class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3"
           >
-            <i class="pi pi-user text-lg"></i>
+            <i class="pi pi-user text-base sm:text-lg"></i>
             {{ "PROFILE_SETTINGS" | translate }}
           </h2>
         </div>
-        <div class="p-6">
+        <div class="p-3 sm:p-4 md:p-6">
           <app-profile-settings></app-profile-settings>
         </div>
       </div>
@@ -42,15 +46,17 @@
       <div
         class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
       >
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <div
+          class="px-3 py-3 sm:px-6 sm:py-4 border-b border-gray-200 dark:border-gray-700"
+        >
           <h2
-            class="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-3"
+            class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3"
           >
-            <i class="pi pi-shield text-lg"></i>
+            <i class="pi pi-shield text-base sm:text-lg"></i>
             {{ "SECURITY_SETTINGS" | translate }}
           </h2>
         </div>
-        <div class="p-6">
+        <div class="p-3 sm:p-4 md:p-6">
           <app-security-settings></app-security-settings>
         </div>
       </div>

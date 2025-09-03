@@ -1,24 +1,26 @@
-<div class="max-w-4xl mx-auto space-y-8">
+<div class="max-w-4xl mx-auto space-y-4 sm:space-y-6 md:space-y-8">
   <!-- Language Section -->
   <div
-    class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-8"
+    class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 sm:p-6 md:p-8"
   >
-    <div class="flex items-center gap-3 mb-6">
+    <div class="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
       <div
-        class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center"
+        class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center"
       >
-        <i class="pi pi-globe text-white text-lg"></i>
+        <i class="pi pi-globe text-white text-sm sm:text-lg"></i>
       </div>
       <div>
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+        <h3
+          class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white"
+        >
           {{ "LANGUAGE_PREFERENCE" | translate }}
         </h3>
-        <p class="text-gray-500 dark:text-gray-400 text-sm">
+        <p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
           {{ "LANGUAGE_PREFERENCE_DESCRIPTION" | translate }}
         </p>
       </div>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
       <button
         *ngFor="let lang of languages"
         (click)="switchLanguage(lang.value)"
@@ -28,22 +30,22 @@
           'bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-primary dark:hover:border-primary hover:shadow-md dark:hover:shadow-lg':
             language() !== lang.value
         }"
-        class="relative p-4 rounded-xl transition-all duration-300 ease-in-out flex items-center justify-between group"
+        class="relative p-3 sm:p-4 rounded-xl transition-all duration-300 ease-in-out flex items-center justify-between group"
       >
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3">
           <div
-            class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-600 flex items-center justify-center"
+            class="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-100 dark:bg-gray-600 flex items-center justify-center"
           >
             <span
-              class="text-sm font-medium text-gray-700 dark:text-gray-200"
+              class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200"
               >{{ lang.label.charAt(0) }}</span
             >
           </div>
-          <span class="font-medium">{{ lang.label }}</span>
+          <span class="font-medium text-sm sm:text-base">{{ lang.label }}</span>
         </div>
         <div
           *ngIf="language() === lang.value"
-          class="w-5 h-5 bg-white rounded-full flex items-center justify-center"
+          class="w-4 h-4 sm:w-5 sm:h-5 bg-white rounded-full flex items-center justify-center"
         >
           <i class="pi pi-check text-primary text-xs"></i>
         </div>
@@ -53,24 +55,26 @@
 
   <!-- Theme Section -->
   <div
-    class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-8"
+    class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 sm:p-6 md:p-8"
   >
-    <div class="flex items-center gap-3 mb-6">
+    <div class="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
       <div
-        class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center"
+        class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center"
       >
-        <i class="pi pi-palette text-white text-lg"></i>
+        <i class="pi pi-palette text-white text-sm sm:text-lg"></i>
       </div>
       <div>
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+        <h3
+          class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white"
+        >
           {{ "DEFAULT_THEME" | translate }}
         </h3>
-        <p class="text-gray-500 dark:text-gray-400 text-sm">
+        <p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
           {{ "DEFAULT_THEME_DESCRIPTION" | translate }}
         </p>
       </div>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
       <button
         *ngFor="let t of themes"
         (click)="switchTheme(t.value)"
@@ -80,11 +84,11 @@
           'bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-primary dark:hover:border-primary hover:shadow-md dark:hover:shadow-lg':
             theme() !== t.value
         }"
-        class="relative p-4 rounded-xl transition-all duration-300 ease-in-out flex items-center justify-between group"
+        class="relative p-3 sm:p-4 rounded-xl transition-all duration-300 ease-in-out flex items-center justify-between group"
       >
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3">
           <div
-            class="w-8 h-8 rounded-lg flex items-center justify-center"
+            class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center"
             [ngClass]="{
               'bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400':
                 t.value === 'light',
@@ -92,14 +96,20 @@
                 t.value === 'dark'
             }"
           >
-            <i class="pi pi-sun text-sm" *ngIf="t.value === 'light'"></i>
-            <i class="pi pi-moon text-sm" *ngIf="t.value === 'dark'"></i>
+            <i
+              class="pi pi-sun text-xs sm:text-sm"
+              *ngIf="t.value === 'light'"
+            ></i>
+            <i
+              class="pi pi-moon text-xs sm:text-sm"
+              *ngIf="t.value === 'dark'"
+            ></i>
           </div>
-          <span class="font-medium">{{ t.label }}</span>
+          <span class="font-medium text-sm sm:text-base">{{ t.label }}</span>
         </div>
         <div
           *ngIf="theme() === t.value"
-          class="w-5 h-5 bg-white rounded-full flex items-center justify-center"
+          class="w-4 h-4 sm:w-5 sm:h-5 bg-white rounded-full flex items-center justify-center"
         >
           <i class="pi pi-check text-primary text-xs"></i>
         </div>
@@ -109,38 +119,44 @@
 
   <!-- Notification Settings -->
   <div
-    class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-8"
+    class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 sm:p-6 md:p-8"
   >
-    <div class="flex items-center gap-3 mb-6">
+    <div class="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
       <div
-        class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center"
+        class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center"
       >
-        <i class="pi pi-bell text-white text-lg"></i>
+        <i class="pi pi-bell text-white text-sm sm:text-lg"></i>
       </div>
       <div>
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+        <h3
+          class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white"
+        >
           {{ "NOTIFICATION_PREFERENCES" | translate }}
         </h3>
-        <p class="text-gray-500 dark:text-gray-400 text-sm">
+        <p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
           {{ "NOTIFICATION_PREFERENCES_DESCRIPTION" | translate }}
         </p>
       </div>
     </div>
-    <div class="space-y-4">
+    <div class="space-y-3 sm:space-y-4">
       <div
-        class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl"
+        class="flex items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-xl"
       >
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3 sm:gap-4">
           <div
-            class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center"
+            class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center"
           >
-            <i class="pi pi-envelope text-blue-600 dark:text-blue-400"></i>
+            <i
+              class="pi pi-envelope text-blue-600 dark:text-blue-400 text-sm sm:text-base"
+            ></i>
           </div>
           <div>
-            <h4 class="font-medium text-gray-900 dark:text-white">
+            <h4
+              class="font-medium text-gray-900 dark:text-white text-sm sm:text-base"
+            >
               {{ "EMAIL_NOTIFICATIONS" | translate }}
             </h4>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
+            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               {{ "EMAIL_NOTIFICATIONS_DESCRIPTION" | translate }}
             </p>
             <span
@@ -157,19 +173,23 @@
         </label>
       </div>
       <div
-        class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl"
+        class="flex items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-xl"
       >
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3 sm:gap-4">
           <div
-            class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center"
+            class="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center"
           >
-            <i class="pi pi-bell text-green-600 dark:text-green-400"></i>
+            <i
+              class="pi pi-bell text-green-600 dark:text-green-400 text-sm sm:text-base"
+            ></i>
           </div>
           <div>
-            <h4 class="font-medium text-gray-900 dark:text-white">
+            <h4
+              class="font-medium text-gray-900 dark:text-white text-sm sm:text-base"
+            >
               {{ "PUSH_NOTIFICATIONS" | translate }}
             </h4>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
+            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               {{ "PUSH_NOTIFICATIONS_DESCRIPTION" | translate }}
             </p>
             <span
@@ -186,19 +206,23 @@
         </label>
       </div>
       <div
-        class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl"
+        class="flex items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-xl"
       >
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3 sm:gap-4">
           <div
-            class="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center"
+            class="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center"
           >
-            <i class="pi pi-chart-bar text-purple-600 dark:text-purple-400"></i>
+            <i
+              class="pi pi-chart-bar text-purple-600 dark:text-purple-400 text-sm sm:text-base"
+            ></i>
           </div>
           <div>
-            <h4 class="font-medium text-gray-900 dark:text-white">
+            <h4
+              class="font-medium text-gray-900 dark:text-white text-sm sm:text-base"
+            >
               {{ "WEEKLY_REPORTS" | translate }}
             </h4>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
+            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               {{ "WEEKLY_REPORTS_DESCRIPTION" | translate }}
             </p>
             <span

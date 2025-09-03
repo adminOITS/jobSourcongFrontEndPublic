@@ -555,7 +555,6 @@ export class ApplicationService {
             });
           }
           if (this.applicationsSignal().data.length > 0) {
-            console.log('applicationsSignal', this.applicationsSignal());
             this.applicationsSignal.update((applications) => ({
               ...applications,
               data: applications.data.map((app) =>

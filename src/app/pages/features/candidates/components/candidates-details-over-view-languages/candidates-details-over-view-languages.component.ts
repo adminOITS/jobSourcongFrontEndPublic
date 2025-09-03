@@ -63,7 +63,6 @@ export class CandidatesDetailsOverViewLanguagesComponent {
   }
 
   onDeleteLanguage(id: string) {
-    // TODO: Implement API call to delete language
-    console.log('Deleting language with id:', id);
+    this.languageService.deleteLanguage();
   }
 }

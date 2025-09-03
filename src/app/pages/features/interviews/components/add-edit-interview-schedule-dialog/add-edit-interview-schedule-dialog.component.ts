@@ -111,7 +111,7 @@ export class AddEditInterviewScheduleDialogComponent implements OnDestroy {
       const interviewRequest: InterviewRequest = {
         type: formValue.type,
         interviewDuration: formValue.interviewDuration,
-        scheduledDateTime: formValue.scheduledDateTime,
+        scheduledDateTime: formValue.scheduledDateTime.toISOString(),
         meetingLink: formValue.meetingLink,
       };
 

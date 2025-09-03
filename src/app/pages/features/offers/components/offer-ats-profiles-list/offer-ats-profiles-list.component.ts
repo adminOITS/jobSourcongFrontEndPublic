@@ -86,7 +86,6 @@ export class OfferAtsProfilesListComponent implements OnInit {
       this.loadProfiles();
     }
   }
-
   loadProfiles(): void {
     if (!this.offerId) return;
 

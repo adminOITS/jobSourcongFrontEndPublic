@@ -72,13 +72,7 @@ export class AtsModalComponent {
     this.onClose.emit();
   }
 
-  onMaximize(): void {
-    // Handle maximize event
-    console.log('Dialog maximized');
-  }
+  onMaximize(): void {}
 
-  onRestore(): void {
-    // Handle restore event
-    console.log('Dialog restored');
-  }
+  onRestore(): void {}
 }

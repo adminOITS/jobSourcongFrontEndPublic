@@ -134,8 +134,6 @@ export class EducationService {
   }
 
   openEditDialog(education: EducationResponse) {
-    console.log('education', education);
-
     this.selectedEducation.set(education);
     this.isDialogVisible.set(true);
   }

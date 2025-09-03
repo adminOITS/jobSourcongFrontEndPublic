@@ -48,7 +48,6 @@ export class OfferEducationCardComponent {
     },
   ];
   onEditEducation(): void {
-    console.log('Edit education');
     this.offerEducationService.openEditDialog(this.education);
   }
   confirmDelete() {
