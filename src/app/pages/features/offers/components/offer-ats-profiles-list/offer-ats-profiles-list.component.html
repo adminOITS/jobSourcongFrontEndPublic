@@ -207,4 +207,14 @@
       </button>
     </div>
   </div>
+
+  <!-- Apply to Offer Dialog -->
+  <app-apply-to-offer-dialog
+    [isVisible]="isApplyDialogVisible"
+    [candidateId]="applyDialogCandidateId()"
+    [profileId]="applyDialogProfileId()"
+    (visibleChange)="onDialogVisibleChange($event)"
+    (applyWithEmail)="onApplyWithEmail($event)"
+    (applyWithoutEmail)="onApplyWithoutEmail($event)"
+  ></app-apply-to-offer-dialog>
 </div>

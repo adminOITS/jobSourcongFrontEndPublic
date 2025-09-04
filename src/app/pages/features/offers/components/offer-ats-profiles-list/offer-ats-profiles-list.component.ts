@@ -18,6 +18,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatchingResultService } from '../../../../../core/services/ats/matching-result.service';
 import { ProfileShortResponseDto } from '../../../../../core/models/ats.models';
 import { ApplicationService } from '../../../../../core/services/applications/application.service';
+import { ApplyToOfferDialogComponent } from '../../../profiles/components/apply-to-offer-dialog/apply-to-offer-dialog.component';
 
 @Component({
   selector: 'app-offer-ats-profiles-list',
@@ -31,6 +32,7 @@ import { ApplicationService } from '../../../../../core/services/applications/ap
     CardModule,
     ProgressBarModule,
     TagModule,
+    ApplyToOfferDialogComponent,
   ],
   templateUrl: './offer-ats-profiles-list.component.html',
   styles: [
@@ -77,6 +79,11 @@ export class OfferAtsProfilesListComponent implements OnInit {
   readonly isPublishing = computed(() =>
     this.matchingResultService.isPublishingLoading()
   );
+
+  // Apply to offer dialog
+  isApplyDialogVisible = signal<boolean>(false);
+  applyDialogCandidateId = signal<string>('');
+  applyDialogProfileId = signal<string>('');
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -171,10 +178,37 @@ export class OfferAtsProfilesListComponent implements OnInit {
    */
   applyToOffer(profile: ProfileShortResponseDto): void {
     if (profile && profile.candidate?.id && profile.id) {
-      this.applicationService.createApplication(
-        profile.candidate.id,
-        profile.id
-      );
+      this.applyDialogCandidateId.set(profile.candidate.id);
+      this.applyDialogProfileId.set(profile.id);
+      this.isApplyDialogVisible.set(true);
     }
+  }
+
+  onApplyWithEmail(event: { candidateId: string; profileId: string }) {
+    this.applicationService.createApplication(
+      event.candidateId,
+      event.profileId,
+      true
+    );
+    this.closeApplyDialog();
+  }
+
+  onApplyWithoutEmail(event: { candidateId: string; profileId: string }) {
+    this.applicationService.createApplication(
+      event.candidateId,
+      event.profileId,
+      false
+    );
+    this.closeApplyDialog();
+  }
+
+  onDialogVisibleChange(visible: boolean) {
+    this.isApplyDialogVisible.set(visible);
+  }
+
+  closeApplyDialog() {
+    this.isApplyDialogVisible.set(false);
+    this.applyDialogCandidateId.set('');
+    this.applyDialogProfileId.set('');
   }
 }

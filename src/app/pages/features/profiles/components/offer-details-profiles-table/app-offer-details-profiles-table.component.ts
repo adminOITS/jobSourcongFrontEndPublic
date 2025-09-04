@@ -32,10 +32,10 @@ import { DEFAULT_PROFILE_SIZE } from '../../../../../core/utils/constants';
 import { ApplicationService } from '../../../../../core/services/applications/application.service';
 import { ProfilesActionsMenuComponent } from '../profiles-actions-menu/profiles-actions-menu.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogModule } from 'primeng/dialog';
 import { AddProfileDialogComponent } from '../add-profile-dialog/add-profile-dialog.component';
 import { EditProfileDialogComponent } from '../edit-profile-dialog/edit-profile-dialog.component';
 import { EditResumeDialogComponent } from '../edit-resume-dialog/edit-resume-dialog.component';
+import { ApplyToOfferDialogComponent } from '../apply-to-offer-dialog/apply-to-offer-dialog.component';
 
 @Component({
   selector: 'app-offer-details-profiles-table',
@@ -53,7 +53,7 @@ import { EditResumeDialogComponent } from '../edit-resume-dialog/edit-resume-dia
     TagModule,
     ProfilesActionsMenuComponent,
     ConfirmDialogModule,
-    DialogModule,
+    ApplyToOfferDialogComponent,
   ],
   providers: [ConfirmationService],
   templateUrl: './offer-details-profiles-table.component.html',
@@ -78,9 +78,8 @@ export class OfferDetailsProfilesTableComponent implements OnDestroy {
 
   // Apply to offer dialog
   isApplyDialogVisible = signal<boolean>(false);
-  applyDialogData = signal<{ candidateId: string; profileId: string } | null>(
-    null
-  );
+  applyDialogCandidateId = signal<string>('');
+  applyDialogProfileId = signal<string>('');
   constructor() {
     this.initColumns();
   }
@@ -136,37 +135,37 @@ export class OfferDetailsProfilesTableComponent implements OnDestroy {
     }
   }
   applyToOffer(event: { candidateId: string; profileId: string }) {
-    this.applyDialogData.set(event);
+    this.applyDialogCandidateId.set(event.candidateId);
+    this.applyDialogProfileId.set(event.profileId);
     this.isApplyDialogVisible.set(true);
   }
 
-  sendEmailAndApply() {
-    const data = this.applyDialogData();
-    if (data) {
-      this.applicationService.createApplication(
-        data.candidateId,
-        data.profileId,
-        true
-      );
-      this.closeApplyDialog();
-    }
+  onApplyWithEmail(event: { candidateId: string; profileId: string }) {
+    this.applicationService.createApplication(
+      event.candidateId,
+      event.profileId,
+      true
+    );
+    this.closeApplyDialog();
   }
 
-  applyWithoutEmail() {
-    const data = this.applyDialogData();
-    if (data) {
-      this.applicationService.createApplication(
-        data.candidateId,
-        data.profileId,
-        false
-      );
-      this.closeApplyDialog();
-    }
+  onApplyWithoutEmail(event: { candidateId: string; profileId: string }) {
+    this.applicationService.createApplication(
+      event.candidateId,
+      event.profileId,
+      false
+    );
+    this.closeApplyDialog();
+  }
+
+  onDialogVisibleChange(visible: boolean) {
+    this.isApplyDialogVisible.set(visible);
   }
 
   closeApplyDialog() {
     this.isApplyDialogVisible.set(false);
-    this.applyDialogData.set(null);
+    this.applyDialogCandidateId.set('');
+    this.applyDialogProfileId.set('');
   }
 
   loadCandidateProfilesLazy(event: TableLazyLoadEvent) {
