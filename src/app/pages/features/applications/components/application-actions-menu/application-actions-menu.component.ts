@@ -436,7 +436,7 @@ export class ApplicationActionsMenuComponent implements OnInit {
         actionLabel: 'WITHDRAWN_BY_CANDIDATE_Action',
         commentRequired: true,
         actionFunction: (comment: TransitionCommentRequest) => {
-          this.applicationService.withdrawByCandidate(
+          this.applicationService.withdrawByCandidateStaff(
             this.application()?.id!,
             comment
           );

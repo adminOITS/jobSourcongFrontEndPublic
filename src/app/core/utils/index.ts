@@ -288,6 +288,18 @@ export const getApplicationStatusStyle = (
       background: 'bg-blue-100 dark:bg-blue-950',
       text: 'text-blue-700 dark:text-blue-200',
     },
+    INTERESTED_BY_CANDIDATE: {
+      background: 'bg-green-100 dark:bg-green-950',
+      text: 'text-green-700 dark:text-green-200',
+    },
+    MORE_INFO_REQUESTED_BY_CANDIDATE: {
+      background: 'bg-yellow-100 dark:bg-yellow-950',
+      text: 'text-yellow-700 dark:text-yellow-200',
+    },
+    WAITING_FOR_CANDIDATE_ACTION: {
+      background: 'bg-purple-100 dark:bg-purple-950',
+      text: 'text-purple-700 dark:text-purple-200',
+    },
   };
 
   return styles[status];

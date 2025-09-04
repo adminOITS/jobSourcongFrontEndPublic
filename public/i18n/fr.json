@@ -1295,5 +1295,33 @@
   "CREATED": "Créé",
   "NO_MEETING_LINK": "Aucun lien de réunion",
   "MORE_ACTIONS": "Plus d'Actions",
-  "TECHNICAL": "Technique"
+  "TECHNICAL": "Technique",
+
+  "APPLICATION_INTERESTED_BY_CANDIDATE_SUCCESSFULLY": "Candidature marquée comme intéressée par le candidat avec succès",
+  "APPLICATION_INTERESTED_BY_CANDIDATE_FAILED": "Erreur lors du marquage de la candidature comme intéressée par le candidat",
+  "APPLICATION_MORE_INFO_REQUESTED_BY_CANDIDATE_SUCCESSFULLY": "Demande d'informations supplémentaires par le candidat avec succès",
+  "APPLICATION_MORE_INFO_REQUESTED_BY_CANDIDATE_FAILED": "Erreur lors de la demande d'informations supplémentaires par le candidat",
+
+  "ACTION_WINDOW_EXPIRED": "La fenêtre d'action a expiré. Veuillez contacter le support si vous devez changer votre décision.",
+  "APPLICATION_CANNOT_BE_WITHDRAWN_FROM_FINAL_STATUS": "La candidature ne peut pas être retirée du statut final : {status}",
+  "APPLICATION_CANNOT_BE_MARKED_INTERESTED_FROM_STATUS": "La candidature ne peut pas être marquée comme intéressée depuis le statut : {status}",
+  "APPLICATION_CANNOT_REQUEST_MORE_INFO_FROM_STATUS": "La candidature ne peut pas demander plus d'informations depuis le statut : {status}",
+  "APPLICATION_NOT_FOUND": "Candidature non trouvée",
+  "INTERESTED_BY_CANDIDATE": "Intéressé par le Candidat",
+  "MORE_INFO_REQUESTED_BY_CANDIDATE": "Plus d'Infos Demandées par le Candidat",
+
+  "CANDIDATE_ACTION": "Action Candidat",
+  "CURRENT_STATUS": "Statut Actuel",
+  "ACTION_CONFIRMATION": "Confirmation d'Action",
+  "WITHDRAW_APPLICATION_CONFIRMATION": "Êtes-vous sûr de vouloir retirer votre candidature ? Cette action ne peut pas être annulée.",
+  "MARK_INTERESTED_CONFIRMATION": "Êtes-vous sûr de vouloir marquer cette candidature comme intéressée ? Cela notifiera l'équipe RH de votre intérêt.",
+  "REQUEST_MORE_INFO_CONFIRMATION": "Êtes-vous sûr de vouloir demander plus d'informations sur ce poste ? Cela notifiera l'équipe RH de votre demande.",
+
+  "CANDIDATE_ACTION_OPTIONS": "Options d'Action",
+  "CANDIDATE_ACTION_DESCRIPTION": "Vous avez 10 minutes pour changer d'avis. Choisissez une des actions ci-dessous pour mettre à jour le statut de votre candidature.",
+  "INITIAL_ACTION_PERFORMED": "Action initiale effectuée",
+  "WAITING_FOR_CANDIDATE_ACTION": "En attente de l'action du candidat",
+  "APPLY_TO_OFFER": "Postuler à l'offre",
+  "DO_YOU_WANT_TO_SEND_AN_EMAIL_TO_THE_CANDIDATE": "Voulez-vous envoyer un email au candidat ?",
+  "APPLY_WITHOUT_EMAIL": "Ne pas envoyer d'email"
 }

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-guest-layout',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './guest-layout.component.html',
-  styles: ``
+  styles: ``,
 })
-export class GuestLayoutComponent {
-
-}
+export class GuestLayoutComponent {}

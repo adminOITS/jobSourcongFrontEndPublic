@@ -127,6 +127,7 @@
 
 <app-profiles-actions-menu
   [profile]="profile"
+  (onApplyToOffer)="applyToOffer($event)"
   (onDeleteProfile)="deleteProfile()"
   (onEditProfile)="editProfile()"
   (onEditResume)="editResume()"
@@ -137,27 +138,26 @@
   [style]="{ minWidth: '450px' }"
   [draggable]="false"
   [rejectVisible]="true"
-  acceptLabel="{{ 'YES' | translate }}"
-  rejectLabel="{{ 'NO' | translate }}"
-  acceptIcon="pi pi-check"
-  rejectIcon="pi pi-times"
-  acceptButtonStyleClass="p-button-danger"
+  acceptLabel="{{ acceptLabel | translate }}"
+  rejectLabel="{{ rejectLabel | translate }}"
+  [acceptIcon]="acceptIcon"
+  [rejectIcon]="rejectIcon"
+  [rejectButtonStyleClass]="rejectButtonStyleClass"
+  [acceptButtonStyleClass]="acceptButtonStyleClass"
   rejectButtonStyleClass="p-button-text"
 >
   <ng-template pTemplate="header">
     <div class="flex items-center gap-2">
       <i class="pi pi-exclamation-triangle text-yellow-500"></i>
       <span class="font-medium text-text!">{{
-        "DELETE_PROFILE" | translate
+        confirmationHeader | translate
       }}</span>
     </div>
   </ng-template>
   <ng-template pTemplate="message">
     <div class="flex items-center gap-2">
       <i class="pi pi-info-circle text-blue-500"></i>
-      <span class="text-text!">{{
-        "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_PROFILE" | translate
-      }}</span>
+      <span class="text-text!">{{ confirmationMsg | translate }}</span>
     </div>
   </ng-template>
 </p-confirmDialog>

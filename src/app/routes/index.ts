@@ -67,6 +67,7 @@ export const ROUTES = {
     LIST: 'applications/:offerId',
     TRACK_STATUS: 'applications/profile/:profileId',
     VALIDATION_REVIEW: 'applications/validation-review/:applicationId',
+    CANDIDATE_ACTION: 'applications/candidate-action/:applicationId',
   },
   MAILING: {
     LIST: 'mailing',
@@ -83,6 +84,6 @@ export const ROUTES = {
   },
   ATS: {
     BASE: 'ats',
-    DETAILS:'ats/offers/:offerId/candidates/:candidateId/profiles/:profileId'
+    DETAILS: 'ats/offers/:offerId/candidates/:candidateId/profiles/:profileId',
   },
 };

@@ -1346,5 +1346,33 @@
   "TOTAL_ASSIGNED_OFFERS": "Total assigned offers",
   "FAILED_TO_PUBLISH_PROFILES": "Failed to publish profiles",
   "ACCEPTED_APPLICATIONS": "Accepted Applications",
-  "REJECTED_APPLICATIONS": "Rejected Applications"
+  "REJECTED_APPLICATIONS": "Rejected Applications",
+
+  "APPLICATION_INTERESTED_BY_CANDIDATE_SUCCESSFULLY": "Application marked as interested by candidate successfully",
+  "APPLICATION_INTERESTED_BY_CANDIDATE_FAILED": "Error marking application as interested by candidate",
+  "APPLICATION_MORE_INFO_REQUESTED_BY_CANDIDATE_SUCCESSFULLY": "More information requested by candidate successfully",
+  "APPLICATION_MORE_INFO_REQUESTED_BY_CANDIDATE_FAILED": "Error requesting more information by candidate",
+
+  "ACTION_WINDOW_EXPIRED": "Action window has expired. Please contact support if you need to change your decision.",
+  "APPLICATION_CANNOT_BE_WITHDRAWN_FROM_FINAL_STATUS": "Application cannot be withdrawn from final status: {status}",
+  "APPLICATION_CANNOT_BE_MARKED_INTERESTED_FROM_STATUS": "Application cannot be marked as interested from status: {status}",
+  "APPLICATION_CANNOT_REQUEST_MORE_INFO_FROM_STATUS": "Application cannot request more info from status: {status}",
+  "APPLICATION_NOT_FOUND": "Application not found",
+  "INTERESTED_BY_CANDIDATE": "Interested by Candidate",
+  "MORE_INFO_REQUESTED_BY_CANDIDATE": "More Info Requested by Candidate",
+
+  "CANDIDATE_ACTION": "Candidate Action",
+  "CURRENT_STATUS": "Current Status",
+  "ACTION_CONFIRMATION": "Action Confirmation",
+  "WITHDRAW_APPLICATION_CONFIRMATION": "Are you sure you want to withdraw your application? This action cannot be undone.",
+  "MARK_INTERESTED_CONFIRMATION": "Are you sure you want to mark this application as interested? This will notify the HR team of your interest.",
+  "REQUEST_MORE_INFO_CONFIRMATION": "Are you sure you want to request more information about this position? This will notify the HR team of your request.",
+
+  "CANDIDATE_ACTION_OPTIONS": "Action Options",
+  "CANDIDATE_ACTION_DESCRIPTION": "You have 10 minutes to change your mind. Choose one of the actions below to update your application status.",
+  "INITIAL_ACTION_PERFORMED": "Initial action performed",
+  "WAITING_FOR_CANDIDATE_ACTION": "Waiting for Candidate Action",
+  "APPLY_TO_OFFER": "Apply to Offer",
+  "DO_YOU_WANT_TO_SEND_AN_EMAIL_TO_THE_CANDIDATE": "Do you want to send an email to the candidate?",
+  "APPLY_WITHOUT_EMAIL": "Don't send email"
 }

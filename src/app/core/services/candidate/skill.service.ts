@@ -136,7 +136,7 @@ export class SkillService {
         next: (skill) => {
           this.messageWrapper.success('SKILL_UPDATED_SUCCESSFULLY');
           this.candidateSkills.set(
-            this.candidateSkills().map((s) => (s.id === skill.id ? skill : s))
+            this.candidateSkills().map((s) => (s.id === skillId ? skill : s))
           );
         },
         error: (error) => {

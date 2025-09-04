@@ -94,10 +94,14 @@ export class ApplicationService {
   private messageWrapper = inject(MessageWrapperService);
   private offerService = inject(OfferService);
   private router = inject(Router);
-  createApplication(candidateId: string, profileId: string) {
+  createApplication(
+    candidateId: string,
+    profileId: string,
+    sendEmail: boolean = false
+  ) {
     const jobOfferId = this.offerService.offerDetails()?.id;
     const companyId = this.offerService.offerDetails()?.company.id;
-    const url = `${this.baseUrl}/companies/${companyId}/offers/${jobOfferId}/candidates/${candidateId}/profiles/${profileId}`;
+    const url = `${this.baseUrl}/companies/${companyId}/offers/${jobOfferId}/candidates/${candidateId}/profiles/${profileId}?sendEmail=${sendEmail}`;
     this._isApplicationLoading.set(true);
     this.http
       .post<ApplicationResponse>(url, {})
@@ -145,6 +149,7 @@ export class ApplicationService {
 
   // Get application by ID
   getApplicationById(applicationId: string) {
+    this._applicationDetails.set(null);
     const url = `${this.baseUrl}/${applicationId}`;
 
     this._isApplicationLoading.set(true);
@@ -169,6 +174,31 @@ export class ApplicationService {
       });
   }
 
+  getApplicationByIdPublic(applicationId: string) {
+    this._applicationDetails.set(null);
+    const url = `${this.baseUrl}/${applicationId}/public`;
+
+    this._isApplicationLoading.set(true);
+    this.http
+      .get<ApplicationResponse>(url)
+      .pipe(
+        take(1),
+        finalize(() => this._isApplicationLoading.set(false))
+      )
+      .subscribe({
+        next: (response) => {
+          this._applicationDetails.set(response);
+        },
+        error: (error) => {
+          this.router.navigate(
+            ['/applications/' + applicationId + '/not-found'],
+            {
+              state: { message: 'APPLICATION_NOT_FOUND' },
+            }
+          );
+        },
+      });
+  }
   // Get applications by job offer ID with filters
   getApplicationsByJobOfferId(
     jobOfferId: string,
@@ -494,11 +524,11 @@ export class ApplicationService {
       });
   }
 
-  withdrawByCandidate(
+  withdrawByCandidateStaff(
     applicationId: string,
     request: TransitionCommentRequest
   ) {
-    const url = `${this.baseUrl}/${applicationId}/withdraw-by-candidate`;
+    const url = `${this.baseUrl}/${applicationId}/withdraw-by-candidate-staff`;
     this._isApplicationLoading.set(true);
     this.appSettingsService.setGlobalLoading(true);
     this.http
@@ -612,6 +642,154 @@ export class ApplicationService {
           this.messageWrapper.error('APPLICATION_REJECTED_BY_VALIDATOR_FAILED');
         },
       });
+  }
+
+  // Candidate actions (no authentication required)
+  withdrawByCandidate(applicationId: string) {
+    const url = `${this.baseUrl}/${applicationId}/candidate/withdraw`;
+    this._isApplicationLoading.set(true);
+    this.http
+      .put<void>(url, {})
+      .pipe(
+        take(1),
+        finalize(() => this._isApplicationLoading.set(false))
+      )
+      .subscribe({
+        next: () => {
+          this.applicationsSignal.update((applications) => ({
+            ...applications,
+            data: applications.data.map((app) =>
+              app.id === applicationId
+                ? {
+                    ...app,
+                    status: ApplicationStatusEnum.WITHDRAWN_BY_CANDIDATE,
+                  }
+                : app
+            ),
+          }));
+          this.messageWrapper.success(
+            'APPLICATION_WITHDRAWN_BY_CANDIDATE_SUCCESSFULLY'
+          );
+        },
+        error: (error) => {
+          this.handleCandidateActionError(
+            error,
+            'APPLICATION_WITHDRAWN_BY_CANDIDATE_FAILED'
+          );
+        },
+      });
+  }
+
+  interestedByCandidate(applicationId: string) {
+    const url = `${this.baseUrl}/${applicationId}/candidate/interested`;
+    this._isApplicationLoading.set(true);
+    this.http
+      .put<void>(url, {})
+      .pipe(
+        take(1),
+        finalize(() => this._isApplicationLoading.set(false))
+      )
+      .subscribe({
+        next: () => {
+          this.applicationsSignal.update((applications) => ({
+            ...applications,
+            data: applications.data.map((app) =>
+              app.id === applicationId
+                ? {
+                    ...app,
+                    status: ApplicationStatusEnum.INTERESTED_BY_CANDIDATE,
+                  }
+                : app
+            ),
+          }));
+          this.messageWrapper.success(
+            'APPLICATION_INTERESTED_BY_CANDIDATE_SUCCESSFULLY'
+          );
+        },
+        error: (error) => {
+          this.handleCandidateActionError(
+            error,
+            'APPLICATION_INTERESTED_BY_CANDIDATE_FAILED'
+          );
+        },
+      });
+  }
+
+  moreInfoRequestedByCandidate(applicationId: string) {
+    const url = `${this.baseUrl}/${applicationId}/candidate/more-info`;
+    this._isApplicationLoading.set(true);
+    this.http
+      .put<void>(url, {})
+      .pipe(
+        take(1),
+        finalize(() => this._isApplicationLoading.set(false))
+      )
+      .subscribe({
+        next: () => {
+          this.applicationsSignal.update((applications) => ({
+            ...applications,
+            data: applications.data.map((app) =>
+              app.id === applicationId
+                ? {
+                    ...app,
+                    status:
+                      ApplicationStatusEnum.MORE_INFO_REQUESTED_BY_CANDIDATE,
+                  }
+                : app
+            ),
+          }));
+          this.messageWrapper.success(
+            'APPLICATION_MORE_INFO_REQUESTED_BY_CANDIDATE_SUCCESSFULLY'
+          );
+        },
+        error: (error) => {
+          this.handleCandidateActionError(
+            error,
+            'APPLICATION_MORE_INFO_REQUESTED_BY_CANDIDATE_FAILED'
+          );
+        },
+      });
+  }
+
+  private handleCandidateActionError(error: any, defaultMessageKey: string) {
+    if (error.error && error.error.message) {
+      const message = error.error.message;
+
+      if (message.includes('Action window has expired')) {
+        this.messageWrapper.error('ACTION_WINDOW_EXPIRED');
+      } else if (
+        message.includes('Application cannot be withdrawn from final status')
+      ) {
+        this.messageWrapper.error(
+          'APPLICATION_CANNOT_BE_WITHDRAWN_FROM_FINAL_STATUS'
+        );
+      } else if (
+        message.includes(
+          'Application cannot be marked as interested from status'
+        )
+      ) {
+        this.messageWrapper.error(
+          'APPLICATION_CANNOT_BE_MARKED_INTERESTED_FROM_STATUS'
+        );
+      } else if (
+        message.includes('Application cannot request more info from status')
+      ) {
+        this.messageWrapper.error(
+          'APPLICATION_CANNOT_REQUEST_MORE_INFO_FROM_STATUS'
+        );
+      } else if (
+        message.includes('Application not found') ||
+        message.includes('application not found')
+      ) {
+        this.messageWrapper.error('APPLICATION_NOT_FOUND');
+      } else {
+        // Use the error message directly if no specific match
+        this.messageWrapper.error(defaultMessageKey);
+      }
+    } else {
+      // Fallback to default message
+      this.messageWrapper.error(defaultMessageKey);
+    }
   }
 
   // Signal getter

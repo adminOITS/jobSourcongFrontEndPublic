@@ -162,7 +162,8 @@ export interface OfferShortResponse extends BaseEntity {
   category: string;
   applicationsCount?: number;
   interviewsCount?: number;
-  staffOfferAssignment?: StaffOfferAssignmentResponse;
+  validatorOfferAssignment?: StaffOfferAssignmentResponse;
+  recruiterOfferAssignment?: StaffOfferAssignmentResponse;
 }
 export interface StaffOfferAssignmentResponse extends BaseEntity {
   staff: StaffShortResponse;

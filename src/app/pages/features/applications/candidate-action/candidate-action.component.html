@@ -1,0 +1,86 @@
+<app-loader [isLoading]="isApplicationLoading"></app-loader>
+
+<div
+  class="mt-20 rounded-xl bg-card shadow-sm border border-gray-200 dark:border-gray-700 p-8 mb-8"
+  *ngIf="!isApplicationLoading()"
+>
+  <!-- Action Buttons -->
+  <div class="flex flex-col sm:flex-row gap-4 justify-center">
+    <!-- Withdraw Button -->
+    <button
+      (click)="withdrawApplication()"
+      class="group inline-flex items-center cursor-pointer gap-3 px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-sm hover:shadow-md"
+      [class]="getActionButtonConfig('withdraw').class"
+    >
+      <i
+        [class]="
+          'pi ' +
+          getActionButtonConfig('withdraw').icon +
+          ' text-lg group-hover:scale-110 transition-transform ' +
+          getActionButtonConfig('withdraw').iconClass
+        "
+      ></i>
+      <span>{{ getActionButtonConfig("withdraw").label | translate }}</span>
+    </button>
+
+    <!-- Interested Button -->
+    <button
+      (click)="markAsInterested()"
+      class="group inline-flex items-center cursor-pointer gap-3 px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-sm hover:shadow-md"
+      [class]="getActionButtonConfig('interested').class"
+    >
+      <i
+        [class]="
+          'pi ' +
+          getActionButtonConfig('interested').icon +
+          ' text-lg group-hover:scale-110 transition-transform ' +
+          getActionButtonConfig('interested').iconClass
+        "
+      ></i>
+      <span>{{ getActionButtonConfig("interested").label | translate }}</span>
+    </button>
+
+    <!-- More Info Button -->
+    <button
+      (click)="requestMoreInfo()"
+      class="group inline-flex items-center cursor-pointer gap-3 px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-sm hover:shadow-md"
+      [class]="getActionButtonConfig('more-info').class"
+    >
+      <i
+        [class]="
+          'pi ' +
+          getActionButtonConfig('more-info').icon +
+          ' text-lg group-hover:scale-110 transition-transform ' +
+          getActionButtonConfig('more-info').iconClass
+        "
+      ></i>
+      <span>{{ getActionButtonConfig("more-info").label | translate }}</span>
+    </button>
+  </div>
+</div>
+
+<!-- Action Information Message -->
+<div
+  class="mx-6 rounded-xl bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 p-6 mb-8"
+  *ngIf="!isApplicationLoading()"
+>
+  <div class="flex items-start gap-3">
+    <div
+      class="w-8 h-8 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center flex-shrink-0"
+    >
+      <i class="pi pi-info-circle text-blue-600 dark:text-blue-400"></i>
+    </div>
+    <div>
+      <h3 class="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+        {{ "CANDIDATE_ACTION_OPTIONS" | translate }}
+      </h3>
+      <p class="text-blue-800 dark:text-blue-200 mb-2">
+        {{ "CANDIDATE_ACTION_DESCRIPTION" | translate }}
+      </p>
+      <p class="text-sm text-blue-700 dark:text-blue-300" *ngIf="actionStatus">
+        <strong>{{ "INITIAL_ACTION_PERFORMED" | translate }}:</strong>
+        {{ getActionButtonConfig(actionStatus).label | translate }}
+      </p>
+    </div>
+  </div>
+</div>

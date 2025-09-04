@@ -5,7 +5,7 @@ import {
 } from '../../models/offer.models';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { take, finalize } from 'rxjs';
+import { take, finalize, map } from 'rxjs';
 import { OFFER_SERVICE_DOMAIN } from '../../utils/constants';
 import { OfferService } from './offer.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -99,7 +99,9 @@ export class OfferSkillService {
       )
       .subscribe({
         next: (res) => {
-          this.offerSkills.set([...this.offerSkills(), res]);
+          this.offerSkills.set(
+            this.offerSkills().map((s) => (s.id === res.id ? res : s))
+          );
           this.messageService.add({
             severity: 'success',
             summary: this.translateService.instant('SUCCESS'),

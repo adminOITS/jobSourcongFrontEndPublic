@@ -31,6 +31,10 @@ export class ProfilesActionsMenuComponent implements OnInit {
   @ViewChild('menu') menu: any;
 
   @Output() onDeleteProfile = new EventEmitter<void>();
+  @Output() onApplyToOffer = new EventEmitter<{
+    candidateId: string;
+    profileId: string;
+  }>();
   menuItems: MenuItem[] = [];
   private authService = inject(AuthService);
   private userRole = this.authService.getRole();
@@ -48,15 +52,6 @@ export class ProfilesActionsMenuComponent implements OnInit {
   // Define possible actions for each role
   private roleActions: Record<string, RoleAction[]> = {
     HR: [
-      // {
-      //   key: 'VIEW_DETAILS',
-      //   label: 'VIEW_DETAILS',
-      //   icon: 'pi pi-eye',
-      //   iconColor: 'text-gray-500',
-      //   can: () => true,
-      //   action: () => this.viewDetails(),
-      // },
-
       {
         key: 'APPLY_TO_OFFER',
         label: 'APPLY',
@@ -95,15 +90,6 @@ export class ProfilesActionsMenuComponent implements OnInit {
       },
     ],
     HR_ADMIN: [
-      // {
-      //   key: 'VIEW_DETAILS',
-      //   label: 'VIEW_DETAILS',
-      //   icon: 'pi pi-eye',
-      //   iconColor: 'text-gray-500',
-      //   can: () => true,
-      //   action: () => this.viewDetails(),
-      // },
-
       {
         key: 'APPLY_TO_OFFER',
         label: 'APPLY',
@@ -141,14 +127,6 @@ export class ProfilesActionsMenuComponent implements OnInit {
       },
     ],
     RECRUITER: [
-      // {
-      //   key: 'VIEW_DETAILS',
-      //   label: 'VIEW_DETAILS',
-      //   icon: 'pi pi-eye',
-      //   iconColor: 'text-gray-500',
-      //   can: () => true,
-      //   action: () => this.viewDetails(),
-      // },
       {
         key: 'APPLY_TO_OFFER',
         label: 'APPLY',
@@ -213,13 +191,16 @@ export class ProfilesActionsMenuComponent implements OnInit {
       }));
   }
 
-  private viewDetails(): void {}
   private applyToOffer() {
     if (this.profile()) {
-      this.applicationService.createApplication(
-        this.profile().candidate.id,
-        this.profile().id
-      );
+      this.onApplyToOffer.emit({
+        candidateId: this.profile().candidate.id,
+        profileId: this.profile().id,
+      });
+      // this.applicationService.createApplication(
+      //   this.profile().candidate.id,
+      //   this.profile().id
+      // );
     }
   }
   private deleteProfile() {

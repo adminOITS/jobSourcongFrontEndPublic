@@ -96,9 +96,26 @@ export class OfferDetailsProfilesTableComponent implements OnDestroy {
   editResume() {
     console.log('editResume');
   }
+  confirmationHeader = '';
+  confirmationMsg = '';
+  acceptLabel = '';
+  acceptIcon = '';
+  acceptButtonStyleClass = '';
+  rejectLabel = '';
+  rejectIcon = '';
+  rejectButtonStyleClass = '';
   deleteProfile() {
     if (this.profile()) {
+      this.confirmationHeader = 'DELETE_PROFILE';
+      this.confirmationMsg = 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_PROFILE';
+      this.acceptLabel = 'YES';
+      this.acceptIcon = 'pi pi-check';
+      this.acceptButtonStyleClass = 'p-button-danger';
+      this.rejectLabel = 'CANCEL';
+      this.rejectIcon = 'pi pi-times';
+      this.rejectButtonStyleClass = 'p-button-text';
       this.confirmationService.confirm({
+        message: this.confirmationMsg,
         accept: () => {
           if (this.profile()) {
             this.profileService.deleteProfile(
@@ -109,6 +126,35 @@ export class OfferDetailsProfilesTableComponent implements OnDestroy {
         },
       });
     }
+  }
+  applyToOffer(event: { candidateId: string; profileId: string }) {
+    this.confirmationHeader = 'APPLY_TO_OFFER';
+    this.confirmationMsg = 'DO_YOU_WANT_TO_SEND_AN_EMAIL_TO_THE_CANDIDATE';
+    this.acceptLabel = 'SEND_EMAIL';
+    this.acceptIcon = 'pi pi-envelope';
+    this.acceptButtonStyleClass = 'p-button-success';
+    this.rejectLabel = 'APPLY_WITHOUT_EMAIL';
+    this.rejectIcon = 'pi pi-check';
+    this.rejectButtonStyleClass = 'p-button-text';
+    this.confirmationService.confirm({
+      message: this.confirmationMsg,
+      accept: () => {
+        if (this.profile()) {
+          this.applicationService.createApplication(
+            event.candidateId,
+            event.profileId,
+            true
+          );
+        }
+      },
+      reject: () => {
+        this.applicationService.createApplication(
+          event.candidateId,
+          event.profileId,
+          false
+        );
+      },
+    });
   }
 
   loadCandidateProfilesLazy(event: TableLazyLoadEvent) {

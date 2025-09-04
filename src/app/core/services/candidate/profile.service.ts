@@ -20,6 +20,7 @@ import {
 } from '../../models/attachment.models';
 import { AttachmentService } from '../attachment/attachment.service';
 import { detectContentType } from '../../utils';
+import { JobCategory } from '../../models/category.models';
 
 @Injectable({
   providedIn: 'root',
@@ -214,11 +215,15 @@ export class ProfileService {
       )
       .subscribe({
         next: (profile) => {
+          const category: JobCategory =
+            JobCategory[
+              profile.category.toUpperCase() as keyof typeof JobCategory
+            ];
           this.messageWrapper.success('PROFILE_UPDATED_SUCCESSFULLY');
           this._profilesSignal.update((prev) => ({
             ...prev,
             data: prev.data.map((profile) =>
-              profile.id === profileId ? profile : profile
+              profile.id === profileId ? { ...profile, category } : profile
             ),
           }));
           this.closeEditProfileDialog();
