@@ -82,9 +82,14 @@ export class ApplicationActionsMenuComponent implements OnInit {
         icon: 'pi pi-arrow-right',
         iconColor: 'text-blue-500',
         can: () =>
-          ['NEW', 'CANCELLED_BY_RECRUITER', 'WITHDRAWN_BY_CANDIDATE'].includes(
-            this.application()?.status!
-          ),
+          [
+            'NEW',
+            'CANCELLED_BY_RECRUITER',
+            'WITHDRAWN_BY_CANDIDATE',
+            'INTERESTED_BY_CANDIDATE',
+            'MORE_INFO_REQUESTED_BY_CANDIDATE',
+            'WAITING_FOR_CANDIDATE_ACTION',
+          ].includes(this.application()?.status!),
 
         action: () => this.pushToHr(),
       },
@@ -102,7 +107,13 @@ export class ApplicationActionsMenuComponent implements OnInit {
         icon: 'pi pi-undo',
         iconColor: 'text-yellow-500',
         can: () =>
-          ['NEW', 'SUBMITTED_TO_HR'].includes(this.application()?.status!),
+          [
+            'NEW',
+            'SUBMITTED_TO_HR',
+            'INTERESTED_BY_CANDIDATE',
+            'MORE_INFO_REQUESTED_BY_CANDIDATE',
+            'WAITING_FOR_CANDIDATE_ACTION',
+          ].includes(this.application()?.status!),
         action: () => this.withdrawByCandidate(),
       },
       {
@@ -111,9 +122,14 @@ export class ApplicationActionsMenuComponent implements OnInit {
         icon: 'pi pi-trash',
         iconColor: 'text-red-500',
         can: () =>
-          ['NEW', 'SUBMITTED_TO_HR', 'CANCELLED_BY_RECRUITER'].includes(
-            this.application()?.status!
-          ),
+          [
+            'NEW',
+            'SUBMITTED_TO_HR',
+            'CANCELLED_BY_RECRUITER',
+            'INTERESTED_BY_CANDIDATE',
+            'MORE_INFO_REQUESTED_BY_CANDIDATE',
+            'WAITING_FOR_CANDIDATE_ACTION',
+          ].includes(this.application()?.status!),
         action: () => this.deleteApplication(),
       },
     ],
@@ -148,6 +164,9 @@ export class ApplicationActionsMenuComponent implements OnInit {
             'INVALIDATED_BY_HR',
             'REJECTED_BY_HR',
             'REJECTED_BY_VALIDATOR',
+            'INTERESTED_BY_CANDIDATE',
+            'MORE_INFO_REQUESTED_BY_CANDIDATE',
+            'WAITING_FOR_CANDIDATE_ACTION',
           ].includes(this.application()?.status!),
         action: () => this.pushToValidator(),
       },
@@ -166,6 +185,9 @@ export class ApplicationActionsMenuComponent implements OnInit {
             'REJECTED_BY_HR',
             'REJECTED_BY_VALIDATOR',
             'PUSHED_TO_VALIDATOR',
+            'INTERESTED_BY_CANDIDATE',
+            'MORE_INFO_REQUESTED_BY_CANDIDATE',
+            'WAITING_FOR_CANDIDATE_ACTION',
           ].includes(this.application()?.status!),
         action: () => this.acceptByValidator(),
       },
@@ -194,7 +216,15 @@ export class ApplicationActionsMenuComponent implements OnInit {
         label: 'REJECTED_BY_VALIDATOR_Action',
         icon: 'pi pi-times-circle',
         iconColor: 'text-red-500',
-        can: () => this.application()?.status === 'SUBMITTED_TO_HR',
+        can: () =>
+          [
+            'ACCEPTED_BY_VALIDATOR',
+            'SUBMITTED_TO_HR',
+            'NEW',
+            'INTERESTED_BY_CANDIDATE',
+            'MORE_INFO_REQUESTED_BY_CANDIDATE',
+            'WAITING_FOR_CANDIDATE_ACTION',
+          ].includes(this.application()?.status!),
         action: () => this.rejectByValidator(),
       },
       {
@@ -253,6 +283,9 @@ export class ApplicationActionsMenuComponent implements OnInit {
             'INVALIDATED_BY_HR',
             'REJECTED_BY_HR',
             'REJECTED_BY_VALIDATOR',
+            'INTERESTED_BY_CANDIDATE',
+            'MORE_INFO_REQUESTED_BY_CANDIDATE',
+            'WAITING_FOR_CANDIDATE_ACTION',
           ].includes(this.application()?.status!),
         action: () => this.pushToValidator(),
       },
@@ -271,6 +304,9 @@ export class ApplicationActionsMenuComponent implements OnInit {
             'REJECTED_BY_HR',
             'REJECTED_BY_VALIDATOR',
             'PUSHED_TO_VALIDATOR',
+            'INTERESTED_BY_CANDIDATE',
+            'MORE_INFO_REQUESTED_BY_CANDIDATE',
+            'WAITING_FOR_CANDIDATE_ACTION',
           ].includes(this.application()?.status!),
         action: () => this.acceptByValidator(),
       },
@@ -279,7 +315,15 @@ export class ApplicationActionsMenuComponent implements OnInit {
         label: 'REJECTED_BY_VALIDATOR_Action',
         icon: 'pi pi-times-circle',
         iconColor: 'text-red-500',
-        can: () => this.application()?.status === 'SUBMITTED_TO_HR',
+        can: () =>
+          [
+            'ACCEPTED_BY_VALIDATOR',
+            'SUBMITTED_TO_HR',
+            'NEW',
+            'INTERESTED_BY_CANDIDATE',
+            'MORE_INFO_REQUESTED_BY_CANDIDATE',
+            'WAITING_FOR_CANDIDATE_ACTION',
+          ].includes(this.application()?.status!),
         action: () => this.rejectByValidator(),
       },
       {

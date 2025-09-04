@@ -32,6 +32,7 @@ import { DEFAULT_PROFILE_SIZE } from '../../../../../core/utils/constants';
 import { ApplicationService } from '../../../../../core/services/applications/application.service';
 import { ProfilesActionsMenuComponent } from '../profiles-actions-menu/profiles-actions-menu.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { AddProfileDialogComponent } from '../add-profile-dialog/add-profile-dialog.component';
 import { EditProfileDialogComponent } from '../edit-profile-dialog/edit-profile-dialog.component';
 import { EditResumeDialogComponent } from '../edit-resume-dialog/edit-resume-dialog.component';
@@ -52,6 +53,7 @@ import { EditResumeDialogComponent } from '../edit-resume-dialog/edit-resume-dia
     TagModule,
     ProfilesActionsMenuComponent,
     ConfirmDialogModule,
+    DialogModule,
   ],
   providers: [ConfirmationService],
   templateUrl: './offer-details-profiles-table.component.html',
@@ -73,6 +75,12 @@ export class OfferDetailsProfilesTableComponent implements OnDestroy {
   applicationService = inject(ApplicationService);
   destroy$ = new Subject<void>();
   private confirmationService = inject(ConfirmationService);
+
+  // Apply to offer dialog
+  isApplyDialogVisible = signal<boolean>(false);
+  applyDialogData = signal<{ candidateId: string; profileId: string } | null>(
+    null
+  );
   constructor() {
     this.initColumns();
   }
@@ -128,33 +136,37 @@ export class OfferDetailsProfilesTableComponent implements OnDestroy {
     }
   }
   applyToOffer(event: { candidateId: string; profileId: string }) {
-    this.confirmationHeader = 'APPLY_TO_OFFER';
-    this.confirmationMsg = 'DO_YOU_WANT_TO_SEND_AN_EMAIL_TO_THE_CANDIDATE';
-    this.acceptLabel = 'SEND_EMAIL';
-    this.acceptIcon = 'pi pi-envelope';
-    this.acceptButtonStyleClass = 'p-button-success';
-    this.rejectLabel = 'APPLY_WITHOUT_EMAIL';
-    this.rejectIcon = 'pi pi-check';
-    this.rejectButtonStyleClass = 'p-button-text';
-    this.confirmationService.confirm({
-      message: this.confirmationMsg,
-      accept: () => {
-        if (this.profile()) {
-          this.applicationService.createApplication(
-            event.candidateId,
-            event.profileId,
-            true
-          );
-        }
-      },
-      reject: () => {
-        this.applicationService.createApplication(
-          event.candidateId,
-          event.profileId,
-          false
-        );
-      },
-    });
+    this.applyDialogData.set(event);
+    this.isApplyDialogVisible.set(true);
+  }
+
+  sendEmailAndApply() {
+    const data = this.applyDialogData();
+    if (data) {
+      this.applicationService.createApplication(
+        data.candidateId,
+        data.profileId,
+        true
+      );
+      this.closeApplyDialog();
+    }
+  }
+
+  applyWithoutEmail() {
+    const data = this.applyDialogData();
+    if (data) {
+      this.applicationService.createApplication(
+        data.candidateId,
+        data.profileId,
+        false
+      );
+      this.closeApplyDialog();
+    }
+  }
+
+  closeApplyDialog() {
+    this.isApplyDialogVisible.set(false);
+    this.applyDialogData.set(null);
   }
 
   loadCandidateProfilesLazy(event: TableLazyLoadEvent) {

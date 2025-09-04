@@ -115,11 +115,12 @@
         !isOffersLoading() &&
         staffAssignedOffers().data.length > 0
       "
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 lg:gap-4"
+      class="flex flex-wrap gap-2 sm:gap-3 lg:gap-4"
     >
       <app-company-details-members-tab-staff-assignment-card
         *ngFor="let offer of staffAssignedOffers().data"
         [offer]="offer"
+        class="flex-1 min-w-[280px] sm:min-w-[320px] lg:min-w-[340px] max-w-[400px]"
       ></app-company-details-members-tab-staff-assignment-card>
     </div>
   </div>
