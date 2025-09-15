@@ -1,4 +1,4 @@
-FROM node:20.11.1-alpine3.19 AS build
+FROM public.ecr.aws/docker/library/node:20.11.1-alpine3.19 AS build
 # Set the working directory
 WORKDIR /app
 COPY package*.json ./
@@ -10,7 +10,8 @@ RUN npm run build --configuration=production
 
 
 # Stage 2: Serve the application with nginx
-FROM nginx:1.25.4-alpine
+FROM public.ecr.aws/docker/library/nginx:1.25.4-alpine
+
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
