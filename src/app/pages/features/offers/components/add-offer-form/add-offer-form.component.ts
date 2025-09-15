@@ -85,12 +85,12 @@ type ExperienceFormGroup = {
   requirementLevel: FormControl<'REQUIRED' | 'OPTIONAL' | 'PREFERRED' | null>;
 };
 
-type AdditionalInfoFormGroup = {
-  name: FormControl<string>;
-  description: FormControl<string | null>;
-  requirementLevel: FormControl<'REQUIRED' | 'OPTIONAL' | 'PREFERRED' | null>;
-  skillType: FormControl<'FUNCTIONAL_SKILL' | 'TECHNICAL_SKILL' | null>;
-};
+// type AdditionalInfoFormGroup = {
+//   name: FormControl<string>;
+//   description: FormControl<string | null>;
+//   requirementLevel: FormControl<'REQUIRED' | 'OPTIONAL' | 'PREFERRED' | null>;
+//   skillType: FormControl<'FUNCTIONAL_SKILL' | 'TECHNICAL_SKILL' | null>;
+// };
 
 @Component({
   selector: 'app-add-offer-form',
@@ -181,7 +181,7 @@ export class AddOfferFormComponent implements OnInit, OnDestroy {
       languages: this.fb.array<FormGroup<LanguageFormGroup>>([]),
       education: this.fb.array<FormGroup<EducationFormGroup>>([]),
       experiences: this.fb.array<FormGroup<ExperienceFormGroup>>([]),
-      additionalInfos: this.fb.array<FormGroup<AdditionalInfoFormGroup>>([]),
+      // additionalInfos: this.fb.array<FormGroup<AdditionalInfoFormGroup>>([]),
     });
 
     // Watch for category changes
@@ -293,14 +293,15 @@ export class AddOfferFormComponent implements OnInit, OnDestroy {
           yearsRequired: experience.yearsRequired,
           requirementLevel: experience.requirementLevel.value,
         })),
-        additionalInfos: formValue.additionalInfos.map(
-          (additionalInfo: any) => ({
-            name: additionalInfo.name,
-            description: additionalInfo.description,
-            requirementLevel: additionalInfo.requirementLevel.value,
-            skillType: additionalInfo.skillType.value,
-          })
-        ),
+        // additionalInfos: formValue.additionalInfos.map(
+        //   (additionalInfo: any) => ({
+        //     name: additionalInfo.name,
+        //     description: additionalInfo.description,
+        //     requirementLevel: additionalInfo.requirementLevel.value,
+        //     skillType: additionalInfo.skillType.value,
+        //   })
+        // ),
+        additionalInfos: [],
         contractType: formValue.contractType,
       };
       this.offerService.createOffer(this.companyId, offer);
@@ -339,11 +340,11 @@ export class AddOfferFormComponent implements OnInit, OnDestroy {
     >;
   }
 
-  get additionalInfos() {
-    return this.offerForm.get('additionalInfos') as FormArray<
-      FormGroup<AdditionalInfoFormGroup>
-    >;
-  }
+  // get additionalInfos() {
+  //   return this.offerForm.get('additionalInfos') as FormArray<
+  //     FormGroup<AdditionalInfoFormGroup>
+  //   >;
+  // }
 
   addSkill() {
     if (this.skills.controls.some((control) => control.invalid)) {
@@ -458,30 +459,30 @@ export class AddOfferFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  addAdditionalInfo() {
-    if (this.additionalInfos.controls.some((control) => control.invalid)) {
-      const msg = this.translateService.instant(
-        'PLEASE_FILL_IN_ALL_ADDITIONAL_INFO_FIELDS_BEFORE_ADDING_A_NEW_ONE'
-      );
-      this.messageService.error(msg);
-      return;
-    }
-    this.additionalInfos.push(
-      this.fb.group<AdditionalInfoFormGroup>({
-        name: new FormControl('', {
-          nonNullable: true,
-          validators: [Validators.required],
-        }),
-        description: new FormControl('', {}),
-        requirementLevel: new FormControl(null, {
-          validators: [Validators.required],
-        }),
-        skillType: new FormControl(null, {
-          validators: [Validators.required],
-        }),
-      })
-    );
-  }
+  // addAdditionalInfo() {
+  //   if (this.additionalInfos.controls.some((control) => control.invalid)) {
+  //     const msg = this.translateService.instant(
+  //       'PLEASE_FILL_IN_ALL_ADDITIONAL_INFO_FIELDS_BEFORE_ADDING_A_NEW_ONE'
+  //     );
+  //     this.messageService.error(msg);
+  //     return;
+  //   }
+  //   this.additionalInfos.push(
+  //     this.fb.group<AdditionalInfoFormGroup>({
+  //       name: new FormControl('', {
+  //         nonNullable: true,
+  //         validators: [Validators.required],
+  //       }),
+  //       description: new FormControl('', {}),
+  //       requirementLevel: new FormControl(null, {
+  //         validators: [Validators.required],
+  //       }),
+  //       skillType: new FormControl(null, {
+  //         validators: [Validators.required],
+  //       }),
+  //     })
+  //   );
+  // }
 
   removeSkill(index: number) {
     this.skills.removeAt(index);
@@ -499,9 +500,9 @@ export class AddOfferFormComponent implements OnInit, OnDestroy {
     this.experiences.removeAt(index);
   }
 
-  removeAdditionalInfo(index: number) {
-    this.additionalInfos.removeAt(index);
-  }
+  // removeAdditionalInfo(index: number) {
+  //   this.additionalInfos.removeAt(index);
+  // }
 
   private initializeOptions() {
     this.languageOptions =
@@ -564,13 +565,10 @@ export class AddOfferFormComponent implements OnInit, OnDestroy {
     const languagesValid = this.languages.valid;
     const educationValid = this.education.valid;
     const experiencesValid = this.experiences.valid;
-    const additionalInfosValid = this.additionalInfos.valid;
+    // const additionalInfosValid = this.additionalInfos.valid;
     return (
-      skillsValid &&
-      languagesValid &&
-      educationValid &&
-      experiencesValid &&
-      additionalInfosValid
+      skillsValid && languagesValid && educationValid && experiencesValid
+      // additionalInfosValid
     );
   }
 
@@ -646,8 +644,8 @@ export class AddOfferFormComponent implements OnInit, OnDestroy {
     this.languages.controls.forEach((control) => control.markAllAsTouched());
     this.education.controls.forEach((control) => control.markAllAsTouched());
     this.experiences.controls.forEach((control) => control.markAllAsTouched());
-    this.additionalInfos.controls.forEach((control) =>
-      control.markAllAsTouched()
-    );
+    // this.additionalInfos.controls.forEach((control) =>
+    //   control.markAllAsTouched()
+    // );
   }
 }

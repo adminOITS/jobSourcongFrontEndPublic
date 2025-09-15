@@ -43,10 +43,14 @@ type TagSeverity =
   styles: [],
 })
 export class CandidatesDetailsOverViewTabComponent {
+  @Input() isApplicationReview: boolean = false;
+  @Input() isEditAllowed: boolean = false;
+
   appSettingsService = inject(AppSettingsService);
   translateService = inject(TranslateService);
   candidateService = inject(CandidateService);
   candidate = this.candidateService.candidateDetails;
+
   constructor() {
     effect(() => {
       const language = this.appSettingsService.language();

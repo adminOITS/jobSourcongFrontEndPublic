@@ -68,6 +68,8 @@ export const ROUTES = {
     TRACK_STATUS: 'applications/profile/:profileId',
     VALIDATION_REVIEW: 'applications/validation-review/:applicationId',
     CANDIDATE_ACTION: 'applications/candidate-action/:applicationId',
+    PUSHED_TO_CLIENT_VALIDATION_REVIEW:
+      'applications/suggestion/:applicationId',
   },
   MAILING: {
     LIST: 'mailing',

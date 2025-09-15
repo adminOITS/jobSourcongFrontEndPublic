@@ -29,6 +29,7 @@ export class CandidateService {
   private messageWrapper = inject(MessageWrapperService);
   private selectedCandidate = signal<CandidateResponse | null>(null);
   private isDialogVisible = signal<boolean>(false);
+  private showPersonalInfo = signal<boolean>(false);
   private candidates = signal<PaginatedResponse<CandidateResponse>>({
     currentPage: 1,
     totalItems: 0,
@@ -42,7 +43,7 @@ export class CandidateService {
   readonly isCandidateLoading = computed(() => this._isCandidateLoading());
   readonly candidateDetails = computed(() => this.selectedCandidate());
   readonly isDialogVisibleComputed = computed(() => this.isDialogVisible());
-
+  readonly showPersonalInfoComputed = computed(() => this.showPersonalInfo());
   CandidatePersonalInfo = linkedSignal({
     source: () => this.selectedCandidate(),
     computation: (source) => source ?? null,
@@ -137,6 +138,35 @@ export class CandidateService {
         },
         error: (error) => {
           this.router.navigate(['/candidate/' + candidateId + '/not-found'], {
+            state: { message: 'CANDIDATE_NOT_FOUND' },
+          });
+        },
+      });
+  }
+
+  getCandidateByProfileAndApplication(
+    profileId: string,
+    applicationId: string
+  ) {
+    this.selectedCandidate.set(null);
+    this._isCandidateLoading.set(true);
+    this.http
+      .get<CandidateResponse>(
+        `${this.baseUrl}/profiles/${profileId}/applications/${applicationId}`
+      )
+      .pipe(
+        take(1),
+        finalize(() => {
+          this._isCandidateLoading.set(false);
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          this.showPersonalInfo.set(response.email ? false : true);
+          this.selectedCandidate.set(response);
+        },
+        error: (error) => {
+          this.router.navigate(['/candidate/' + profileId + '/not-found'], {
             state: { message: 'CANDIDATE_NOT_FOUND' },
           });
         },
@@ -251,9 +281,63 @@ export class CandidateService {
           );
         },
         error: (error) => {
-          this.messageWrapper.error(
-            'ERROR_UPDATING_CANDIDATE_VALIDATION_STATUS'
-          );
+          // Check for specific validation errors
+          const errorMessage = error?.error?.message || error?.message || '';
+
+          if (
+            errorMessage.includes(
+              'Candidate must have a city and country before verification'
+            )
+          ) {
+            this.messageWrapper.error(
+              'CANDIDATE_MUST_HAVE_CITY_AND_COUNTRY_BEFORE_VERIFICATION'
+            );
+          } else if (
+            errorMessage.includes(
+              'Candidate must have at least one profile before verification'
+            )
+          ) {
+            this.messageWrapper.error(
+              'CANDIDATE_MUST_HAVE_AT_LEAST_ONE_PROFILE_BEFORE_VERIFICATION'
+            );
+          } else if (
+            errorMessage.includes(
+              'Candidate must have at least one skill before verification'
+            )
+          ) {
+            this.messageWrapper.error(
+              'CANDIDATE_MUST_HAVE_AT_LEAST_ONE_SKILL_BEFORE_VERIFICATION'
+            );
+          } else if (
+            errorMessage.includes(
+              'Candidate must have at least one experience before verification'
+            )
+          ) {
+            this.messageWrapper.error(
+              'CANDIDATE_MUST_HAVE_AT_LEAST_ONE_EXPERIENCE_BEFORE_VERIFICATION'
+            );
+          } else if (
+            errorMessage.includes(
+              'Candidate must have at least one education before verification'
+            )
+          ) {
+            this.messageWrapper.error(
+              'CANDIDATE_MUST_HAVE_AT_LEAST_ONE_EDUCATION_BEFORE_VERIFICATION'
+            );
+          } else if (
+            errorMessage.includes(
+              'Candidate must have at least one language before verification'
+            )
+          ) {
+            this.messageWrapper.error(
+              'CANDIDATE_MUST_HAVE_AT_LEAST_ONE_LANGUAGE_BEFORE_VERIFICATION'
+            );
+          } else {
+            // Default error for any other validation errors
+            this.messageWrapper.error(
+              'ERROR_UPDATING_CANDIDATE_VALIDATION_STATUS'
+            );
+          }
         },
       });
   }

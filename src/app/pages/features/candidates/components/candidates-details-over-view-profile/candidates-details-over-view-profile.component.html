@@ -8,14 +8,16 @@
       {{ fullName || ("NO_NAME" | translate) }}
     </h2>
 
-    <button
-      pButton
-      *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-      icon="pi pi-pencil"
-      class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
-      label="{{ 'EDIT' | translate }}"
-      (click)="openEditDialog()"
-    ></button>
+    <ng-container *ngIf="isEditAllowed">
+      <button
+        pButton
+        *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+        icon="pi pi-pencil"
+        class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
+        label="{{ 'EDIT' | translate }}"
+        (click)="openEditDialog()"
+      ></button>
+    </ng-container>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -83,9 +85,11 @@
   </div>
 </div>
 
-<app-add-edit-candidate-personal-info-dialog
-  *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-/>
+<ng-container *ngIf="isEditAllowed">
+  <app-add-edit-candidate-personal-info-dialog
+    *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+  />
+</ng-container>
 
 <p-toast
   position="bottom-center"

@@ -24,8 +24,10 @@ import { formatDateSafely } from '../../../../../core/utils';
   providers: [ConfirmationService],
 })
 export class ExperienceCardComponent {
+  @Input() isEditAllowed: boolean = false;
   @ViewChild('menu') menu!: Menu;
   @Input() experience!: ExperienceResponse;
+  @Input() isApplicationReview: boolean = false;
   experienceService = inject(ExperienceService);
   confirmationService = inject(ConfirmationService);
 

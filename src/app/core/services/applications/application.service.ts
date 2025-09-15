@@ -110,10 +110,10 @@ export class ApplicationService {
         finalize(() => this._isApplicationLoading.set(false))
       )
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.messageWrapper.success('APPLICATION_CREATED_SUCCESSFULLY');
         },
-        error: (error) => {
+        error: () => {
           this.messageWrapper.error('APPLICATION_CREATED_FAILED');
         },
       });
@@ -133,15 +133,17 @@ export class ApplicationService {
         })
       )
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.messageWrapper.success('APPLICATION_DELETED_SUCCESSFULLY');
-          this.applicationsSignal.update((applications) => ({
-            ...applications,
-            data: applications.data.filter((app) => app.id !== applicationId),
-            totalItems: applications.totalItems - 1,
-          }));
+          this.applicationsSignal.update(
+            (applications: PaginatedResponse<ApplicationResponse>) => ({
+              ...applications,
+              data: applications.data.filter((app) => app.id !== applicationId),
+              totalItems: applications.totalItems - 1,
+            })
+          );
         },
-        error: (error) => {
+        error: () => {
           this.messageWrapper.error('APPLICATION_DELETED_FAILED');
         },
       });
@@ -160,10 +162,10 @@ export class ApplicationService {
         finalize(() => this._isApplicationLoading.set(false))
       )
       .subscribe({
-        next: (response) => {
+        next: (response: ApplicationResponse) => {
           this._applicationDetails.set(response);
         },
-        error: (error) => {
+        error: () => {
           this.router.navigate(
             ['/applications/' + applicationId + '/not-found'],
             {
@@ -204,6 +206,12 @@ export class ApplicationService {
     jobOfferId: string,
     filters?: ApplicationSearchRequest
   ) {
+    this.applicationsSignal.set({
+      data: [],
+      currentPage: 0,
+      totalItems: 0,
+      totalPages: 0,
+    });
     const url = `${this.baseUrl}/offers/${jobOfferId}`;
     let params = new HttpParams();
 
@@ -275,7 +283,84 @@ export class ApplicationService {
     candidateId: string,
     filters?: ApplicationSearchRequest
   ) {
+    this.applicationsSignal.set({
+      data: [],
+      currentPage: 0,
+      totalItems: 0,
+      totalPages: 0,
+    });
     const url = `${this.baseUrl}/candidates/${candidateId}`;
+    let params = new HttpParams();
+
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) {
+          params = params.set(key, value);
+        }
+      });
+    }
+    this._isApplicationsLoading.set(true);
+    this.http
+      .get<PaginatedResponse<ApplicationResponse>>(url, {
+        params,
+      })
+      .pipe(
+        take(1),
+        finalize(() => this._isApplicationsLoading.set(false))
+      )
+      .subscribe({
+        next: (response) => {
+          this.applicationsSignal.set(response);
+        },
+        error: (error) => {},
+      });
+  }
+
+  getAllClientPushedApplications(filters?: ApplicationSearchRequest) {
+    this.applicationsSignal.set({
+      data: [],
+      currentPage: 0,
+      totalItems: 0,
+      totalPages: 0,
+    });
+    const url = `${this.baseUrl}/pushed-to-client`;
+    let params = new HttpParams();
+
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) {
+          params = params.set(key, value);
+        }
+      });
+    }
+    this._isApplicationsLoading.set(true);
+    this.http
+      .get<PaginatedResponse<ApplicationResponse>>(url, {
+        params,
+      })
+      .pipe(
+        take(1),
+        finalize(() => this._isApplicationsLoading.set(false))
+      )
+      .subscribe({
+        next: (response) => {
+          this.applicationsSignal.set(response);
+        },
+        error: (error) => {},
+      });
+  }
+
+  getClientPushedApplicationsByJobOfferId(
+    jobOfferId: string,
+    filters?: ApplicationSearchRequest
+  ) {
+    this.applicationsSignal.set({
+      data: [],
+      currentPage: 0,
+      totalItems: 0,
+      totalPages: 0,
+    });
+    const url = `${this.baseUrl}/offers/${jobOfferId}/pushed-to-client`;
     let params = new HttpParams();
 
     if (filters) {
@@ -640,6 +725,185 @@ export class ApplicationService {
         },
         error: () => {
           this.messageWrapper.error('APPLICATION_REJECTED_BY_VALIDATOR_FAILED');
+        },
+      });
+  }
+
+  pushToClient(applicationId: string, request: TransitionCommentRequest) {
+    const url = `${this.baseUrl}/${applicationId}/push-to-client`;
+    this._isApplicationLoading.set(true);
+    this.http
+      .put<void>(url, request)
+      .pipe(
+        take(1),
+        finalize(() => {
+          this._isApplicationLoading.set(false);
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.applicationsSignal.update((applications) => ({
+            ...applications,
+            data: applications.data.map((app) =>
+              app.id === applicationId
+                ? { ...app, status: ApplicationStatusEnum.PUSHED_TO_CLIENT }
+                : app
+            ),
+          }));
+          this.messageWrapper.success(
+            'APPLICATION_PUSHED_TO_CLIENT_SUCCESSFULLY'
+          );
+          this.closeApplicationCommentDialog();
+        },
+        error: () => {
+          this.messageWrapper.error('APPLICATION_PUSHED_TO_CLIENT_FAILED');
+        },
+      });
+  }
+
+  unpushApplication(applicationId: string, request: TransitionCommentRequest) {
+    const url = `${this.baseUrl}/${applicationId}/unpush`;
+    this._isApplicationLoading.set(true);
+    this.http
+      .put<void>(url, request)
+      .pipe(
+        take(1),
+        finalize(() => {
+          this._isApplicationLoading.set(false);
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.applicationsSignal.update((applications) => ({
+            ...applications,
+            data: applications.data.map((app) =>
+              app.id === applicationId
+                ? {
+                    ...app,
+                    status: ApplicationStatusEnum.UNPUSHED_BY_CLIENT,
+                  }
+                : app
+            ),
+          }));
+          this.messageWrapper.success('APPLICATION_UNPUSHED_SUCCESSFULLY');
+          this.closeApplicationCommentDialog();
+        },
+        error: () => {
+          this.messageWrapper.error('APPLICATION_UNPUSHED_FAILED');
+        },
+      });
+  }
+
+  rejectByClient(applicationId: string, request: TransitionCommentRequest) {
+    const url = `${this.baseUrl}/${applicationId}/reject-by-client`;
+    this._isApplicationLoading.set(true);
+    this.http
+      .put<void>(url, request)
+      .pipe(
+        take(1),
+        finalize(() => {
+          this._isApplicationLoading.set(false);
+        })
+      )
+      .subscribe({
+        next: () => {
+          this._applicationDetails.update((applications) => ({
+            ...this.applicationDetails()!,
+            status: ApplicationStatusEnum.REJECTED_BY_CLIENT,
+          }));
+          this.messageWrapper.success(
+            'APPLICATION_REJECTED_BY_CLIENT_SUCCESSFULLY'
+          );
+          this.closeApplicationCommentDialog();
+        },
+        error: () => {
+          this.messageWrapper.error('APPLICATION_REJECTED_BY_CLIENT_FAILED');
+        },
+      });
+  }
+
+  invalidateByClient(applicationId: string, request: TransitionCommentRequest) {
+    const url = `${this.baseUrl}/${applicationId}/invalidate-by-client`;
+    this._isApplicationLoading.set(true);
+    this.http
+      .put<void>(url, request)
+      .pipe(
+        take(1),
+        finalize(() => {
+          this._isApplicationLoading.set(false);
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.applicationsSignal.update((applications) => ({
+            ...applications,
+            data: applications.data.map((app) =>
+              app.id === applicationId
+                ? {
+                    ...app,
+                    status: ApplicationStatusEnum.INVALIDATED_BY_CLIENT,
+                  }
+                : app
+            ),
+          }));
+          this.messageWrapper.success(
+            'APPLICATION_INVALIDATED_BY_CLIENT_SUCCESSFULLY'
+          );
+          this.closeApplicationCommentDialog();
+        },
+        error: () => {
+          this.messageWrapper.error('APPLICATION_INVALIDATED_BY_CLIENT_FAILED');
+        },
+      });
+  }
+
+  validateByClient(applicationId: string, request: TransitionCommentRequest) {
+    const url = `${this.baseUrl}/${applicationId}/validate-by-client`;
+    this._isApplicationLoading.set(true);
+    this.http
+      .put<void>(url, request)
+      .pipe(
+        take(1),
+        finalize(() => {
+          this._isApplicationLoading.set(false);
+        })
+      )
+      .subscribe({
+        next: () => {
+          this._applicationDetails.update((applications) => ({
+            ...this.applicationDetails()!,
+            status: ApplicationStatusEnum.VALIDATED_BY_CLIENT,
+          }));
+          this.messageWrapper.success(
+            'APPLICATION_VALIDATED_BY_CLIENT_SUCCESSFULLY'
+          );
+          this.closeApplicationCommentDialog();
+        },
+        error: () => {
+          this.messageWrapper.error('APPLICATION_VALIDATED_BY_CLIENT_FAILED');
+        },
+      });
+  }
+
+  shareApplicationProfileWithClient(applicationId: string) {
+    const url = `${this.baseUrl}/${applicationId}/share-with-client`;
+    this._isApplicationLoading.set(true);
+    this.http
+      .put<void>(url, {})
+      .pipe(
+        take(1),
+        finalize(() => {
+          this._isApplicationLoading.set(false);
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.messageWrapper.success(
+            'APPLICATION_SHARED_WITH_CLIENT_SUCCESSFULLY'
+          );
+        },
+        error: () => {
+          this.messageWrapper.error('APPLICATION_SHARED_WITH_CLIENT_FAILED');
         },
       });
   }

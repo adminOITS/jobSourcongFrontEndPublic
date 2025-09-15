@@ -90,6 +90,17 @@ export class GlobalApplicationsTableComponent implements OnDestroy {
     this.selectedApplication.set(application);
     this.actionsMenu.toggle(event);
   }
+  shareApplicationProfileWithClient() {
+    this.confirmationService.confirm({
+      message:
+        'ARE_YOU_SURE_YOU_WANT_TO_SHARE_THIS_APPLICATION_PROFILE_WITH_CLIENT',
+      accept: () => {
+        this.applicationService.shareApplicationProfileWithClient(
+          this.selectedApplication()?.id!
+        );
+      },
+    });
+  }
   deleteApplication() {
     this.confirmationService.confirm({
       message: 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_APPLICATION',
@@ -105,6 +116,7 @@ export class GlobalApplicationsTableComponent implements OnDestroy {
       this.selectedApplication()?.id!
     );
   }
+
   initColumns() {
     this.columns = [
       {

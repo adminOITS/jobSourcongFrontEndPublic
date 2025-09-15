@@ -76,6 +76,9 @@ export const SKILL_TYPES = [
 export const EMPLOYMENT_TYPES = [
   { name: 'FULLTIME', value: 'FULL_TIME' },
   { name: 'PART_TIME', value: 'PART_TIME' },
+  { name: 'FREELANCE', value: 'FREELANCE' },
+  { name: 'INTERNSHIP', value: 'INTERNSHIP' },
+  { name: 'TEMPORARY', value: 'TEMPORARY' },
 ];
 
 export const WORK_MODES: { name: string; value: WorkMode }[] = [

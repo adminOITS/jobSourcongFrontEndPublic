@@ -1,56 +1,62 @@
-<p-confirmDialog
-  *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-  [style]="{ minWidth: '450px' }"
-  [draggable]="false"
-  [rejectVisible]="true"
-  acceptLabel="{{ 'YES' | translate }}"
-  rejectLabel="{{ 'NO' | translate }}"
-  acceptIcon="pi pi-check"
-  rejectIcon="pi pi-times"
-  acceptButtonStyleClass="p-button-danger"
-  rejectButtonStyleClass="p-button-text"
->
-  <ng-template pTemplate="header">
-    <div class="flex items-center gap-2">
-      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
-      <span class="font-medium text-text!">{{
-        "DELETE_SKILL" | translate
-      }}</span>
-    </div>
-  </ng-template>
-  <ng-template pTemplate="message">
-    <div class="flex items-center gap-2">
-      <i class="pi pi-info-circle text-blue-500"></i>
-      <span class="text-text!">{{
-        "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_SKILL" | translate
-      }}</span>
-    </div>
-  </ng-template>
-</p-confirmDialog>
+<ng-container *ngIf="!isApplicationReview">
+  <p-confirmDialog
+    *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+    [style]="{ minWidth: '450px' }"
+    [draggable]="false"
+    [rejectVisible]="true"
+    acceptLabel="{{ 'YES' | translate }}"
+    rejectLabel="{{ 'NO' | translate }}"
+    acceptIcon="pi pi-check"
+    rejectIcon="pi pi-times"
+    acceptButtonStyleClass="p-button-danger"
+    rejectButtonStyleClass="p-button-text"
+  >
+    <ng-template pTemplate="header">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+        <span class="font-medium text-text!">{{
+          "DELETE_SKILL" | translate
+        }}</span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="message">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-info-circle text-blue-500"></i>
+        <span class="text-text!">{{
+          "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_SKILL" | translate
+        }}</span>
+      </div>
+    </ng-template>
+  </p-confirmDialog>
+</ng-container>
 
 <div
   class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 transition-all duration-300"
 >
   <div class="flex justify-between items-start mb-2">
-    <h4 class="text-base sm:text-lg font-medium text-slate-800 dark:text-slate-100">
+    <h4
+      class="text-base sm:text-lg font-medium text-slate-800 dark:text-slate-100"
+    >
       {{ skill.name }}
     </h4>
-    <div class="relative">
-      <p-menu
-        #menu
-        *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-        [popup]="true"
-        [model]="menuItems"
-        appendTo="body"
-      ></p-menu>
-      <button
-        *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-        pButton
-        icon="pi pi-ellipsis-v"
-        class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
-        (click)="menu.toggle($event)"
-      ></button>
-    </div>
+    <ng-container *ngIf="isEditAllowed">
+      <div class="relative" *ngIf="!isApplicationReview">
+        <p-menu
+          #menu
+          *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+          [popup]="true"
+          [model]="menuItems"
+          appendTo="body"
+        ></p-menu>
+        <button
+          *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+          pButton
+          icon="pi pi-ellipsis-v"
+          class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
+          (click)="menu.toggle($event)"
+        ></button>
+      </div>
+    </ng-container>
   </div>
   <div class="flex items-center space-x-2">
     <div
@@ -67,7 +73,9 @@
         [style.width]="getProficiencyWidth(skill.proficiencyLevel)"
       ></div>
     </div>
-    <span class="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300">
+    <span
+      class="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300"
+    >
       {{ skill.proficiencyLevel | translate }}
     </span>
   </div>

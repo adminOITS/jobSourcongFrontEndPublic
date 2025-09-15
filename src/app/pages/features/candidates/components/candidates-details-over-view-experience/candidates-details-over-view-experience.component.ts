@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
@@ -21,6 +21,8 @@ import { HasRoleDirective } from '../../../../../core/directives/has-role.direct
   templateUrl: './candidates-details-over-view-experience.component.html',
 })
 export class CandidatesDetailsOverViewExperienceComponent implements OnInit {
+  @Input() isApplicationReview: boolean = false;
+  @Input() isEditAllowed: boolean = false;
   experienceService = inject(ExperienceService);
   private candidateService = inject(CandidateService);
   experiences = this.candidateService.candidateExperiences;

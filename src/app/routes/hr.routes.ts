@@ -91,6 +91,13 @@ export const HrRoutes: Routes = [
           ).then((m) => m.SettingsPageComponent),
       },
       {
+        path: ROUTES.APPLICATION.PUSHED_TO_CLIENT_VALIDATION_REVIEW,
+        loadComponent: () =>
+          import(
+            '../pages/features/applications/application-pushed-to-client-validation-review/application-pushed-to-client-validation-review.component'
+          ).then((m) => m.ApplicationPushedToClientValidationReviewComponent),
+      },
+      {
         path: ROUTES.INTERVIEW.LIST,
         loadComponent: () =>
           import(

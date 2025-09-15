@@ -31,8 +31,10 @@ import { HasRoleDirective } from '../../../../../core/directives/has-role.direct
   providers: [ConfirmationService],
 })
 export class LanguageCardComponent {
+  @Input() isEditAllowed: boolean = false;
   @ViewChild('menu') menu!: Menu;
   @Input() language!: LanguageResponse;
+  @Input() isApplicationReview: boolean = false;
   @Output() delete = new EventEmitter<string>();
 
   languageService = inject(LanguageService);

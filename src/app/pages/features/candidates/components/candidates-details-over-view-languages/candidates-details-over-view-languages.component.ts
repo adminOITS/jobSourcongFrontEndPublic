@@ -24,6 +24,9 @@ import { HasRoleDirective } from '../../../../../core/directives/has-role.direct
   templateUrl: './candidates-details-over-view-languages.component.html',
 })
 export class CandidatesDetailsOverViewLanguagesComponent {
+  @Input() isApplicationReview: boolean = false;
+  @Input() isEditAllowed: boolean = false;
+
   languageService = inject(LanguageService);
   candidateService = inject(CandidateService);
   languages = this.candidateService.candidateLanguages;

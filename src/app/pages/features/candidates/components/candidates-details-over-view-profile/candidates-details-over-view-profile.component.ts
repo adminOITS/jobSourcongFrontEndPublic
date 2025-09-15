@@ -27,6 +27,7 @@ import { HasRoleDirective } from '../../../../../core/directives/has-role.direct
   templateUrl: './candidates-details-over-view-profile.component.html',
 })
 export class CandidatesDetailsOverViewProfileComponent {
+  @Input() isEditAllowed: boolean = false;
   candidateService = inject(CandidateService);
   candidate = this.candidateService.candidateDetails;
   get fullName(): string {

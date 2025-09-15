@@ -1,32 +1,34 @@
-<p-confirmDialog
-  *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-  [style]="{ minWidth: '450px' }"
-  [draggable]="false"
-  [rejectVisible]="true"
-  acceptLabel="{{ 'YES' | translate }}"
-  rejectLabel="{{ 'NO' | translate }}"
-  acceptIcon="pi pi-check"
-  rejectIcon="pi pi-times"
-  acceptButtonStyleClass="p-button-danger"
-  rejectButtonStyleClass="p-button-text"
->
-  <ng-template pTemplate="header">
-    <div class="flex items-center gap-2">
-      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
-      <span class="font-medium text-text!">{{
-        "DELETE_EDUCATION" | translate
-      }}</span>
-    </div>
-  </ng-template>
-  <ng-template pTemplate="message">
-    <div class="flex items-center gap-2">
-      <i class="pi pi-info-circle text-blue-500"></i>
-      <span class="text-text!">{{
-        "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_EDUCATION" | translate
-      }}</span>
-    </div>
-  </ng-template>
-</p-confirmDialog>
+<ng-container *ngIf="!isApplicationReview">
+  <p-confirmDialog
+    *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+    [style]="{ minWidth: '450px' }"
+    [draggable]="false"
+    [rejectVisible]="true"
+    acceptLabel="{{ 'YES' | translate }}"
+    rejectLabel="{{ 'NO' | translate }}"
+    acceptIcon="pi pi-check"
+    rejectIcon="pi pi-times"
+    acceptButtonStyleClass="p-button-danger"
+    rejectButtonStyleClass="p-button-text"
+  >
+    <ng-template pTemplate="header">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+        <span class="font-medium text-text!">{{
+          "DELETE_EDUCATION" | translate
+        }}</span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="message">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-info-circle text-blue-500"></i>
+        <span class="text-text!">{{
+          "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_EDUCATION" | translate
+        }}</span>
+      </div>
+    </ng-template>
+  </p-confirmDialog>
+</ng-container>
 
 <div
   class="bg-slate-50 mt-2 dark:bg-slate-700/50 border-l-4 border-blue-500 pl-4 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 rounded-lg p-4"
@@ -49,32 +51,34 @@
         class="inline-block mt-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 sm:px-3 py-1 rounded-full border border-slate-200 dark:border-slate-600 whitespace-nowrap"
       >
         <i class="pi pi-calendar text-blue-500 mr-1"></i>
-        {{ formatDateSafely(education.startDate, "MMM yyyy", "N/A") }} -
+        {{ formatDateSafely(education.startDate, "N/A") }} -
         {{
           education.current
             ? ("PRESENT" | translate)
-            : formatDateSafely(education.endDate, "MMM yyyy", "N/A")
+            : formatDateSafely(education.endDate, "N/A")
         }}
       </span>
     </div>
 
     <!-- Menu Button Area: Fixed position, top right -->
-    <div class="flex-shrink-0">
-      <p-menu
-        #menu
-        *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-        [popup]="true"
-        [model]="menuItems"
-        appendTo="body"
-      ></p-menu>
-      <button
-        *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-        pButton
-        icon="pi pi-ellipsis-v"
-        class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
-        (click)="menu.toggle($event)"
-      ></button>
-    </div>
+    <ng-container *ngIf="isEditAllowed">
+      <div class="flex-shrink-0" *ngIf="!isApplicationReview">
+        <p-menu
+          #menu
+          *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+          [popup]="true"
+          [model]="menuItems"
+          appendTo="body"
+        ></p-menu>
+        <button
+          *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+          pButton
+          icon="pi pi-ellipsis-v"
+          class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
+          (click)="menu.toggle($event)"
+        ></button>
+      </div>
+    </ng-container>
   </div>
 
   <!-- Card Body: Additional content below header -->

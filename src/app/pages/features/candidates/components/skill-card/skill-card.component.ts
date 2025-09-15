@@ -26,8 +26,10 @@ import { HasRoleDirective } from '../../../../../core/directives/has-role.direct
   providers: [ConfirmationService],
 })
 export class SkillCardComponent {
+  @Input() isEditAllowed: boolean = false;
   @ViewChild('menu') menu!: Menu;
   @Input() skill!: SkillResponse;
+  @Input() isApplicationReview: boolean = false;
   skillService = inject(SkillService);
   confirmationService = inject(ConfirmationService);
   route = inject(ActivatedRoute);

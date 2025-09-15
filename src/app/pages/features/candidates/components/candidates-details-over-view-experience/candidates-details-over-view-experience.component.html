@@ -8,14 +8,18 @@
       <i class="pi pi-briefcase text-blue-500 mr-2"></i>
       {{ "EXPERIENCE" | translate }}
     </h3>
-    <button
-      *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-      pButton
-      icon="pi pi-plus"
-      class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
-      label="{{ 'ADD' | translate }}"
-      (click)="experienceService.openAddDialog()"
-    ></button>
+    <ng-container *ngIf="isEditAllowed">
+      <ng-container *ngIf="!isApplicationReview">
+        <button
+          *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+          pButton
+          icon="pi pi-plus"
+          class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
+          label="{{ 'ADD' | translate }}"
+          (click)="experienceService.openAddDialog()"
+        ></button>
+      </ng-container>
+    </ng-container>
   </div>
   <div
     *ngIf="experiences() && experiences().length > 0; else noExperience"
@@ -24,6 +28,8 @@
     <app-experience-card
       *ngFor="let exp of experiences()"
       [experience]="exp"
+      [isApplicationReview]="isApplicationReview"
+      [isEditAllowed]="isEditAllowed"
     ></app-experience-card>
   </div>
   <ng-template #noExperience>
@@ -35,18 +41,26 @@
       <p class="text-slate-600 dark:text-slate-300 mb-2">
         {{ "NO_EXPERIENCE_DESCRIPTION" | translate }}
       </p>
-      <button
-        *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-        pButton
-        icon="pi pi-plus"
-        class="p-button-rounded p-button-text"
-        label="{{ 'ADD_EXPERIENCE' | translate }}"
-        (click)="experienceService.openAddDialog()"
-      ></button>
+      <ng-container *ngIf="isEditAllowed">
+        <ng-container *ngIf="!isApplicationReview">
+          <button
+            *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+            pButton
+            icon="pi pi-plus"
+            class="p-button-rounded p-button-text"
+            label="{{ 'ADD_EXPERIENCE' | translate }}"
+            (click)="experienceService.openAddDialog()"
+          ></button>
+        </ng-container>
+      </ng-container>
     </div>
   </ng-template>
 </div>
 
-<app-add-edit-candidate-experience-dialog
-  *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-></app-add-edit-candidate-experience-dialog>
+<ng-container *ngIf="isEditAllowed">
+  <ng-container *ngIf="!isApplicationReview">
+    <app-add-edit-candidate-experience-dialog
+      *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+    ></app-add-edit-candidate-experience-dialog>
+  </ng-container>
+</ng-container>

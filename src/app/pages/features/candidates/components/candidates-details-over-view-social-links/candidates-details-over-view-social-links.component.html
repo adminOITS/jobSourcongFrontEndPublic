@@ -6,15 +6,16 @@
     <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">
       {{ "SOCIAL_LINKS" | translate }}
     </h2>
-
-    <button
-      *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-      pButton
-      icon="pi pi-pencil"
-      [label]="'EDIT_SOCIAL_LINKS' | translate"
-      (click)="onEditClick()"
-      class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
-    ></button>
+    <ng-container *ngIf="isEditAllowed">
+      <button
+        *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+        pButton
+        icon="pi pi-pencil"
+        [label]="'EDIT_SOCIAL_LINKS' | translate"
+        (click)="onEditClick()"
+        class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
+      ></button>
+    </ng-container>
   </div>
 
   <!-- Social Links Display -->
@@ -43,6 +44,8 @@
 </div>
 
 <!-- Dialog Component -->
-<app-add-edit-candidate-social-links-dialog
-  *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-></app-add-edit-candidate-social-links-dialog>
+<ng-container *ngIf="isEditAllowed">
+  <app-add-edit-candidate-social-links-dialog
+    *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+  ></app-add-edit-candidate-social-links-dialog>
+</ng-container>

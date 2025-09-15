@@ -23,49 +23,50 @@ export function isValidDate(dateString: string | null | undefined): boolean {
   return !isNaN(date.getTime()) && dateString.trim() !== '';
 }
 
+// export function normalizeMonthYearDate(
+//   dateString: string | null | undefined
+// ): string | null {
+//   if (!dateString || typeof dateString !== 'string') {
+//     return null;
+//   }
+
+//   // Check if the date string matches MM-YYYY format
+//   const monthYearPattern = /^(0[1-9]|1[0-2])-(\d{4})$/;
+//   const match = dateString.trim().match(monthYearPattern);
+
+//   if (match) {
+//     // If it matches MM-YYYY format, prepend '01-' to make it DD-MM-YYYY
+//     return `01-${dateString}`;
+//   }
+
+//   // Return the original string if it doesn't match the pattern
+//   return dateString;
+// }
 export function normalizeMonthYearDate(
   dateString: string | null | undefined
-): string | null {
-  if (!dateString || typeof dateString !== 'string') {
-    return null;
-  }
+): Date | null {
+  if (!dateString) return null;
 
-  // Check if the date string matches MM-YYYY format
-  const monthYearPattern = /^(0[1-9]|1[0-2])-(\d{4})$/;
-  const match = dateString.trim().match(monthYearPattern);
+  // Expect input in MM-YYYY format
+  const [month, year] = dateString.split('-').map(Number);
+  if (!month || !year || month < 1 || month > 12) return null;
 
-  if (match) {
-    // If it matches MM-YYYY format, prepend '01-' to make it DD-MM-YYYY
-    return `01-${dateString}`;
-  }
-
-  // Return the original string if it doesn't match the pattern
-  return dateString;
+  // Create date: JS months are 0-based, so subtract 1
+  return new Date(year, month - 1, 1);
 }
 
 export function formatDateSafely(
   dateString: string | null | undefined,
-  format: string = 'MMM yyyy',
   fallback: string = 'Invalid Date'
 ): string {
-  // Normalize the date string first
-  const normalizedDateString = normalizeMonthYearDate(dateString);
+  const date = normalizeMonthYearDate(dateString);
+  if (!date || isNaN(date.getTime())) return fallback;
 
-  if (!isValidDate(normalizedDateString)) {
-    return fallback;
-  }
-
-  try {
-    const date = new Date(normalizedDateString!);
-    // Simple date formatting - you can use a library like date-fns for more complex formatting
-    const month = date.toLocaleDateString('en-US', { month: 'short' });
-    const year = date.getFullYear();
-    return `${month} ${year}`;
-  } catch (error) {
-    return fallback;
-  }
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+  });
 }
-
 export function updateQueryParamWithoutNavigation(
   paramKey: string,
   paramValue: string,
@@ -299,6 +300,26 @@ export const getApplicationStatusStyle = (
     WAITING_FOR_CANDIDATE_ACTION: {
       background: 'bg-purple-100 dark:bg-purple-950',
       text: 'text-purple-700 dark:text-purple-200',
+    },
+    PUSHED_TO_CLIENT: {
+      background: 'bg-pink-100 dark:bg-pink-950',
+      text: 'text-pink-700 dark:text-pink-200',
+    },
+    REJECTED_BY_CLIENT: {
+      background: 'bg-red-100 dark:bg-red-950',
+      text: 'text-red-700 dark:text-red-200',
+    },
+    VALIDATED_BY_CLIENT: {
+      background: 'bg-green-100 dark:bg-green-950',
+      text: 'text-green-700 dark:text-green-200',
+    },
+    INVALIDATED_BY_CLIENT: {
+      background: 'bg-orange-100 dark:bg-orange-950',
+      text: 'text-orange-700 dark:text-orange-200',
+    },
+    UNPUSHED_BY_CLIENT: {
+      background: 'bg-cyan-100 dark:bg-cyan-950',
+      text: 'text-cyan-700 dark:text-cyan-200',
     },
   };
 

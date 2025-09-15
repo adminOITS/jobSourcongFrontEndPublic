@@ -8,14 +8,18 @@
       <i class="pi pi-globe text-blue-500 mr-2"></i>
       {{ "LANGUAGES" | translate }}
     </h3>
-    <button
-      *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-      pButton
-      icon="pi pi-plus"
-      class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
-      label="{{ 'ADD' | translate }}"
-      (click)="languageService.openAddDialog()"
-    ></button>
+    <ng-container *ngIf="isEditAllowed">
+      <ng-container *ngIf="!isApplicationReview">
+        <button
+          *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+          pButton
+          icon="pi pi-plus"
+          class="p-button-rounded p-button-text p-button-sm dark:text-slate-200"
+          label="{{ 'ADD' | translate }}"
+          (click)="languageService.openAddDialog()"
+        ></button>
+      </ng-container>
+    </ng-container>
   </div>
   <div
     *ngIf="languages() && languages().length > 0; else noLanguages"
@@ -24,7 +28,9 @@
     <app-language-card
       *ngFor="let lang of languages()"
       [language]="lang"
+      [isApplicationReview]="isApplicationReview"
       (delete)="onDeleteLanguage($event)"
+      [isEditAllowed]="isEditAllowed"
     ></app-language-card>
   </div>
   <ng-template #noLanguages>
@@ -36,18 +42,26 @@
       <p class="text-slate-600 dark:text-slate-300 mb-2">
         {{ "NO_LANGUAGES_DESCRIPTION" | translate }}
       </p>
-      <button
-        *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-        pButton
-        icon="pi pi-plus"
-        class="p-button-rounded p-button-text"
-        label="{{ 'ADD_LANGUAGE' | translate }}"
-        (click)="languageService.openAddDialog()"
-      ></button>
+      <ng-container *ngIf="isEditAllowed">
+        <ng-container *ngIf="!isApplicationReview">
+          <button
+            *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+            pButton
+            icon="pi pi-plus"
+            class="p-button-rounded p-button-text"
+            label="{{ 'ADD_LANGUAGE' | translate }}"
+            (click)="languageService.openAddDialog()"
+          ></button>
+        </ng-container>
+      </ng-container>
     </div>
   </ng-template>
 
-  <app-add-edit-candidate-language-dialog
-    *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
-  ></app-add-edit-candidate-language-dialog>
+  <ng-container *ngIf="isEditAllowed">
+    <ng-container *ngIf="!isApplicationReview">
+      <app-add-edit-candidate-language-dialog
+        *appHasRole="['HR_ADMIN', 'HR', 'RECRUITER']"
+      ></app-add-edit-candidate-language-dialog>
+    </ng-container>
+  </ng-container>
 </div>

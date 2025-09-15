@@ -48,7 +48,7 @@ export class ApplicationActionsMenuComponent implements OnInit {
   private userRole = this.authService.getRole();
   @Output() onDelete = new EventEmitter<void>();
   @Output() onViewDetails = new EventEmitter<void>();
-
+  @Output() onShareApplicationProfileWithClient = new EventEmitter<void>();
   constructor() {
     effect(() => {
       if (this.application()) {
@@ -270,6 +270,31 @@ export class ApplicationActionsMenuComponent implements OnInit {
         action: () => this.scheduleInterview(),
       },
       {
+        key: 'PUSH_TO_CLIENT',
+        label: 'PUSHED_TO_CLIENT_Action',
+        icon: 'pi pi-arrow-right-arrow-left',
+        iconColor: 'text-blue-500',
+        can: () => true,
+        action: () => this.pushToClient(),
+      },
+      {
+        key: 'SHARE_APPLICATION_PROFILE_WITH_CLIENT',
+        label: 'SHARE_APPLICATION_PROFILE_WITH_CLIENT_Action',
+        icon: 'pi pi-share-alt',
+        iconColor: 'text-blue-500',
+        can: () =>
+          ['VALIDATED_BY_CLIENT'].includes(this.application()?.status!),
+        action: () => this.shareApplicationProfileWithClient(),
+      },
+      {
+        key: 'UNPUSH_FROM_CLIENT',
+        label: 'UNPUSHED_FROM_CLIENT_Action',
+        icon: 'pi pi-arrow-left',
+        iconColor: 'text-red-500',
+        can: () => ['PUSHED_TO_CLIENT'].includes(this.application()?.status!),
+        action: () => this.unpushFromClient(),
+      },
+      {
         key: 'PUSH_TO_VALIDATOR',
         label: 'PUSHED_TO_VALIDATOR_Action',
         icon: 'pi pi-arrow-right-arrow-left',
@@ -326,6 +351,7 @@ export class ApplicationActionsMenuComponent implements OnInit {
           ].includes(this.application()?.status!),
         action: () => this.rejectByValidator(),
       },
+
       {
         key: 'SEND_ACCEPTANCE_EMAIL',
         label: 'SEND_ACCEPTANCE_EMAIL_Action',
@@ -441,6 +467,30 @@ export class ApplicationActionsMenuComponent implements OnInit {
   }
   viewDetails() {
     this.onViewDetails.emit();
+  }
+  private pushToClient() {
+    this.applicationService.openApplicationCommentDialog({
+      actionLabel: 'PUSHED_TO_CLIENT_Action',
+      commentRequired: true,
+      actionFunction: (comment: TransitionCommentRequest) => {
+        this.applicationService.pushToClient(this.application()?.id!, comment);
+      },
+    });
+  }
+  private shareApplicationProfileWithClient() {
+    this.onShareApplicationProfileWithClient.emit();
+  }
+  private unpushFromClient() {
+    this.applicationService.openApplicationCommentDialog({
+      actionLabel: 'UNPUSHED_FROM_CLIENT_Action',
+      commentRequired: true,
+      actionFunction: (comment: TransitionCommentRequest) => {
+        this.applicationService.unpushApplication(
+          this.application()?.id!,
+          comment
+        );
+      },
+    });
   }
   scheduleInterview() {
     this.interviewService.openAddDialog(this.application()?.id!);
